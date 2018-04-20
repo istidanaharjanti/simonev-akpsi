@@ -22,8 +22,8 @@ const history = createBrowserHistory();
 ReactDOM.render((
   <HashRouter history={history}>
     <Switch>
-      <Route exact path="/login" name="Login Page" component={Login}/>
-      <Route path="/" name="Home" component={Full}/>
+      <Route exact path="/" name="Login Page" component={Login}/>
+      <Route path="/dashboard" name="Home" component={Full}/>
     </Switch>
   </HashRouter>
 ), document.getElementById('root'));

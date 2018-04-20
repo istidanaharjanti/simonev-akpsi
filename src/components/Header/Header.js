@@ -97,7 +97,7 @@ class Header extends Component {
                 <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
                 <DropdownItem divider/>
                 <DropdownItem>
-                  <Link to="/login"><i className="fa fa-lock"></i> Logout</Link>
+                  <Link to="/"><i className="fa fa-lock"></i> Logout</Link>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
