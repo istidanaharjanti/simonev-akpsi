@@ -19,11 +19,19 @@ import Login from './views/Pages/Login/'
 
 const history = createBrowserHistory();
 
+function requireAuth(nextState, replace) {
+  if (!loggedIn()) {
+    replace({
+      pathname: '/'
+    })
+  }
+}
+
 ReactDOM.render((
   <HashRouter history={history}>
     <Switch>
       <Route exact path="/" name="Login Page" component={Login}/>
-      <Route path="/dashboard" name="Home" component={Full}/>
+      <Route path="/dashboard" onEnter={requireAuth} name="Home" component={Full}/>
     </Switch>
   </HashRouter>
 ), document.getElementById('root'));
