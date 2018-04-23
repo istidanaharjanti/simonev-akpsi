@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 // import reducers from '../../../reducers';
 import { usernameChanged, passwordChanged, setToken } from '../../../actions';
 
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Container, Row, Col, CardGroup, Card, CardBlock, Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 let username;
@@ -34,7 +34,7 @@ class LoginComponent extends Component {
   componentDidUpdate() {
     username = this.state.username
     password = this.state.password
-    console.log('thiz.props', this.props);
+    console.log(username, password)
   };
 
   handleUserName(event) {
@@ -87,9 +87,9 @@ class LoginComponent extends Component {
                     </InputGroup>
                     <Row>
                       <Col xs="6">
-                        {/* <Link to="/dashboard"> */}
                         <Button color="primary" className="px-4" onClick={this.loginFunc}>Login</Button>
-                        {/* </Link> */}
+                        { this.props.currentToken !== '' && <Redirect from="/" to="/dashboard" /> }
+                        {/* </Redirect> */}
                       </Col>
                       <Col xs="6" className="text-right">
                         <Button color="link" className="px-0">Forgot password?</Button>
