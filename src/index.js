@@ -15,7 +15,7 @@ import '../scss/style.scss'
 import Full from './containers/Full/'
 
 // Views
-import Login from './views/Pages/Login/'
+import Login from './views/Pages/Login/Login.container'
 
 const history = createBrowserHistory();
 
