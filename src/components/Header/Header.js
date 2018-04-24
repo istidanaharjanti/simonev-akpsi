@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   Badge,
+  Button,
   Dropdown,
   DropdownMenu,
   DropdownItem,
@@ -13,6 +15,9 @@ import {
   DropdownToggle
 } from 'reactstrap';
 
+import { setToken } from '../../actions';
+
+let resetToken;
 class Header extends Component {
 
   constructor(props) {
@@ -24,6 +29,11 @@ class Header extends Component {
       dropdownOpen: false,
       notifOpen: false
     };
+  }
+  
+  componentDidMount() {
+    console.log('did', this.props);
+    resetToken = this.props.setToken
   }
 
   toggle() {
@@ -56,6 +66,13 @@ class Header extends Component {
   asideToggle(e) {
     e.preventDefault();
     document.body.classList.toggle('aside-menu-hidden');
+  }
+
+  logout() {
+    console.log('props', this.props);
+    console.log('rest', resetToken);
+    // console.log(this.props.currentToken, this.props.userData);
+    // this.props.setToken('');
   }
 
   render() {
@@ -97,7 +114,7 @@ class Header extends Component {
                 <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
                 <DropdownItem divider/>
                 <DropdownItem>
-                  <Link to="/"><i className="fa fa-lock"></i> Logout</Link>
+                <Button color="link" onClick={this.logout}><i className="fa fa-lock"></i>Logout</Button>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -108,4 +125,10 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  const { currentToken, userData } = state.auth;
+
+  return { currentToken, userData };
+};
+
+export default connect(mapStateToProps, { setToken })(Header);

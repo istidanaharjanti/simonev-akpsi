@@ -9,5 +9,10 @@ export default {
       //   text: 'NEW'
       // }
     },
+    {
+      name: 'Data Paket',
+      url: '/data-paket',
+      icon: 'icon-folder'
+    },
   ]
 };

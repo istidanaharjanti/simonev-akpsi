@@ -13,8 +13,6 @@ import '../scss/style.scss'
 
 // Containers
 import Full from './containers/Full/'
-
-// Views
 import Login from './views/Pages/Login/Login.container'
 
 const history = createBrowserHistory();
@@ -32,6 +30,7 @@ ReactDOM.render((
     <Switch>
       <Route exact path="/" name="Login Page" component={Login}/>
       <Route path="/dashboard" onEnter={requireAuth} name="Home" component={Full}/>
+      <Route path="/data-paket" onEnter={requireAuth} name="Data Paket" component={Full}/>
     </Switch>
   </HashRouter>
 ), document.getElementById('root'));

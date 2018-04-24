@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 // import { createStore } from 'redux';
 
 // import reducers from '../../../reducers';
-import { usernameChanged, passwordChanged, setToken } from '../../../actions';
+import { setToken, saveUserData } from '../../../actions';
 
 import { Redirect } from 'react-router-dom';
 import { Container, Row, Col, CardGroup, Card, CardBlock, Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
@@ -13,6 +13,7 @@ import { Container, Row, Col, CardGroup, Card, CardBlock, Button, Input, InputGr
 let username;
 let password;
 let saveToken;
+let saveUserSession;
 
 class LoginComponent extends Component {
   constructor(props) {
@@ -28,13 +29,14 @@ class LoginComponent extends Component {
   };
 
   componentDidMount() {
-    saveToken = this.props.setToken
+    saveToken = this.props.setToken;
+    saveUserSession = this.props.saveUserData;
   }
 
   componentDidUpdate() {
-    username = this.state.username
-    password = this.state.password
-    console.log(username, password)
+    username = this.state.username;
+    password = this.state.password;
+    console.log('login', this.props);
   };
 
   handleUserName(event) {
@@ -59,8 +61,8 @@ class LoginComponent extends Component {
       },
       data: qs.stringify(data)
     }).then((response) => {
-      console.log('response', response);
       saveToken(response.data.token);
+      saveUserSession(response.data);
     }).catch((e) => {
       alert(e);
     });
@@ -89,7 +91,6 @@ class LoginComponent extends Component {
                       <Col xs="6">
                         <Button color="primary" className="px-4" onClick={this.loginFunc}>Login</Button>
                         { this.props.currentToken !== '' && <Redirect from="/" to="/dashboard" /> }
-                        {/* </Redirect> */}
                       </Col>
                       <Col xs="6" className="text-right">
                         <Button color="link" className="px-0">Forgot password?</Button>
@@ -108,9 +109,9 @@ class LoginComponent extends Component {
 
 
 const mapStateToProps = (state) => {
-  const { username, password, currentToken } = state.auth;
+  const { currentToken, userData } = state.auth;
 
-  return { username, password, currentToken };
+  return { currentToken, userData };
 };
 
-export default connect(mapStateToProps, { usernameChanged, passwordChanged, setToken })(LoginComponent);
+export default connect(mapStateToProps, { setToken, saveUserData })(LoginComponent);
