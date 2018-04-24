@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
 
-import HeaderContainer from '../../components/Header/Header.container';
+import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
@@ -15,7 +15,7 @@ class Full extends Component {
   render() {
     return (
       <div className="app">
-        <HeaderContainer {...this.props}/>
+        <Header {...this.props}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
           <main className="main">

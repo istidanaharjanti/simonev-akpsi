@@ -38,6 +38,7 @@
     "datatables.net-bs4": "^1.10.16",
     "font-awesome": "^4.7.0",
     "history": "4.6.3",
+    "js-cookie": "^2.2.0",
     "namor": "^1.0.1",
     "qs": "^6.5.1",
     "react": "^15.6.1",

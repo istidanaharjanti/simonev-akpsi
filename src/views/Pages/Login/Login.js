@@ -1,11 +1,7 @@
 import React, {Component} from "react";
 import axios from 'axios';
 import qs from 'qs';
-import { connect } from 'react-redux';
-// import { createStore } from 'redux';
-
-// import reducers from '../../../reducers';
-import { setToken, saveUserData } from '../../../actions';
+import Cookies from 'js-cookie';
 
 import { Redirect } from 'react-router-dom';
 import { Container, Row, Col, CardGroup, Card, CardBlock, Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
@@ -18,7 +14,6 @@ let saveUserSession;
 class LoginComponent extends Component {
   constructor(props) {
     super(props);
-    console.log('props', props);
     
     this.state = {
       username: '',
@@ -29,14 +24,15 @@ class LoginComponent extends Component {
   };
 
   componentDidMount() {
-    saveToken = this.props.setToken;
-    saveUserSession = this.props.saveUserData;
+    this.setState({
+      username: '',
+      password: ''
+    })
   }
 
   componentDidUpdate() {
     username = this.state.username;
     password = this.state.password;
-    console.log('login', this.props);
   };
 
   handleUserName(event) {
@@ -48,7 +44,7 @@ class LoginComponent extends Component {
   }
 
   loginFunc() {
-    const url = 'https://f49c66f7-f1a9-49d2-8969-9e51d8d22382.mock.pstmn.io/login';
+    const url = 'http://localhost:2018/login';
     const data = {
       username: username,
       password: password
@@ -61,8 +57,9 @@ class LoginComponent extends Component {
       },
       data: qs.stringify(data)
     }).then((response) => {
-      saveToken(response.data.token);
-      saveUserSession(response.data);
+      Cookies.set('token', response.data.token);
+      Cookies.set('userSession', response.data);
+      window.location.replace('/#/dashboard');
     }).catch((e) => {
       alert(e);
     });
@@ -90,7 +87,7 @@ class LoginComponent extends Component {
                     <Row>
                       <Col xs="6">
                         <Button color="primary" className="px-4" onClick={this.loginFunc}>Login</Button>
-                        { this.props.currentToken !== '' && <Redirect from="/" to="/dashboard" /> }
+                        { Cookies.get('token') && <Redirect from="/" to="/dashboard" /> }
                       </Col>
                       <Col xs="6" className="text-right">
                         <Button color="link" className="px-0">Forgot password?</Button>
@@ -107,11 +104,4 @@ class LoginComponent extends Component {
   }
 }
 
-
-const mapStateToProps = (state) => {
-  const { currentToken, userData } = state.auth;
-
-  return { currentToken, userData };
-};
-
-export default connect(mapStateToProps, { setToken, saveUserData })(LoginComponent);
+export default LoginComponent;

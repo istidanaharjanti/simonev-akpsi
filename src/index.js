@@ -13,7 +13,7 @@ import '../scss/style.scss'
 
 // Containers
 import Full from './containers/Full/'
-import Login from './views/Pages/Login/Login.container'
+import Login from './views/Pages/Login/Login'
 
 const history = createBrowserHistory();
 

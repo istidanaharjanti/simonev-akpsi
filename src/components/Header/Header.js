@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import {
   Badge,
   Button,
@@ -14,10 +14,6 @@ import {
   NavbarToggler,
   DropdownToggle
 } from 'reactstrap';
-
-import { setToken } from '../../actions';
-
-let resetToken;
 class Header extends Component {
 
   constructor(props) {
@@ -27,13 +23,18 @@ class Header extends Component {
     this.toggleNotif = this.toggleNotif.bind(this);
     this.state = {
       dropdownOpen: false,
-      notifOpen: false
+      notifOpen: false,
+      userData: {}
     };
   }
   
   componentDidMount() {
-    console.log('did', this.props);
-    resetToken = this.props.setToken
+    const sessionCookie = Cookies.get('userSession');
+    if(sessionCookie) {
+      this.setState({
+        userData: JSON.parse(sessionCookie)
+      });
+    }
   }
 
   toggle() {
@@ -69,10 +70,8 @@ class Header extends Component {
   }
 
   logout() {
-    console.log('props', this.props);
-    console.log('rest', resetToken);
-    // console.log(this.props.currentToken, this.props.userData);
-    // this.props.setToken('');
+    Cookies.remove('token');
+    Cookies.remove('userSession');
   }
 
   render() {
@@ -102,7 +101,9 @@ class Header extends Component {
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <DropdownToggle className="nav-link dropdown-toggle" style={{paddingRight: 10}}>
                 <img src={'img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-                <span className="d-md-down-none">admin</span>
+                <span className="d-md-down-none">
+                  {this.state.userData && this.state.userData.data && this.state.userData.data.nama}
+                </span>
               </DropdownToggle>
               <DropdownMenu right className={this.state.dropdownOpen ? 'show' : ''}>
                 <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
@@ -115,6 +116,7 @@ class Header extends Component {
                 <DropdownItem divider/>
                 <DropdownItem>
                 <Button color="link" onClick={this.logout}><i className="fa fa-lock"></i>Logout</Button>
+                   { !Cookies.get('token') && <Redirect to="/" /> }
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -125,10 +127,4 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { currentToken, userData } = state.auth;
-
-  return { currentToken, userData };
-};
-
-export default connect(mapStateToProps, { setToken })(Header);
+export default Header;
