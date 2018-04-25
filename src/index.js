@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
+import Cookies from 'js-cookie';
 
 // Styles
 // Import Font Awesome Icons Set
@@ -18,7 +19,7 @@ import Login from './views/Pages/Login/Login'
 const history = createBrowserHistory();
 
 function requireAuth(nextState, replace) {
-  if (!loggedIn()) {
+  if (!Cookies.get('token')) {
     replace({
       pathname: '/'
     })

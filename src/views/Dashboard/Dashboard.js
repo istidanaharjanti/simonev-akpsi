@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Bar, Doughnut, Line, Pie, Polar, Radar} from "react-chartjs-2";
 import {CardColumns, Card, CardHeader, CardBlock} from "reactstrap";
+import Cookies from 'js-cookie';
 
 const line = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -138,11 +139,25 @@ const polar = {
     'Blue'
   ]
 };
-
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: {}
+    }
+  }
+  componentDidMount() {
+    const sessionCookie = Cookies.get('userSession');
+    if(sessionCookie) {
+      this.setState({
+        userData: JSON.parse(sessionCookie)
+      });
+    }
+  }
   render() {
     return (
       <div className="animated fadeIn">
+        <h2>Ini role {this.state.userData && this.state.userData.data && this.state.userData.data.jabatan}</h2>
         <CardColumns className="cols-2">
           <Card>
             <CardHeader>

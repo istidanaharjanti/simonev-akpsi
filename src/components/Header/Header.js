@@ -100,7 +100,7 @@ class Header extends Component {
           <NavItem>
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <DropdownToggle className="nav-link dropdown-toggle" style={{paddingRight: 10}}>
-                <img src={'img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+                <i className="fa fa-user"></i>
                 <span className="d-md-down-none">
                   {this.state.userData && this.state.userData.data && this.state.userData.data.nama}
                 </span>
