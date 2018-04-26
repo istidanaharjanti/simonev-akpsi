@@ -52,7 +52,7 @@ class LoginComponent extends Component {
     axios({
       url,  
       method: 'POST',
-      header: {
+      headers: {
        'Content-Type': 'application/x-www-form-urlencoded',
       },
       data: qs.stringify(data)

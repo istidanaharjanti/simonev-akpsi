@@ -8,21 +8,22 @@ export class DataTbl extends Component {
     componentDidMount(){
       this.$el = $(this.el);
       this.$el.DataTable({
-         data: this.props.data,
-         columns: [
-            { title: "Name" },
-            { title: "Position" },
-            { title: "Office" },
-            { title: "Extn." },
-            { title: "Start date" },
-            { title: "Salary" }
+         "ajax": this.props.data,
+         "columns": [
+            { "data": "id" },
+            { "data": "nama_paket" },
+            { "data": "jenis_pekerjaan" },
+            { "data": "lokasi_pekerjaan" },
+            { "data": "pagu_paket" },
+            { "data": "tahun_anggaran" },
+            { "data": "unit_eselon1" }
          ]
       })
     }
 
-    componentWillUnmount() {
-      this.$el.DataTable.destroy(true);
-    }
+    // componentWillUnmount() {
+    //   this.$el.DataTable.destroy(true);
+    // }
     render() {
       return(
         <div>
