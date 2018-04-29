@@ -100,7 +100,7 @@ class Header extends Component {
           <NavItem>
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <DropdownToggle className="nav-link dropdown-toggle" style={{paddingRight: 10}}>
-                <i className="fa fa-user"></i>
+                <i className="fa fa-user" style={{marginRight: 5}}></i>
                 <span className="d-md-down-none">
                   {this.state.userData && this.state.userData.data && this.state.userData.data.nama}
                 </span>

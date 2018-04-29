@@ -1,151 +1,154 @@
-// import React, { Component } from "react";
-// import { makeData } from "./Utils";
-
-// Import React Table
-// import ReactTable from "react-table";
-// import "react-table/react-table.css";
-
-// class DataPaket extends Component  {
-//   constructor() {
-//     super();
-//     this.state = {
-//       data: makeData()
-//     };
-//   }
-//   render() {
-//     const { data } = this.state;
-//     return (
-//       <div className="animated fadeIn">
-//         <ReactTable
-//           data={data}
-//           columns={[
-//             {
-//               Header: "Name",
-//               columns: [
-//                 {
-//                   Header: "First Name",
-//                   accessor: "firstName"
-//                 },
-//                 {
-//                   Header: "Last Name",
-//                   id: "lastName",
-//                   accessor: d => d.lastName
-//                 }
-//               ]
-//             },
-//             {
-//               Header: "Info",
-//               columns: [
-//                 {
-//                   Header: "Age",
-//                   accessor: "age"
-//                 },
-//                 {
-//                   Header: "Status",
-//                   accessor: "status"
-//                 }
-//               ]
-//             },
-//             {
-//               Header: 'Stats',
-//               columns: [
-//                 {
-//                   Header: "Visits",
-//                   accessor: "visits"
-//                 }
-//               ]
-//             }
-//           ]}
-//           defaultPageSize={10}
-//           className="-striped -highlight"
-//         />
-//         <br />
-//       </div>
-//     );
-//   }
-// }
-
-
-// export default DataPaket;
-
-
-
 import React, { Component } from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { DataTbl } from '../../datatables';
 
 class DataPaket extends Component {
     constructor() {
         super();
         this.state = {
-            // dataSet: [
-            //     ["Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800"],
-            //     ["Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750"],
-            //     ["Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000"],
-            //     ["Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060"],
-            //     ["Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700"],
-            //     ["Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000"],
-            //     ["Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500"],
-            //     ["Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900"],
-            //     ["Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500"],
-            //     ["Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600"],
-            //     ["Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560"],
-            //     ["Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000"],
-            //     ["Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600"],
-            //     ["Haley Kennedy", "Senior Marketing Designer", "London", "3597", "2012/12/18", "$313,500"],
-            //     ["Tatyana Fitzpatrick", "Regional Director", "London", "1965", "2010/03/17", "$385,750"],
-            //     ["Michael Silva", "Marketing Designer", "London", "1581", "2012/11/27", "$198,500"],
-            //     ["Paul Byrd", "Chief Financial Officer (CFO)", "New York", "3059", "2010/06/09", "$725,000"],
-            //     ["Gloria Little", "Systems Administrator", "New York", "1721", "2009/04/10", "$237,500"],
-            //     ["Bradley Greer", "Software Engineer", "London", "2558", "2012/10/13", "$132,000"],
-            //     ["Dai Rios", "Personnel Lead", "Edinburgh", "2290", "2012/09/26", "$217,500"],
-            //     ["Jenette Caldwell", "Development Lead", "New York", "1937", "2011/09/03", "$345,000"],
-            //     ["Yuri Berry", "Chief Marketing Officer (CMO)", "New York", "6154", "2009/06/25", "$675,000"],
-            //     ["Caesar Vance", "Pre-Sales Support", "New York", "8330", "2011/12/12", "$106,450"],
-            //     ["Doris Wilder", "Sales Assistant", "Sidney", "3023", "2010/09/20", "$85,600"],
-            //     ["Angelica Ramos", "Chief Executive Officer (CEO)", "London", "5797", "2009/10/09", "$1,200,000"],
-            //     ["Gavin Joyce", "Developer", "Edinburgh", "8822", "2010/12/22", "$92,575"],
-            //     ["Jennifer Chang", "Regional Director", "Singapore", "9239", "2010/11/14", "$357,650"],
-            //     ["Brenden Wagner", "Software Engineer", "San Francisco", "1314", "2011/06/07", "$206,850"],
-            //     ["Fiona Green", "Chief Operating Officer (COO)", "San Francisco", "2947", "2010/03/11", "$850,000"],
-            //     ["Shou Itou", "Regional Marketing", "Tokyo", "8899", "2011/08/14", "$163,000"],
-            //     ["Michelle House", "Integration Specialist", "Sidney", "2769", "2011/06/02", "$95,400"],
-            //     ["Suki Burks", "Developer", "London", "6832", "2009/10/22", "$114,500"],
-            //     ["Prescott Bartlett", "Technical Author", "London", "3606", "2011/05/07", "$145,000"],
-            //     ["Gavin Cortez", "Team Leader", "San Francisco", "2860", "2008/10/26", "$235,500"],
-            //     ["Martena Mccray", "Post-Sales support", "Edinburgh", "8240", "2011/03/09", "$324,050"],
-            //     ["Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675"]
-            // ]
-            dataSet: []
+            dataSet: {},
+            userData: {},
+            confirmModal: false,
+            successModal: false
+        }
+    this.toggleAccept = this.toggleAccept.bind(this);
+    this.toggleSuccess = this.toggleSuccess.bind(this);
+    this.startRUP = this.startRUP.bind(this);
+    this.getRUPdata = this.getRUPdata.bind(this);
+    }
+    componentWillMount(){
+        const sessionCookie = Cookies.get('userSession');
+        if(sessionCookie) {
+          this.setState({
+            userData: JSON.parse(sessionCookie)
+          });
         }
     }
-    componentWillMount() {
-      this.getRUPdata();
+    componentDidMount() {
+        const isKabiro = this.isKabiro();
+        if(isKabiro) {
+            this.getRUPdata();
+        }
     }
     getRUPdata() {
-      const url = 'http://localhost:2018/kabiro/paket/rup/2018';
-      const token = Cookies.get('token');
-      console.log(token)
-      axios({
-        url,
-        method: 'GET',
-        headers: {
-          'Authorization': token,
-          'Content-Type': 'application/x-www-form-urlencoded'
+        const self = this;
+        const url = 'http://localhost:2018/kabiro/paket/rup/2018';
+        const token = Cookies.get('token');
+        console.log(token)
+        axios({
+          url,
+          method: 'GET',
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+          }).then((response) => {
+          self.setState({
+            dataSet: response.data
+          })
+          }).catch((e) => {
+            alert(e);
+        });
+      }
+    isKabag() {
+      if (this.state.userData && this.state.userData.data){
+        if(this.state.userData.data.jabatan === 'kabag'){
+         return true;
+        } else {
+          return false;
         }
-        }).then((response) => {
-        this.state.dataSet = response.data;
-        // console.log(Array.from(this.state.dataSet));
-        }).catch((e) => {
-          alert(e);
+      }
+    }
+    isKabiro() {
+      if (this.state.userData && this.state.userData.data){
+        if(this.state.userData.data.jabatan === 'kabiro'){
+        return true;
+        } else {
+        return false;
+        }
+      }
+    }
+    toggleAccept() {
+      this.setState({
+        confirmModal: !this.state.confirmModal
       });
     }
+    toggleSuccess() {
+      this.setState({
+        successModal: false,
+      });
+      window.location.reload();
+    }
+    startRUP() {
+      const self = this;
+      axios({
+        url: 'http://localhost:2018/kabiro/paket/rup/2018/start',
+        method: 'post',
+        headers: {
+          'Authorization': Cookies.get('token')
+        }
+      }).then((res) => {
+        self.setState({
+          successModal: true
+        })
+      }).catch((e) => {
+        alert(e);
+      })
+    }
     render() {
+        const urlKabiro = "http://localhost:2018/kabiro/paket/rup/2018";
+        const urlKabag = "http://localhost:2018/kabag/paket/spse/2018";
+        const dt = {
+            "ajax": {
+               'url': this.isKabag() ? urlKabag : urlKabiro,   
+               'type': 'GET',
+               'beforeSend': function (request) {
+                   request.setRequestHeader("Authorization", Cookies.get('token'))
+               },
+           },
+            "columns": [
+               { "data": "id" },
+               { "data": "nama_paket" },
+               { "data": "jenis_pekerjaan" },
+               { "data": "lokasi_pekerjaan" },
+               { "data": "pagu_paket" },
+               { "data": "tahun_anggaran" },
+               { "data": "unit_eselon1" }
+            ]
+         }
+         const dtHeader = ["ID", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
         return (
             <div className="animated fadeIn">
-                <DataTbl data={this.state.dataSet}>
+                <h1>Data Paket RUP Tahun 2018</h1>
+                <DataTbl data={dt} dataHeader={dtHeader}>
                 </DataTbl>
+                { this.isKabiro() && 
+                <div>
+                <Button size="lg" color="primary" onClick={this.toggleAccept} style={{float:'right', marginTop: '3%', fontWeight: 'bold'}}>Mulai Monev 2018!</Button>
+                <Modal isOpen={this.state.confirmModal} toggle={this.toggleAccept}>
+                    <ModalHeader toggle={this.toggleAccept}>Konfirmasi Kegiatan</ModalHeader>
+                    <ModalBody>
+                       Anda yakin ingin memulai kegiatan monitoring dan evaluasi tahun 2018?<br/>
+                       Anda tidak dapat membatalkan jika sudah memilih ya.
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onClick={this.startRUP}>Tentu</Button>{' '}
+                      <Button color="secondary" onClick={this.toggleAccept}>Tidak</Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal isOpen={this.state.successModal} toggle={this.toggleSuccess}>
+                    <ModalHeader toggle={this.toggleSuccess}>Kegiatan Dimulai</ModalHeader>
+                    <ModalBody>
+                       Kegiatan Monitoring dan Evaluasi Tahun 2018 berhasil dimulai!
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="success" onClick={this.toggleSuccess}>OK</Button>
+                    </ModalFooter>
+                </Modal>
+                </div>
+                }
             </div>
         );
     };
