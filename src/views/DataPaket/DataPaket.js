@@ -21,13 +21,15 @@ class DataPaket extends Component {
             dataSet: {},
             userData: {},
             confirmModal: false,
-            successModal: false
+            successModal: false,
+            confirmModalSendToKpa: false
         }
     this.toggleAccept = this.toggleAccept.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
     this.startRUP = this.startRUP.bind(this);
     this.getRUPdata = this.getRUPdata.bind(this);
     this.getSPSEdata = this.getSPSEdata.bind(this);
+    this.showSendToKpaModal = this.showSendToKpaModal.bind(this);
     }
     componentWillMount(){
         const sessionCookie = Cookies.get('userSession');
@@ -112,6 +114,11 @@ class DataPaket extends Component {
         successModal: false,
       });
       window.location.reload();
+    }
+    showSendToKpaModal() {
+      this.setState({
+        confirmModalSendToKpa: !this.state.confirmModalSendToKpa,
+      });
     }
     startRUP() {
       const self = this;
@@ -234,9 +241,19 @@ class DataPaket extends Component {
                 { this.isKabag() &&
                 <Row style={{marginTop: '5%', marginBottom: '5%', textAlign: 'right'}}>
                   <Col xs="12">
-                    <Button type="submit" size="lg" color="primary"><i className="fa fa-dot-circle-o"></i> Send to KPA</Button>
+                    <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i> Send to KPA</Button>
                     <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
                   </Col>
+                  <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
+                    <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
+                    <ModalBody>
+                       Anda yakin ingin meneruskan paket ini ke KPA?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onClick={this.showSendToKpaModal}>Tentu</Button>{' '}
+                      <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
+                    </ModalFooter>
+                  </Modal>
                 </Row>
                 }
                 { this.isKabiro() && 
