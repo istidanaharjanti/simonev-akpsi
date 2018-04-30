@@ -14,14 +14,14 @@ export class DataTbl extends Component {
       return(
         <div>
           <table className="display" width="150%" ref={el => this.el = el}>
-          <thead>
+          {/* <thead>
             <tr>
             {this.props.dataHeader.map(function(i,h){
               return <th key={h}>{i}</th>
             })
           }
           </tr>
-        </thead>
+        </thead> */}
           </table>
         </div>
       );

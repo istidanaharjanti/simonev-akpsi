@@ -27,6 +27,7 @@ class DataPaket extends Component {
     this.toggleSuccess = this.toggleSuccess.bind(this);
     this.startRUP = this.startRUP.bind(this);
     this.getRUPdata = this.getRUPdata.bind(this);
+    this.getSPSEdata = this.getSPSEdata.bind(this);
     }
     componentWillMount(){
         const sessionCookie = Cookies.get('userSession');
@@ -38,7 +39,12 @@ class DataPaket extends Component {
         const isKabiro = this.isKabiro();
         if(isKabiro){
           this.getRUPdata();
+        } else if(this.isKabag()){
+          this.getSPSEdata();
         }
+    }
+    componentDidUpdate(){
+      console.log(this.state.dataSet);
     }
     getRUPdata() {
         const self = this;
@@ -58,7 +64,26 @@ class DataPaket extends Component {
           }).catch((e) => {
             alert(e);
         });
-      }
+    }
+    getSPSEdata() {
+      const self = this;
+      const url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
+      const token = Cookies.get('token');
+      axios({
+        url,
+        method: 'GET',
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        }).then((response) => {
+        self.setState({
+          dataSet: response.data
+        })
+        }).catch((e) => {
+          alert(e);
+      });
+  }
     isKabag() {
       if (this.state.userData && this.state.userData.data){
         if(this.state.userData.data.jabatan === 'kabag'){
@@ -91,7 +116,7 @@ class DataPaket extends Component {
     startRUP() {
       const self = this;
       axios({
-        url: `http://localhost:2018/kabiro/paket/rup/2018/start`,
+        url: `${process.env.API_HOST}/kabiro/paket/rup/2018/start`,
         method: 'post',
         headers: {
           'Authorization': Cookies.get('token')
@@ -127,69 +152,49 @@ class DataPaket extends Component {
     }
     render() {
         const self = this
-        const urlKabiro = `http://localhost:2018/kabiro/paket/rup/2018`;
-        const urlKabag = `http://localhost:2018/kabag/paket/spse/2018`;
+        const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
+        const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018`;
 
         const columnKabiro = [
-            { "data": "id" },
-            { "data": "nama_paket" },
-            { "data": "jenis_pekerjaan" },
-            { "data": "lokasi_pekerjaan" },
-            { "data": "pagu_paket",
-              "render": function (data, type, full, meta){
-                return self.convertCurrency(data)
-              }
-            },
-            { "data": "tahun_anggaran" },
-            { "data": "unit_eselon1" }
+          {   "sTitle": "ID Paket","mDataProp": "id", "sWidth": "10px"},
+          {   "sTitle": "Nama Paket","mDataProp": "nama_paket", "sWidth": "10px"},
+          {   "sTitle": "Jenis Pekerjaan","mDataProp": "jenis_pekerjaan", "sWidth": "20px"},
+          {   "sTitle": "Lokasi Pekerjaan","mDataProp": "lokasi_pekerjaan", "sWidth": "20px"},
+          {   "sTitle": "Pagu Paket","mDataProp": "pagu_paket", "render": function (data, type, full, meta){
+              return self.convertCurrency(data)
+          },  "sWidth": "20px"},
+          {   "sTitle": "Tahun Anggaran","mDataProp": "tahun_anggaran", "sWidth": "20px"},
+          {   "sTitle": "Unit Eselon I","mDataProp": "unit_eselon1", "sWidth": "20px"},
          ];
+
          const columnKabag = [
-            { // check
-                'targets': 0,
-                'searchable': false,
-                'orderable': false,
-                'className': 'dt-body-center select-checkbox',
-                'render': function (data, type, full, meta){
-                    return '<input type="checkbox">';
-                }
-            },
-            { "data": "id" },
-            { "data": "paket_id" },
-            { "data": "nama_paket"},
-            { "data": "nomor_kontrak"},
-            { "data": "jenis_pekerjaan" },
-            { "data": "lokasi_pekerjaan" },
-            { "data": "pagu_paket",
-              "render": function (data, type, full, meta){
-                return self.convertCurrency(data)
-              }
-            },
-            { "data": "tahun_anggaran" },
-            { "data": "unit_eselon1" },
-            { // toggle
-              'targets': 0,
-              'searchable': false,
-              'orderable': false,
-              'className': 'dt-body-center',
-              'render': function (data, type, full, meta){
-                  return self.renderSwitchJS('M', 'E');
-              }
-          },
-         ];
-        const dt = {
-            ajax: {
-               'url': this.isKabiro() ? urlKabiro : urlKabag,   
-               'type': 'GET',
-               'beforeSend': function (request) {
-                   request.setRequestHeader("Authorization", Cookies.get('token'))
-               },
-           },
-            columns: this.isKabiro() ? columnKabiro : columnKabag,
-            scrollX: true
-         }
-         const kabiroHeader = ["No.", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
-         const kabagHeader = ["test", "No.", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
-         return (
+          {   "sTitle": "<input type='checkbox'></input>","mDataProp": null, "sWidth": "5px", "sDefaultContent": "<input class='dt-body-center select-checkbox' type='checkbox' ></input>", "bSortable": false, "sClass": "dt-body-center select-checkbox"},
+          {   "sTitle": "ID Paket","mDataProp": "id", "sWidth": "10px"},
+          {   "sTitle": "Nama Paket","mDataProp": "nama_paket", "sWidth": "10px"},
+          {   "sTitle": "Nomor Kontrak","mDataProp": "nomor_kontrak", "sWidth": "20px"},
+          {   "sTitle": "Jenis Pekerjaan","mDataProp": "jenis_pekerjaan", "sWidth": "20px"},
+          {   "sTitle": "Lokasi Pekerjaan","mDataProp": "lokasi_pekerjaan", "sWidth": "20px"},
+          {   "sTitle": "Pagu Paket","mDataProp": "pagu_paket", "render": function (data, type, full, meta){
+              return self.convertCurrency(data)
+          },  "sWidth": "20px"},
+          {   "sTitle": "Tahun Anggaran","mDataProp": "tahun_anggaran", "sWidth": "20px"},
+          {   "sTitle": "Unit Eselon I","mDataProp": "unit_eselon1", "sWidth": "20px"},
+          {   "sTitle": "Jenis Paket","mDataProp": null, "sWidth": "5px", "sDefaultContent": self.renderSwitchJS('M', 'E'), "bSortable": false, "sClass": "dt-body-center select-checkbox"}
+];
+         const dt = {
+          ajax: {
+             'url': this.isKabiro() ? urlKabiro : urlKabag,   
+             'type': 'GET',
+             'beforeSend': function (request) {
+                 request.setRequestHeader("Authorization", Cookies.get('token'))
+             },
+         },
+          scrollX: true,
+          aoColumns: this.isKabiro() ? columnKabiro : columnKabag
+       }
+        //  const kabiroHeader = ["No.", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
+        //  const kabagHeader = ["test", "No.", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
+        return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
                 { this.isKabag() &&
@@ -224,10 +229,10 @@ class DataPaket extends Component {
                     </Col>
                 </Row>
                 }
-                <DataTbl data={dt} dataHeader={this.isKabiro() ? kabiroHeader : kabagHeader}>
+                <DataTbl data={dt}>
                 </DataTbl>
                 { this.isKabag() &&
-                <Row style={{marginBottom: '5%', textAlign: 'right'}}>
+                <Row style={{marginTop: '5%', marginBottom: '5%', textAlign: 'right'}}>
                   <Col xs="12">
                     <Button type="submit" size="lg" color="primary"><i className="fa fa-dot-circle-o"></i> Send to KPA</Button>
                     <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
