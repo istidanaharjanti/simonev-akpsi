@@ -108,7 +108,20 @@ class DataPaket extends Component {
           </div>
         );
     }
+
+    renderSwitchJS(on, off) {
+      return `
+        <div>
+          <label class="switch switch-text switch-primary  form-control-label">
+            <input type="checkbox" class="switch-input form-check-input" checked/>
+            <span class="switch-label" data-on="${on}" data-off="${off}"></span>
+            <span class="switch-handle"></span>
+          </label>
+        </div>
+      `
+  }
     render() {
+        const self = this
         const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
         const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018`;
 
@@ -122,7 +135,15 @@ class DataPaket extends Component {
             { "data": "unit_eselon1" }
          ];
          const columnKabag = [
-            { "data": null },
+            { // check
+                'targets': 0,
+                'searchable': false,
+                'orderable': false,
+                'className': 'dt-body-center select-checkbox',
+                'render': function (data, type, full, meta){
+                    return '<input type="checkbox">';
+                }
+            },
             { "data": "id" },
             { "data": "paket_id" },
             { "data": "nama_paket" },
@@ -132,10 +153,15 @@ class DataPaket extends Component {
             { "data": "pagu_paket" },
             { "data": "tahun_anggaran" },
             { "data": "unit_eselon1" },
-            {
-                "data": null,
-                "defaultContent": this.renderSwitch()
-            }
+            { // toggle
+              'targets': 0,
+              'searchable': false,
+              'orderable': false,
+              'className': 'dt-body-center',
+              'render': function (data, type, full, meta){
+                  return self.renderSwitchJS('On', 'Off');
+              }
+          },
          ];
         const dt = {
             "ajax": {
