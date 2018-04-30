@@ -134,33 +134,35 @@ class DataPaket extends Component {
             { "data": "unit_eselon1" },
             {
                 "data": null,
-                "defaultContent": this.renderSwitch()
+                "defaultContent": "<div><Label className='switch switch-text switch-primary'><Input type='checkbox' className='switch-input' defaultChecked/><span className='switch-label' data-on='On' data-off='Off'></span><span className='switch-handle'></span></Label></div>"
             }
          ];
         const dt = {
-            "ajax": {
+            ajax: {
                'url': this.isKabiro() ? urlKabiro : urlKabag,   
                'type': 'GET',
                'beforeSend': function (request) {
                    request.setRequestHeader("Authorization", Cookies.get('token'))
                },
            },
-           "columnDefs": [ {
-                "orderable": false,
-                "className": "select-checkbox",
-                "targets":   0
-            } ],
-            "select": {
-                "style":    "os",
-                "selector": "td:first-child"
+           columnDefs: [ {
+             checkboxes: {
+                selectRow: true
+             },
+             targets:   0
+            }],
+            select: {
+                style: 'multi',
             },
-            "columns": this.isKabiro() ? columnKabiro : columnKabag,
+            order: [[ 1, 'asc' ]],
+            columns: this.isKabiro() ? columnKabiro : columnKabag,
          }
-         const kabiroHeader = ["ID", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
-         const kabagHeader = ["check", "ID", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
+         const kabiroHeader = ["No.", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
+         const kabagHeader = ["check", "No.", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
         return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
+                { this.isKabag() && <p>buat filter</p>}
                 <DataTbl data={dt} dataHeader={this.isKabiro() ? kabiroHeader : kabagHeader}>
                 </DataTbl>
                 { this.isKabag() &&
