@@ -13,6 +13,9 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 console.log('BUILD_DIR', BUILD_DIR);
 console.log('SRC_DIR', SRC_DIR);
 
+
+const Dotenv = require('dotenv-webpack');
+
 module.exports = {
   entry: {
     index: [SRC_DIR + '/index.js']
@@ -104,7 +107,10 @@ module.exports = {
         {from: './public/img', to: 'img'}
       ],
       {copyUnmodified: false}
-    )
+    ),
+    new Dotenv({
+      systemvars: true
+    })
   ]
 }
 ;
