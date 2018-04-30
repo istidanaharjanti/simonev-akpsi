@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label } from 'reactstrap';
 import { DataTbl } from '../../datatables';
 
 class DataPaket extends Component {
@@ -97,33 +97,76 @@ class DataPaket extends Component {
         alert(e);
       })
     }
+    renderSwitch() {
+        return (
+          <div>
+            <Label className="switch switch-text switch-primary">
+              <Input type="checkbox" className="switch-input" defaultChecked/>
+              <span className="switch-label" data-on="On" data-off="Off"></span>
+              <span className="switch-handle"></span>
+            </Label>
+          </div>
+        );
+    }
     render() {
         const urlKabiro = "http://localhost:2018/kabiro/paket/rup/2018";
         const urlKabag = "http://localhost:2018/kabag/paket/spse/2018";
+
+        const columnKabiro = [
+            { "data": "id" },
+            { "data": "nama_paket" },
+            { "data": "jenis_pekerjaan" },
+            { "data": "lokasi_pekerjaan" },
+            { "data": "pagu_paket" },
+            { "data": "tahun_anggaran" },
+            { "data": "unit_eselon1" }
+         ];
+         const columnKabag = [
+            { "data": null },
+            { "data": "id" },
+            { "data": "paket_id" },
+            { "data": "nama_paket" },
+            { "data": "nomor_kontrak" },
+            { "data": "jenis_pekerjaan" },
+            { "data": "lokasi_pekerjaan" },
+            { "data": "pagu_paket" },
+            { "data": "tahun_anggaran" },
+            { "data": "unit_eselon1" },
+            {
+                "data": null,
+                "defaultContent": this.renderSwitch()
+            }
+         ];
         const dt = {
             "ajax": {
-               'url': this.isKabag() ? urlKabag : urlKabiro,   
+               'url': this.isKabiro() ? urlKabiro : urlKabag,   
                'type': 'GET',
                'beforeSend': function (request) {
                    request.setRequestHeader("Authorization", Cookies.get('token'))
                },
            },
-            "columns": [
-               { "data": "id" },
-               { "data": "nama_paket" },
-               { "data": "jenis_pekerjaan" },
-               { "data": "lokasi_pekerjaan" },
-               { "data": "pagu_paket" },
-               { "data": "tahun_anggaran" },
-               { "data": "unit_eselon1" }
-            ]
+           "columnDefs": [ {
+                "orderable": false,
+                "className": "select-checkbox",
+                "targets":   0
+            } ],
+            "select": {
+                "style":    "os",
+                "selector": "td:first-child"
+            },
+            "columns": this.isKabiro() ? columnKabiro : columnKabag,
          }
-         const dtHeader = ["ID", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
+         const kabiroHeader = ["ID", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
+         const kabagHeader = ["check", "ID", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
         return (
             <div className="animated fadeIn">
-                <h1>Data Paket RUP Tahun 2018</h1>
-                <DataTbl data={dt} dataHeader={dtHeader}>
+                <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
+                <DataTbl data={dt} dataHeader={this.isKabiro() ? kabiroHeader : kabagHeader}>
                 </DataTbl>
+                { this.isKabag() &&
+                <div>
+                    {this.renderSwitch()}
+                </div>}
                 { this.isKabiro() && 
                 <div>
                 <Button size="lg" color="primary" onClick={this.toggleAccept} style={{float:'right', marginTop: '3%', fontWeight: 'bold'}}>Mulai Monev 2018!</Button>
