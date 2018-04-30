@@ -15,37 +15,42 @@ import {
 import { DataTbl } from '../../datatables';
 
 class DataPaket extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        const sessionCookie = JSON.parse(Cookies.get('userSession'))
+        const userData = sessionCookie.data ? sessionCookie.data : {}
         this.state = {
-            dataSet: {},
-            userData: {},
+            dataSet: [],
+            userData,
             confirmModal: false,
-            successModal: false
+            successModal: false,
+            rupStatus: false,
         }
     this.toggleAccept = this.toggleAccept.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
     this.startRUP = this.startRUP.bind(this);
     this.getRUPdata = this.getRUPdata.bind(this);
     this.getSPSEdata = this.getSPSEdata.bind(this);
+    this.getRUPstatus = this.getRUPstatus.bind(this);
     }
-    componentWillMount(){
-        const sessionCookie = Cookies.get('userSession');
-        if(sessionCookie) {
-          this.setState({
-            userData: JSON.parse(sessionCookie)
-          });
-        }
-        const isKabiro = this.isKabiro();
-        if(isKabiro){
+    componentDidMount(){
+      // console.log("didmount", this.state.userData)
+      if(this.state.userData.jabatan === "kabiro"){
           this.getRUPdata();
-        } else if(this.isKabag()){
+          this.getRUPstatus();
+          console.log(this.isKabiro())
+      }
+      else if(this.state.userData.jabatan === "kabag"){
           this.getSPSEdata();
         }
+  }
+    componentWillMount(){
+
     }
     componentDidUpdate(){
-      console.log(this.state.dataSet);
+
     }
+
     getRUPdata() {
         const self = this;
         const url = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
@@ -59,12 +64,33 @@ class DataPaket extends Component {
           }
           }).then((response) => {
           self.setState({
-            dataSet: response.data
+            dataSet: response.data.data
           })
           }).catch((e) => {
             alert(e);
         });
     }
+
+    getRUPstatus() {
+      const self = this;
+      const url = `${process.env.API_HOST}/kabiro/paket/rup/2018/status`;
+      const token = Cookies.get('token');
+      axios({
+        url,
+        method: 'GET',
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        }).then((response) => {
+        self.setState({
+          rupStatus: response.data.data
+        })
+        }).catch((e) => {
+          alert(e);
+      });
+  }
+
     getSPSEdata() {
       const self = this;
       const url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
@@ -78,15 +104,15 @@ class DataPaket extends Component {
         }
         }).then((response) => {
         self.setState({
-          dataSet: response.data
+          dataSet: response.data.data
         })
         }).catch((e) => {
           alert(e);
       });
   }
     isKabag() {
-      if (this.state.userData && this.state.userData.data){
-        if(this.state.userData.data.jabatan === 'kabag'){
+      if (this.state.userData && this.state.userData){
+        if(this.state.userData.jabatan === 'kabag'){
          return true;
         } else {
           return false;
@@ -94,8 +120,8 @@ class DataPaket extends Component {
       }
     }
     isKabiro() {
-      if (this.state.userData && this.state.userData.data){
-        if(this.state.userData.data.jabatan === 'kabiro'){
+      if (this.state.userData && this.state.userData){
+        if(this.state.userData.jabatan === 'kabiro'){
         return true;
         } else {
         return false;
@@ -154,6 +180,7 @@ class DataPaket extends Component {
         const self = this
         const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
         const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018`;
+        const dataSet = this.state
 
         const columnKabiro = [
           {   "sTitle": "ID Paket","mDataProp": "id", "sWidth": "10px"},
@@ -241,7 +268,7 @@ class DataPaket extends Component {
                 }
                 { this.isKabiro() && 
                 <div>
-                <Button size="lg" color="primary" onClick={this.toggleAccept} style={{float:'right', marginTop: '3%', fontWeight: 'bold'}}>Mulai Monev 2018!</Button>
+                {this.state.rupStatus && this.state.dataSet && this.state.dataSet.length > 0 ? <Button size="lg" color="warning" disabled style={{float:'right', marginTop: '3%', fontWeight: 'bold'}}>Mulai Monev 2018!</Button> : <Button size="lg" color="primary" onClick={this.toggleAccept} style={{float:'right', marginTop: '3%', fontWeight: 'bold'}}>Mulai Monev 2018!</Button> }
                 <Modal isOpen={this.state.confirmModal} toggle={this.toggleAccept}>
                     <ModalHeader toggle={this.toggleAccept}>Konfirmasi Kegiatan</ModalHeader>
                     <ModalBody>
