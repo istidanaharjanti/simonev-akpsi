@@ -165,7 +165,7 @@ class DataPaket extends Component {
                 </DataTbl>
                 { this.isKabag() &&
                 <div>
-                    {this.renderSwitch()}
+                    test render button {this.renderSwitch()}
                 </div>}
                 { this.isKabiro() && 
                 <div>
