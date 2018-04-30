@@ -84,7 +84,7 @@ class DataPaket extends Component {
     startRUP() {
       const self = this;
       axios({
-        url: `${process.env.API_HOST}/kabiro/paket/rup/2018/start`,
+        url: `http://localhost:2018/kabiro/paket/rup/2018/start`,
         method: 'post',
         headers: {
           'Authorization': Cookies.get('token')
@@ -97,20 +97,31 @@ class DataPaket extends Component {
         alert(e);
       })
     }
-    renderSwitch() {
-        return (
-          <div>
-            <Label className="switch switch-text switch-primary">
-              <Input type="checkbox" className="switch-input" defaultChecked/>
-              <span className="switch-label" data-on="On" data-off="Off"></span>
-              <span className="switch-handle"></span>
-            </Label>
-          </div>
-        );
+
+    renderSwitchJS(on, off) {
+      return `
+        <div>
+          <label class="switch switch-text switch-primary  form-control-label">
+            <input type="checkbox" class="switch-input form-check-input" checked/>
+            <span class="switch-label" data-on="${on}" data-off="${off}"></span>
+            <span class="switch-handle"></span>
+          </label>
+        </div>`
     }
+    // convertCurrency(val, options = {
+    //     style: 'currency',
+    //     currency: 'IDR',
+    //     currencyDisplay: 'symbol',
+    //     maximumFractionDigits: 2,
+    //     minimumFractionDigits: 0,
+    //   }) {
+    //     const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
+    //     return convertedNum;
+    // }
     render() {
-        const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
-        const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018`;
+        const self = this
+        const urlKabiro = `http://localhost:2018/kabiro/paket/rup/2018`;
+        const urlKabag = `http://localhost:2018/kabag/paket/spse/2018`;
 
         const columnKabiro = [
             { "data": "id" },
@@ -122,20 +133,33 @@ class DataPaket extends Component {
             { "data": "unit_eselon1" }
          ];
          const columnKabag = [
-            { "data": null },
+            { // check
+                'targets': 0,
+                'searchable': false,
+                'orderable': false,
+                'className': 'dt-body-center select-checkbox',
+                'render': function (data, type, full, meta){
+                    return '<input type="checkbox">';
+                }
+            },
             { "data": "id" },
             { "data": "paket_id" },
-            { "data": "nama_paket" },
-            { "data": "nomor_kontrak" },
+            { "data": "nama_paket"},
+            { "data": "nomor_kontrak"},
             { "data": "jenis_pekerjaan" },
             { "data": "lokasi_pekerjaan" },
             { "data": "pagu_paket" },
             { "data": "tahun_anggaran" },
             { "data": "unit_eselon1" },
-            {
-                "data": null,
-                "defaultContent": "<div><Label className='switch switch-text switch-primary'><Input type='checkbox' className='switch-input' defaultChecked/><span className='switch-label' data-on='On' data-off='Off'></span><span className='switch-handle'></span></Label></div>"
-            }
+            { // toggle
+              'targets': 0,
+              'searchable': false,
+              'orderable': false,
+              'className': 'dt-body-center',
+              'render': function (data, type, full, meta){
+                  return self.renderSwitchJS('M', 'E');
+              }
+          },
          ];
         const dt = {
             ajax: {
@@ -145,20 +169,11 @@ class DataPaket extends Component {
                    request.setRequestHeader("Authorization", Cookies.get('token'))
                },
            },
-           columnDefs: [ {
-             checkboxes: {
-                selectRow: true
-             },
-             targets:   0
-            }],
-            select: {
-                style: 'multi',
-            },
-            order: [[ 1, 'asc' ]],
             columns: this.isKabiro() ? columnKabiro : columnKabag,
+            scrollX: true
          }
          const kabiroHeader = ["No.", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
-         const kabagHeader = ["check", "No.", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
+         const kabagHeader = ["test", "No.", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
         return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
@@ -167,7 +182,7 @@ class DataPaket extends Component {
                 </DataTbl>
                 { this.isKabag() &&
                 <div>
-                    test render button {this.renderSwitch()}
+                    test
                 </div>}
                 { this.isKabiro() && 
                 <div>

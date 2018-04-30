@@ -13,7 +13,7 @@ export class DataTbl extends Component {
     render() {
       return(
         <div>
-          <table className="display" width="100%" ref={el => this.el = el}>
+          <table className="display" width="150%" ref={el => this.el = el}>
           <thead>
             <tr>
             {this.props.dataHeader.map(function(i,h){
