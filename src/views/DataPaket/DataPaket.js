@@ -34,7 +34,7 @@ class DataPaket extends Component {
     }
     getRUPdata() {
         const self = this;
-        const url = 'http://localhost:2018/kabiro/paket/rup/2018';
+        const url = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
         const token = Cookies.get('token');
         console.log(token)
         axios({
@@ -84,7 +84,7 @@ class DataPaket extends Component {
     startRUP() {
       const self = this;
       axios({
-        url: 'http://localhost:2018/kabiro/paket/rup/2018/start',
+        url: `${process.env.API_HOST}/kabiro/paket/rup/2018/start`,
         method: 'post',
         headers: {
           'Authorization': Cookies.get('token')
@@ -109,8 +109,8 @@ class DataPaket extends Component {
         );
     }
     render() {
-        const urlKabiro = "http://localhost:2018/kabiro/paket/rup/2018";
-        const urlKabag = "http://localhost:2018/kabag/paket/spse/2018";
+        const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
+        const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018`;
 
         const columnKabiro = [
             { "data": "id" },

@@ -44,7 +44,7 @@ class LoginComponent extends Component {
   }
 
   loginFunc() {
-    const url = 'http://localhost:2018/login';
+    const url = `${process.env.API_HOST}/login`;
     const data = {
       username: username,
       password: password

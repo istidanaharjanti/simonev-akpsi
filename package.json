@@ -38,6 +38,7 @@
     "datatables.net": "^1.10.16",
     "datatables.net-bs4": "^1.10.16",
     "datatables.net-dt": "^1.10.16",
+    "dotenv-webpack": "^1.5.5",
     "font-awesome": "^4.7.0",
     "history": "4.6.3",
     "jquery": "^3.3.1",
