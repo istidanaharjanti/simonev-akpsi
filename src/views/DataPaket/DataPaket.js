@@ -1,9 +1,20 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label } from 'reactstrap';
+import {
+    Row,
+    Col,
+    FormGroup,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Input,
+    Label } from 'reactstrap';
 import { DataTbl } from '../../datatables';
 
+let dataRup;
 class DataPaket extends Component {
     constructor() {
         super();
@@ -29,14 +40,16 @@ class DataPaket extends Component {
     componentDidMount() {
         const isKabiro = this.isKabiro();
         if(isKabiro) {
-            this.getRUPdata();
+          this.getRUPdata();
         }
+    }
+    componentDidUpdate(){
+      console.log(dataRup);
     }
     getRUPdata() {
         const self = this;
         const url = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
         const token = Cookies.get('token');
-        console.log(token)
         axios({
           url,
           method: 'GET',
@@ -48,6 +61,7 @@ class DataPaket extends Component {
           self.setState({
             dataSet: response.data
           })
+          dataRup = this.state.dataSet;
           }).catch((e) => {
             alert(e);
         });
@@ -128,7 +142,11 @@ class DataPaket extends Component {
             { "data": "nama_paket" },
             { "data": "jenis_pekerjaan" },
             { "data": "lokasi_pekerjaan" },
-            { "data": "pagu_paket" },
+            { "data": "pagu_paket",
+              "render": function (data, type, full, meta){
+                return self.convertCurrency(data)
+              }
+            },
             { "data": "tahun_anggaran" },
             { "data": "unit_eselon1" }
          ];
@@ -181,7 +199,38 @@ class DataPaket extends Component {
         return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
-                { this.isKabag() && <p>buat filter</p>}
+                { this.isKabag() &&
+                <Row>
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
+                        <Input type="select" name="worktype" id="worktype">
+                          <option value="1">1</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col xs="6">
+                      <Row>
+                        <Col xs="4">
+                            <FormGroup>
+                            <Label htmlFor="ccnumber">Filter by Nilai Pagu</Label>
+                            <Input type="text" id="min" placeholder="min nilai"/>
+                            </FormGroup>
+                        </Col>
+                        <Col xs="4">
+                            <FormGroup>
+                            <Label htmlFor="ccnumber">&nbsp;</Label>
+                            <Input type="text" id="max" placeholder="max nilai"/>
+                            </FormGroup>
+                        </Col>
+                        <Col xs="4">
+                          <Button style={{marginTop: '19%', width:'50%'}} type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                          <Button style={{marginTop: '19%', width:'50%'}} type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+                        </Col>
+                      </Row>
+                    </Col>
+                </Row>
+                }
                 <DataTbl data={dt} dataHeader={this.isKabiro() ? kabiroHeader : kabagHeader}>
                 </DataTbl>
                 { this.isKabag() &&
