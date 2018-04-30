@@ -14,7 +14,6 @@ import {
     Label } from 'reactstrap';
 import { DataTbl } from '../../datatables';
 
-let dataRup;
 class DataPaket extends Component {
     constructor() {
         super();
@@ -36,15 +35,10 @@ class DataPaket extends Component {
             userData: JSON.parse(sessionCookie)
           });
         }
-    }
-    componentDidMount() {
         const isKabiro = this.isKabiro();
-        if(isKabiro) {
+        if(isKabiro){
           this.getRUPdata();
         }
-    }
-    componentDidUpdate(){
-      console.log(dataRup);
     }
     getRUPdata() {
         const self = this;
@@ -61,7 +55,6 @@ class DataPaket extends Component {
           self.setState({
             dataSet: response.data
           })
-          dataRup = this.state.dataSet;
           }).catch((e) => {
             alert(e);
         });
@@ -196,7 +189,7 @@ class DataPaket extends Component {
          }
          const kabiroHeader = ["No.", "Nama Paket", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I"]
          const kabagHeader = ["test", "No.", "ID Paket", "Nama Paket", "Nomor Kontrak", "Jenis Pekerjaan", "Lokasi Pekerjaan", "Pagu Paket", "Tahun Anggaran", "Unit Eselon I", "Jenis Paket"]
-        return (
+         return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
                 { this.isKabag() &&
@@ -224,8 +217,8 @@ class DataPaket extends Component {
                             </FormGroup>
                         </Col>
                         <Col xs="4">
-                          <Button style={{marginTop: '19%', width:'50%'}} type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                          <Button style={{marginTop: '19%', width:'50%'}} type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+                          <Button style={{marginTop: '15%', width:'50%'}} type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                          <Button style={{marginTop: '15%', width:'50%'}} type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
                         </Col>
                       </Row>
                     </Col>
@@ -234,9 +227,13 @@ class DataPaket extends Component {
                 <DataTbl data={dt} dataHeader={this.isKabiro() ? kabiroHeader : kabagHeader}>
                 </DataTbl>
                 { this.isKabag() &&
-                <div>
-                    test
-                </div>}
+                <Row style={{marginBottom: '5%', textAlign: 'right'}}>
+                  <Col xs="12">
+                    <Button type="submit" size="lg" color="primary"><i className="fa fa-dot-circle-o"></i> Send to KPA</Button>
+                    <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+                  </Col>
+                </Row>
+                }
                 { this.isKabiro() && 
                 <div>
                 <Button size="lg" color="primary" onClick={this.toggleAccept} style={{float:'right', marginTop: '3%', fontWeight: 'bold'}}>Mulai Monev 2018!</Button>
