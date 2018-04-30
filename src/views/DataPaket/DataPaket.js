@@ -108,16 +108,16 @@ class DataPaket extends Component {
           </label>
         </div>`
     }
-    // convertCurrency(val, options = {
-    //     style: 'currency',
-    //     currency: 'IDR',
-    //     currencyDisplay: 'symbol',
-    //     maximumFractionDigits: 2,
-    //     minimumFractionDigits: 0,
-    //   }) {
-    //     const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
-    //     return convertedNum;
-    // }
+    convertCurrency(val, options = {
+        style: 'currency',
+        currency: 'IDR',
+        currencyDisplay: 'symbol',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+      }) {
+        const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
+        return convertedNum;
+    }
     render() {
         const self = this
         const urlKabiro = `http://localhost:2018/kabiro/paket/rup/2018`;
@@ -148,7 +148,11 @@ class DataPaket extends Component {
             { "data": "nomor_kontrak"},
             { "data": "jenis_pekerjaan" },
             { "data": "lokasi_pekerjaan" },
-            { "data": "pagu_paket" },
+            { "data": "pagu_paket",
+              "render": function (data, type, full, meta){
+                return self.convertCurrency(data)
+              }
+            },
             { "data": "tahun_anggaran" },
             { "data": "unit_eselon1" },
             { // toggle
