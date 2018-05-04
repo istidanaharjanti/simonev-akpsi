@@ -15,3 +15,5 @@ build
 .env.*
 .idea
 npm-debug.log
+Dockerfile
+.dockerignore
