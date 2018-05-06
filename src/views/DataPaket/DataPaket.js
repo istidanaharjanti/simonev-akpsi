@@ -27,6 +27,10 @@ class DataPaket extends Component {
             successModal: false,
             confirmModalSendToKpa: false,
             rupStatus: false,
+            test: [
+              {id: 1, value: 'apa aja'},
+              {id: 2, value: 'apa aja boleh'}
+            ]
         }
     this.toggleAccept = this.toggleAccept.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
@@ -35,6 +39,7 @@ class DataPaket extends Component {
     this.getSPSEdata = this.getSPSEdata.bind(this);
     this.showSendToKpaModal = this.showSendToKpaModal.bind(this);
     this.getRUPstatus = this.getRUPstatus.bind(this);
+    this.getListTipePekerjaan = this.getListTipePekerjaan.bind(this);
     }
     componentDidMount(){
       if(this.state.userData.jabatan === "kabiro"){
@@ -50,7 +55,6 @@ class DataPaket extends Component {
 
     }
     componentDidUpdate(){
-
     }
 
     getRUPdata() {
@@ -127,6 +131,8 @@ class DataPaket extends Component {
             self.setState({
               tipePekerjaan: response.data.data
             })
+            console.log(self.state.tipePekerjaan)
+            console.log(response)
           }).catch((e) => {
             alert(e);
         });
@@ -249,18 +255,17 @@ class DataPaket extends Component {
         return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
+                {console.log('dlm render', this.state.tipePekerjaan)}
                 { this.isKabag() &&
                 <Row>
                     <Col xs="6">
                       <FormGroup>
                         <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
                         <Input type="select" name="worktype" id="worktype">
-                          {/* {this.state.tipePekerjaan && this.state.tipePekerjaan.map(data => {
-                            <option value={data.id}>{data.description}</option> 
-                           })
-                          } */}
-                          <option>test</option>
-                          <option>test2</option>
+                          { this.state.tipePekerjaan && this.state.tipePekerjaan.map(data => {
+                              return <option value={data.id}>{data.description}</option>
+                            })
+                          }
                         </Input>
                       </FormGroup>
                     </Col>
