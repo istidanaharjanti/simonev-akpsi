@@ -22,7 +22,6 @@ class DataPaket extends Component {
         this.state = {
             dataSet: [],
             userData,
-            tipePekerjaan: [],
             confirmModal: false,
             successModal: false,
             confirmModalSendToKpa: false,
@@ -43,7 +42,6 @@ class DataPaket extends Component {
       }
       else if(this.state.userData.jabatan === "kabag"){
           this.getSPSEdata();
-          this.getListTipePekerjaan();
         }
   }
     componentWillMount(){
@@ -111,24 +109,7 @@ class DataPaket extends Component {
         }).catch((e) => {
           alert(e);
       });
-    }
-    getListTipePekerjaan() {
-        const self = this;
-        const url = `${process.env.API_HOST}/master/list/jenis-pekerjaan`;
-        const token = Cookies.get('token');
-        axios({
-          url,
-          method: 'GET',
-          headers: {
-            'Authorization': token,
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-          }).then((response) => {
-         this.state.tipePekerjaan.push(response.data.data)
-          }).catch((e) => {
-            alert(e);
-        });
-    }
+  }
     isKabag() {
       if (this.state.userData && this.state.userData){
         if(this.state.userData.jabatan === 'kabag'){
@@ -200,15 +181,6 @@ class DataPaket extends Component {
         const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
         return convertedNum;
     }
-    removeDuplicateArr(arr){
-        let unique_array = []
-        for(let i = 0;i < arr.length; i++){
-            if(unique_array.indexOf(arr[i]) == -1){
-                unique_array.push(arr[i])
-            }
-        }
-        return unique_array
-    }
     render() {
         const self = this
         const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
@@ -261,10 +233,7 @@ class DataPaket extends Component {
                       <FormGroup>
                         <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
                         <Input type="select" name="worktype" id="worktype">
-                          {this.state.tipePekerjaan && this.state.tipePekerjaan.map((i) => {
-                            <option value={i.id}>{i.description}</option> 
-                           })
-                          }
+                          <option value="1">1</option>
                         </Input>
                       </FormGroup>
                     </Col>
