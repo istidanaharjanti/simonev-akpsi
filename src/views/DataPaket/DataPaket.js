@@ -124,7 +124,9 @@ class DataPaket extends Component {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
           }).then((response) => {
-         this.state.tipePekerjaan.push(response.data.data)
+            self.setState({
+              tipePekerjaan: response.data.data
+            })
           }).catch((e) => {
             alert(e);
         });
@@ -261,10 +263,12 @@ class DataPaket extends Component {
                       <FormGroup>
                         <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
                         <Input type="select" name="worktype" id="worktype">
-                          {this.state.tipePekerjaan && this.state.tipePekerjaan.map((i) => {
-                            <option value={i.id}>{i.description}</option> 
+                          {/* {this.state.tipePekerjaan && this.state.tipePekerjaan.map(data => {
+                            <option value={data.id}>{data.description}</option> 
                            })
-                          }
+                          } */}
+                          <option>test</option>
+                          <option>test2</option>
                         </Input>
                       </FormGroup>
                     </Col>
