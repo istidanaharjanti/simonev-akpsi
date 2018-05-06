@@ -27,10 +27,11 @@ class DataPaket extends Component {
             successModal: false,
             confirmModalSendToKpa: false,
             rupStatus: false,
-            test: [
-              {id: 1, value: 'apa aja'},
-              {id: 2, value: 'apa aja boleh'}
-            ]
+            filterValue: {
+              jenis_pekerjaan: 'any',
+              min_nilai_kontrak: 'any',
+              max_nilai_kontrak: 'any'
+            }
         }
     this.toggleAccept = this.toggleAccept.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
@@ -40,6 +41,11 @@ class DataPaket extends Component {
     this.showSendToKpaModal = this.showSendToKpaModal.bind(this);
     this.getRUPstatus = this.getRUPstatus.bind(this);
     this.getListTipePekerjaan = this.getListTipePekerjaan.bind(this);
+    this.getFilterValue = this.getFilterValue.bind(this);
+    this.getMinNilaiPagu = this.getMinNilaiPagu.bind(this);
+    this.getMaxNilaiPagu = this.getMaxNilaiPagu.bind(this);
+    this.applyMinMaxFilter = this.applyMinMaxFilter.bind(this);
+    this.resetMinMaxFilter = this.resetMinMaxFilter.bind(this);
     }
     componentDidMount(){
       if(this.state.userData.jabatan === "kabiro"){
@@ -47,15 +53,19 @@ class DataPaket extends Component {
           this.getRUPstatus();
       }
       else if(this.state.userData.jabatan === "kabag"){
-          this.getSPSEdata();
+          this.getSPSEdata(this.state.filterValue);
           this.getListTipePekerjaan();
         }
   }
     componentWillMount(){
 
     }
-    componentDidUpdate(){
-    }
+
+    // componentWillUpdate(nextProps, nextState) {
+    //   if (this.state.filterValue.jenis_pekerjaan !== nextState.filterValue.jenis_pekerjaan) {
+    //     this.getSPSEdata(nextState.filterValue);
+    //   }
+    // }
 
     getRUPdata() {
         const self = this;
@@ -97,12 +107,13 @@ class DataPaket extends Component {
       });
   }
 
-    getSPSEdata() {
+    getSPSEdata(params) {
       const self = this;
       const url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
       const token = Cookies.get('token');
       axios({
         url,
+        params,
         method: 'GET',
         headers: {
           'Authorization': token,
@@ -131,8 +142,6 @@ class DataPaket extends Component {
             self.setState({
               tipePekerjaan: response.data.data
             })
-            console.log(self.state.tipePekerjaan)
-            console.log(response)
           }).catch((e) => {
             alert(e);
         });
@@ -179,7 +188,6 @@ class DataPaket extends Component {
         alert(e);
       })
     }
-
     renderSwitchJS(on, off) {
       return `
         <div>
@@ -200,14 +208,41 @@ class DataPaket extends Component {
         const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
         return convertedNum;
     }
-    removeDuplicateArr(arr){
-        let unique_array = []
-        for(let i = 0;i < arr.length; i++){
-            if(unique_array.indexOf(arr[i]) == -1){
-                unique_array.push(arr[i])
-            }
+    getFilterValue(event) {
+      this.setState({
+        filterValue: {
+          ...this.state.filterValue,
+          jenis_pekerjaan: event.target.value
         }
-        return unique_array
+      })
+    }
+    getMinNilaiPagu(event) {
+      this.setState({
+        filterValue: {
+          ...this.state.filterValue,
+          min_nilai_kontrak: event.target.value
+        }
+      })
+    }
+    getMaxNilaiPagu(event) {
+      this.setState({
+        filterValue: {
+          ...this.state.filterValue,
+          max_nilai_kontrak: event.target.value
+        }
+      })
+    }
+    applyMinMaxFilter() {
+      this.getSPSEdata(this.state.filterValue);
+    }
+    resetMinMaxFilter() {
+      this.setState({
+        filterValue: {
+          jenis_pekerjaan: '',
+          min_nilai_kontrak: '',
+          max_nilai_kontrak: ''
+        }
+      })
     }
     render() {
         const self = this
@@ -248,22 +283,22 @@ class DataPaket extends Component {
              'beforeSend': function (request) {
                  request.setRequestHeader("Authorization", Cookies.get('token'))
              },
-         },
+          },
           scrollX: true,
           aoColumns: this.isKabiro() ? columnKabiro : columnKabag
        }
         return (
             <div className="animated fadeIn">
                 <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
-                {console.log('dlm render', this.state.tipePekerjaan)}
                 { this.isKabag() &&
                 <Row>
                     <Col xs="6">
                       <FormGroup>
                         <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
-                        <Input type="select" name="worktype" id="worktype">
+                        <Input type="select" name="worktype" id="worktype" onChange={this.getFilterValue}>
+                          <option value="any">Please select</option>
                           { this.state.tipePekerjaan && this.state.tipePekerjaan.map(data => {
-                              return <option value={data.id}>{data.description}</option>
+                              return <option value={`${data.id}`}>{data.description}</option>
                             })
                           }
                         </Input>
@@ -274,18 +309,18 @@ class DataPaket extends Component {
                         <Col xs="4">
                             <FormGroup>
                             <Label htmlFor="ccnumber">Filter by Nilai Pagu</Label>
-                            <Input type="text" id="min" placeholder="min nilai"/>
+                            <Input type="text" id="min" placeholder="min nilai" onChange={this.getMinNilaiPagu}/>
                             </FormGroup>
                         </Col>
                         <Col xs="4">
                             <FormGroup>
                             <Label htmlFor="ccnumber">&nbsp;</Label>
-                            <Input type="text" id="max" placeholder="max nilai"/>
+                            <Input type="text" id="max" placeholder="max nilai" onChange={this.getMaxNilaiPagu}/>
                             </FormGroup>
                         </Col>
                         <Col xs="4">
-                          <Button style={{marginTop: '15%', width:'50%'}} type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                          <Button style={{marginTop: '15%', width:'50%'}} type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+                          <Button style={{marginTop: '15%', width:'50%'}} type="submit" size="sm" color="primary" onClick={this.applyMinMaxFilter}><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                          <Button style={{marginTop: '15%', width:'50%'}} type="reset" size="sm" color="danger" onClick={this.resetMinMaxFilter}><i className="fa fa-ban"></i> Reset</Button>
                         </Col>
                       </Row>
                     </Col>
