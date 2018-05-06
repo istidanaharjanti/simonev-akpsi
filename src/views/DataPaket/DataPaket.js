@@ -133,20 +133,12 @@ class DataPaket extends Component {
     }
     isKabag() {
       if (this.state.userData && this.state.userData){
-        if(this.state.userData.jabatan === 'kabag'){
-         return true;
-        } else {
-          return false;
-        }
+        return this.state.userData.jabatan === 'kabag'
       }
     }
     isKabiro() {
       if (this.state.userData && this.state.userData){
-        if(this.state.userData.jabatan === 'kabiro'){
-        return true;
-        } else {
-        return false;
-        }
+        return this.state.userData.jabatan === 'kabiro'
       }
     }
     toggleAccept() {
