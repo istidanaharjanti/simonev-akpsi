@@ -98,6 +98,8 @@ class KPAList extends Component {
     this.applyMinMaxFilter = this.applyMinMaxFilter.bind(this);
     this.resetMinMaxFilter = this.resetMinMaxFilter.bind(this);
     this.getSPSEdata = this.getSPSEdata.bind(this);
+    this.showSendToKpaModal = this.showSendToKpaModal.bind(this);
+    this.toggleSuccess = this.toggleSuccess.bind(this);
   }
   componentDidMount() {
     this.getListTipePekerjaan();
@@ -189,7 +191,17 @@ class KPAList extends Component {
       }
     })
   }
-
+  showSendToKpaModal() {
+    this.setState({
+      confirmModalSendToKpa: !this.state.confirmModalSendToKpa,
+    });
+  }
+  toggleSuccess() {
+    this.setState({
+      confirmModalSendToKpa: false
+    });
+    window.location.reload();
+  }
   render() {
     return (
       <div className="animated fadeIn">
@@ -232,6 +244,22 @@ class KPAList extends Component {
           <DataTbl data={this.state.dt}>
           </DataTbl>
         }
+        <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
+            <Col xs="12">
+              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>Ajukan ke Kabag</Button>
+              <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+            </Col>
+            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
+              <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
+              <ModalBody>
+                Anda yakin ingin mengajukan paket ini ke Kabag?
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
+                <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
+              </ModalFooter>
+            </Modal>
+          </Row>
       </div>
     );
   }
