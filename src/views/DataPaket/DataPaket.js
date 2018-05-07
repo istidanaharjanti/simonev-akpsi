@@ -53,7 +53,7 @@ class DataPaket extends Component {
         { "sTitle": "Jenis Pekerjaan", "mDataProp": "jenis_pekerjaan", "sWidth": "20px" },
         { "sTitle": "Lokasi Pekerjaan", "mDataProp": "lokasi_pekerjaan", "sWidth": "20px" },
         {
-          "sTitle": "Pagu Paket", "mDataProp": "pagu_paket", "render": function (data, type, full, meta) {
+          "sTitle": "Nilai Kontrak", "mDataProp": "nilai_kontrak", "render": function (data, type, full, meta) {
             return convertCurrency(data)
           }, "sWidth": "20px"
         },
@@ -110,7 +110,6 @@ class DataPaket extends Component {
       this.getRUPstatus();
     }
     else if (this.state.userData.jabatan === "kabag") {
-      // this.getSPSEdata(this.state.filterValue);
       this.getListTipePekerjaan();
     }
   }
@@ -271,7 +270,7 @@ class DataPaket extends Component {
       alert(e);
     })
   }
-  renderSwitchJS(on, off) {
+  renderSwitchJS(on, off, id) {
     return `
         <div>
           <label class="switch switch-text switch-primary  form-control-label">
@@ -282,27 +281,8 @@ class DataPaket extends Component {
         </div>`
   }
 
-  // convertCurrency(val, options = {
-  //   style: 'currency',
-  //   currency: 'IDR',
-  //   currencyDisplay: 'symbol',
-  //   maximumFractionDigits: 2,
-  //   minimumFractionDigits: 0,
-  // }) {
-  //   const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
-  //   return convertedNum;
-  // }
-
   getFilterValue(event) {
-    // this.setState({
-    //   filterValue: {
-    //     ...this.state.filterValue,
-    //     jenis_pekerjaan: event.target.value
-    //   }
-    // })
-    // this.getSPSEdata(this.state.filterValue)
-
-    var fv = this.state.filterValue
+    const fv = this.state.filterValue
     fv.jenis_pekerjaan = event.target.value
     this.setState({ filterValue: fv })
     this.getSPSEdata(this.state.filterValue)
@@ -337,48 +317,6 @@ class DataPaket extends Component {
     })
   }
   render() {
-    const self = this
-    const urlKabiro = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
-    const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018`;
-
-    //         const columnKabiro = [
-    //           {   "sTitle": "ID Paket","mDataProp": "id", "sWidth": "10px"},
-    //           {   "sTitle": "Nama Paket","mDataProp": "nama_paket", "sWidth": "10px"},
-    //           {   "sTitle": "Jenis Pekerjaan","mDataProp": "jenis_pekerjaan", "sWidth": "20px"},
-    //           {   "sTitle": "Lokasi Pekerjaan","mDataProp": "lokasi_pekerjaan", "sWidth": "20px"},
-    //           {   "sTitle": "Pagu Paket","mDataProp": "pagu_paket", "render": function (data, type, full, meta){
-    //               return self.convertCurrency(data)
-    //           },  "sWidth": "20px"},
-    //           {   "sTitle": "Tahun Anggaran","mDataProp": "tahun_anggaran", "sWidth": "20px"},
-    //           {   "sTitle": "Unit Eselon I","mDataProp": "unit_eselon1", "sWidth": "20px"},
-    //          ];
-
-    //          const columnKabag = [
-    //           {   "sTitle": "<input type='checkbox'></input>","mDataProp": null, "sWidth": "5px", "sDefaultContent": "<input class='dt-body-center select-checkbox' type='checkbox' ></input>", "bSortable": false, "sClass": "dt-body-center select-checkbox"},
-    //           {   "sTitle": "ID Paket","mDataProp": "id", "sWidth": "10px"},
-    //           {   "sTitle": "Nama Paket","mDataProp": "nama_paket", "sWidth": "10px"},
-    //           {   "sTitle": "Nomor Kontrak","mDataProp": "nomor_kontrak", "sWidth": "20px"},
-    //           {   "sTitle": "Jenis Pekerjaan","mDataProp": "jenis_pekerjaan", "sWidth": "20px"},
-    //           {   "sTitle": "Lokasi Pekerjaan","mDataProp": "lokasi_pekerjaan", "sWidth": "20px"},
-    //           {   "sTitle": "Pagu Paket","mDataProp": "pagu_paket", "render": function (data, type, full, meta){
-    //               return self.convertCurrency(data)
-    //           },  "sWidth": "20px"},
-    //           {   "sTitle": "Tahun Anggaran","mDataProp": "tahun_anggaran", "sWidth": "20px"},
-    //           {   "sTitle": "Unit Eselon I","mDataProp": "unit_eselon1", "sWidth": "20px"},
-    //           {   "sTitle": "Jenis Paket","mDataProp": null, "sWidth": "5px", "sDefaultContent": self.renderSwitchJS('M', 'E'), "bSortable": false, "sClass": "dt-body-center select-checkbox"}
-    // ];
-    //          const dt = {
-    //           ajax: {
-    //             //  'url': this.isKabiro() ? this.state.urlKabiro : urlKabag, 
-    //              'url': this.state.url,  
-    //              'type': 'GET',
-    //              'beforeSend': function (request) {
-    //                  request.setRequestHeader("Authorization", Cookies.get('token'))
-    //              },
-    //           },
-    //           scrollX: true,
-    //           aoColumns: this.isKabiro() ? columnKabiro : columnKabag
-    //        }
     return (
       <div className="animated fadeIn">
         <h1>{this.isKabiro() ? 'Data Paket RUP Tahun 2018' : 'Data Paket SPSE Tahun 2018'}</h1>
@@ -400,7 +338,7 @@ class DataPaket extends Component {
               <Row>
                 <Col xs="4">
                   <FormGroup>
-                    <Label htmlFor="ccnumber">Filter by Nilai Pagu</Label>
+                    <Label htmlFor="ccnumber">Filter by Nilai Kontrak</Label>
                     <Input type="text" id="min" placeholder="min nilai" onChange={this.getMinNilaiPagu} />
                   </FormGroup>
                 </Col>
