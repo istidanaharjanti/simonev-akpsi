@@ -22,10 +22,11 @@ export class DataTbl extends Component {
 
     console.log(document.getElementsByClassName("assign-checkbox"))
     this.assignKPA()
+    this.setTipePekerjaan()
   }
 
   assignKPA() {
-    $(document).on('click', '.assign-checkbox', function () {
+    $(document).on('change', '.assign-checkbox', function () {
       console.log($(this).find('input').is(':checked'))
       var id = $(this).find('input').attr('id')
       var val = []
@@ -35,7 +36,7 @@ export class DataTbl extends Component {
       })
       console.log("val: ", val)
       axios({
-        url: 'http://localhost/kabag/paket/spse/2018/assign',
+        url: `${process.env.API_HOST}/kabag/paket/spse/2018/assign`,
         method: 'POST',
         data: val,
         headers: {
@@ -44,6 +45,40 @@ export class DataTbl extends Component {
         }
       }).then((response) => {
         console.log("resp", response.data.data)
+      }).catch((err) => {
+        alert(err)
+      })
+    })
+  }
+
+  setTipePekerjaan() {
+    $(document).on('change', '.set-tipe-checkbox', function () {
+      console.log($(this).val())
+      console.log($(this).attr('class'))
+      console.log($(this).closest('.set-tipe-checkbox').attr('id'))
+      var id = $(this).closest('input').attr('id')
+      var tp = 'monitoring'
+      if(!$(this).is(':checked')){
+        tp = 'evaluasi'
+      }
+      var val = []
+      val.push({
+        "paket_id": id.replace('set-tipe-', ''),
+        "tipe_pekerjaan": tp
+      })
+      console.log("val: ", val)
+      axios({
+        url: `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan`,
+        method: 'POST',
+        data: val,
+        headers: {
+          'Authorization': Cookies.get('token'),
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        console.log("resp", response.data.data)
+      }).catch((err) => {
+        alert(err)
       })
     })
   }

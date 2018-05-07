@@ -30,6 +30,20 @@ class DataPaket extends Component {
       const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
       return convertedNum;
     }
+    const renderSwitchJS= function(on, off, id, dv) {
+      var checked = "checked"
+      if(dv === 'evaluasi'){
+        checked = ""
+      }
+      return `
+          <div>
+            <label class="switch switch-text switch-primary  form-control-label">
+              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked}/>
+              <span class="switch-label" data-on="${on}" data-off="${off}"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </div>`
+    }
     let url
     let column
     if (userData.jabatan === 'kabiro') {
@@ -46,7 +60,13 @@ class DataPaket extends Component {
     } else if (userData.jabatan === 'kabag') {
       url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
       column = [
-        { "sTitle": "<input type='checkbox'></input>", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { return "<input id='assign-" + data + "' class='dt-body-center select-checkbox' type='checkbox'></input>"}, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
+        { "sTitle": "<input type='checkbox'></input>", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
+          var checked = ""
+          if(full.assignment.status) {
+            checked = "checked"
+          }
+          return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
+        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
         { "sTitle": "ID Paket", "mDataProp": "paket_id", "sWidth": "10px" },
         { "sTitle": "Nama Paket", "mDataProp": "nama_paket", "sWidth": "10px" },
         { "sTitle": "Nomor Kontrak", "mDataProp": "nomor_kontrak", "sWidth": "20px" },
@@ -59,7 +79,9 @@ class DataPaket extends Component {
         },
         { "sTitle": "Tahun Anggaran", "mDataProp": "tahun_anggaran", "sWidth": "20px" },
         { "sTitle": "Unit Eselon I", "mDataProp": "unit_eselon1", "sWidth": "20px" },
-        { "sTitle": "Jenis Paket", "mDataProp": null, "sWidth": "5px", "sDefaultContent": this.renderSwitchJS('M', 'E'), "bSortable": false, "sClass": "dt-body-center select-checkbox" }
+        { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
+          return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
+        }, "bSortable": false, "sClass": "dt-body-center select-checkbox" }
       ]
     }
     this.state = {
@@ -271,11 +293,11 @@ class DataPaket extends Component {
       alert(e);
     })
   }
-  renderSwitchJS(on, off) {
+  renderSwitchJS(on, off, id) {
     return `
         <div>
           <label class="switch switch-text switch-primary  form-control-label">
-            <input type="checkbox" class="switch-input form-check-input" checked/>
+            <input type="checkbox" id="set-tipe-"` + id + `" class="switch-input form-check-input set-tipe-checkbox" checked/>
             <span class="switch-label" data-on="${on}" data-off="${off}"></span>
             <span class="switch-handle"></span>
           </label>
