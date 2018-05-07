@@ -46,8 +46,8 @@ class DataPaket extends Component {
     } else if (userData.jabatan === 'kabag') {
       url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
       column = [
-        { "sTitle": "<input type='checkbox'></input>", "mDataProp": null, "sWidth": "5px", "sDefaultContent": "<input class='dt-body-center select-checkbox' type='checkbox' ></input>", "bSortable": false, "sClass": "dt-body-center select-checkbox" },
-        { "sTitle": "ID Paket", "mDataProp": "id", "sWidth": "10px" },
+        { "sTitle": "<input type='checkbox'></input>", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { return "<input id='assign-" + data + "' class='dt-body-center select-checkbox' type='checkbox'></input>"}, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
+        { "sTitle": "ID Paket", "mDataProp": "paket_id", "sWidth": "10px" },
         { "sTitle": "Nama Paket", "mDataProp": "nama_paket", "sWidth": "10px" },
         { "sTitle": "Nomor Kontrak", "mDataProp": "nomor_kontrak", "sWidth": "20px" },
         { "sTitle": "Jenis Pekerjaan", "mDataProp": "jenis_pekerjaan", "sWidth": "20px" },
@@ -110,7 +110,7 @@ class DataPaket extends Component {
       this.getRUPstatus();
     }
     else if (this.state.userData.jabatan === "kabag") {
-      this.getSPSEdata(this.state.filterValue);
+      // this.getSPSEdata(this.state.filterValue);
       this.getListTipePekerjaan();
     }
   }
