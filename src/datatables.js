@@ -9,9 +9,11 @@ $.DataTable = require('datatables.net');
 export class DataTbl extends Component {
   constructor(props) {
     super(props);
+    const sessionCookie = JSON.parse(Cookies.get('userSession'))
     this.state = {
       table: ({}),
-      assignVal: []
+      assignVal: [],
+      userData: sessionCookie.data ? sessionCookie.data : {}
     }
   }
   componentDidMount() {
@@ -52,6 +54,7 @@ export class DataTbl extends Component {
   }
 
   setTipePekerjaan() {
+    const url = this.state.userData.jabatan === 'kabag' ? `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan` : `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
     $(document).on('change', '.set-tipe-checkbox', function () {
       console.log($(this).val())
       console.log($(this).attr('class'))
@@ -68,7 +71,7 @@ export class DataTbl extends Component {
       })
       console.log("val: ", val)
       axios({
-        url: `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan`,
+        url: url,
         method: 'POST',
         data: val,
         headers: {
