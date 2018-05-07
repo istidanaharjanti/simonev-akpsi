@@ -306,16 +306,6 @@ class DataPaket extends Component {
       alert(e);
     })
   }
-  renderSwitchJS(on, off, id) {
-    return `
-        <div>
-          <label class="switch switch-text switch-primary  form-control-label">
-            <input type="checkbox" id="set-tipe-"` + id + `" class="switch-input form-check-input set-tipe-checkbox" checked/>
-            <span class="switch-label" data-on="${on}" data-off="${off}"></span>
-            <span class="switch-handle"></span>
-          </label>
-        </div>`
-  }
 
   getFilterValue(event) {
     const fv = this.state.filterValue
