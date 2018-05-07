@@ -10,6 +10,7 @@ import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
 import DataPaket from '../../views/DataPaket/';
+import KPAList from '../../views/KPA/';
 
 class Full extends Component {
   render() {
@@ -24,6 +25,7 @@ class Full extends Component {
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/data-paket" name="Data Paket" component={DataPaket}/>
+                <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/>
               </Switch>
             </Container>
           </main>

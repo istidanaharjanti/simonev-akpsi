@@ -60,13 +60,6 @@ class DataPaket extends Component {
     } else if (userData.jabatan === 'kabag') {
       url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
       column = [
-        { "sTitle": "<input type='checkbox'></input>", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
-          var checked = ""
-          if(full.assignment.status) {
-            checked = "checked"
-          }
-          return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
-        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
         { "sTitle": "ID Paket", "mDataProp": "paket_id", "sWidth": "10px" },
         { "sTitle": "Nama Paket", "mDataProp": "nama_paket", "sWidth": "10px" },
         { "sTitle": "Nomor Kontrak", "mDataProp": "nomor_kontrak", "sWidth": "20px" },
@@ -79,6 +72,13 @@ class DataPaket extends Component {
         },
         { "sTitle": "Tahun Anggaran", "mDataProp": "tahun_anggaran", "sWidth": "20px" },
         { "sTitle": "Unit Eselon I", "mDataProp": "unit_eselon1", "sWidth": "20px" },
+        { "sTitle": "Konfirmasi KPA", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
+          var checked = ""
+          if(full.assignment.status) {
+            checked = "checked"
+          }
+          return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
+        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
         { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox" }
@@ -160,6 +160,19 @@ class DataPaket extends Component {
       self.setState({
         dataSet: response.data.data
       })
+      self.setState({
+        dt: {
+          ajax: {
+            'url': `${this.state.url}`,
+            'type': 'GET',
+            'beforeSend': function (request) {
+              request.setRequestHeader("Authorization", Cookies.get('token'))
+            },
+          },
+          scrollX: true,
+          aoColumns: this.state.column
+        }
+      })
     }).catch((e) => {
       alert(e);
     });
@@ -183,7 +196,7 @@ class DataPaket extends Component {
       self.setState({
         dt: {
           ajax: {
-            'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}`,
+            'url': `${this.state.url}`,
             'type': 'GET',
             'beforeSend': function (request) {
               request.setRequestHeader("Authorization", Cookies.get('token'))
@@ -268,6 +281,7 @@ class DataPaket extends Component {
   toggleSuccess() {
     this.setState({
       successModal: false,
+      confirmModalSendToKpa: false
     });
     window.location.reload();
   }
@@ -385,7 +399,7 @@ class DataPaket extends Component {
         {this.isKabag() &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i> Send to KPA</Button>
+              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i> Simpan Tipe Pekerjaan</Button>
               <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
             </Col>
             <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
@@ -394,7 +408,7 @@ class DataPaket extends Component {
                 Anda yakin ingin meneruskan paket ini ke KPA?
                     </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={this.showSendToKpaModal}>Tentu</Button>{' '}
+                <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
                 <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
               </ModalFooter>
             </Modal>
