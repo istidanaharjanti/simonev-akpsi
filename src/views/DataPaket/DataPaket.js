@@ -107,7 +107,8 @@ class DataPaket extends Component {
       filterValue: {
         jenis_pekerjaan: 'any',
         min_nilai_kontrak: 'any',
-        max_nilai_kontrak: 'any'
+        max_nilai_kontrak: 'any',
+        assignment: 'any'
       },
       column
     }
@@ -124,6 +125,7 @@ class DataPaket extends Component {
     this.getMaxNilaiPagu = this.getMaxNilaiPagu.bind(this);
     this.applyMinMaxFilter = this.applyMinMaxFilter.bind(this);
     this.resetMinMaxFilter = this.resetMinMaxFilter.bind(this);
+    this.getAssignmentStatus = this.getAssignmentStatus.bind(this);
 
   }
   componentDidMount() {
@@ -230,7 +232,7 @@ class DataPaket extends Component {
       self.setState({
         dt: {
           ajax: {
-            'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}`,
+            'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}&assignment=${params.assignment}`,
             'type': 'GET',
             'beforeSend': function (request) {
               request.setRequestHeader("Authorization", Cookies.get('token'))
@@ -313,7 +315,12 @@ class DataPaket extends Component {
     this.setState({ filterValue: fv })
     this.getSPSEdata(this.state.filterValue)
   }
-  
+  getAssignmentStatus(event) {
+    const fv = this.state.filterValue
+    fv.assignment = event.target.value
+    this.setState({ filterValue: fv })
+    this.getSPSEdata(this.state.filterValue)
+  }
   getMinNilaiPagu(event) {
     this.setState({
       filterValue: {
@@ -357,6 +364,14 @@ class DataPaket extends Component {
                     return <option value={`${data.id}`}>{data.description}</option>
                   })
                   }
+                </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="worktype">Filtered by Assignment Status</Label>
+                <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
+                  <option value="any">Please select</option>
+                  <option value="true">True</option>
+                  <option value="false">False</option>
                 </Input>
               </FormGroup>
             </Col>
