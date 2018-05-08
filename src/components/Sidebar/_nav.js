@@ -10,32 +10,38 @@ const items = [
     icon: 'icon-speedometer',
   },
 ]
+  items.push({
+    name: 'Data Paket',
+    url: '/data-paket',
+    icon: 'icon-folder'
+  })
 
-if (typeof cookies !== 'undefined') {
-  const sessionCookie = JSON.parse(Cookies.get('userSession'))
-  const userData = sessionCookie.data ? sessionCookie.data : {}
-  if (userData.jabatan === 'kabag' || userData.jabatan === 'kabiro') {
-    items.push({
-      name: 'Data Paket',
-      url: '/data-paket',
-      icon: 'icon-folder'
-    })
-  }
-  if (userData.jabatan === 'kpa') {
-    items.push({
-      name: 'Data Paket',
-      url: '/data-paket-kpa',
-      icon: 'icon-folder'
-    })
-  }
-  if (userData.jabatan === 'pejabatf') {
-    items.push({
-      name: 'Data Paket',
-      url: '/data-paket-pejabatfungsional',
-      icon: 'icon-folder'
-    })
-  }
-}
+// if (typeof cookies !== 'undefined') {
+//   const sessionCookie = JSON.parse(Cookies.get('userSession'))
+//   const userData = sessionCookie.data ? sessionCookie.data : {}
+//   if (userData.jabatan === 'kabag' || userData.jabatan === 'kabiro') {
+//     items.push({
+//       name: 'Data Paket',
+//       url: '/data-paket',
+//       icon: 'icon-folder'
+//     })
+//   }
+//   if (userData.jabatan === 'kpa') {
+//     items.push({
+//       name: 'Data Paket',
+//       url: '/data-paket-kpa',
+//       icon: 'icon-folder'
+//     })
+//   }
+//   if (userData.jabatan === 'pejabatf') {
+//     items.push({
+//       name: 'Data Paket',
+//       url: '/data-paket-pejabatfungsional',
+//       icon: 'icon-folder'
+//     })
+//   }
+// }
+
 
 
 export default {

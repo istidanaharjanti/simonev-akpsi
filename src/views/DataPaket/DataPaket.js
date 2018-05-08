@@ -157,6 +157,7 @@ class DataPaket extends Component {
     this.getAssignmentStatus = this.getAssignmentStatus.bind(this);
     this.lockTipePekerjaan = this.lockTipePekerjaan.bind(this);
     this.lockPejabatFungsional = this.lockPejabatFungsional.bind(this);
+    this.filterMonEv = this.filterMonEv.bind(this);
   }
   componentDidMount() {
     if (this.state.userData.jabatan === "kabiro") {
@@ -189,7 +190,8 @@ class DataPaket extends Component {
       headers: {
         'Authorization': token,
       }
-    }).then((response) => {
+    }).then((response) => {     
+      if (response.data.data.length > 0) {
       self.setState({
         dataSet: response.data.data
       })
@@ -206,6 +208,7 @@ class DataPaket extends Component {
           aoColumns: this.state.column
         }
       })
+    }
     }).catch((e) => {
       alert(e);
     });
@@ -245,7 +248,7 @@ class DataPaket extends Component {
 
   getSPSEdata(params) {
     const self = this;
-    const url = `${process.env.API_HOST}/kabag/paket/spse/2018/`
+    const url = `${process.env.API_HOST}/kabag/paket/spse/2018`
     const token = Cookies.get('token');
     axios({
       url,
@@ -255,6 +258,7 @@ class DataPaket extends Component {
         'Authorization': token,
       }
     }).then((response) => {
+      if (response.data.data.length > 0) {
       self.setState({
         dataSet: response.data.data
       })
@@ -271,6 +275,7 @@ class DataPaket extends Component {
           aoColumns: this.state.column
         }
       })
+    }
     }).catch((e) => {
       alert(e);
     });
@@ -439,8 +444,8 @@ class DataPaket extends Component {
                   <Label htmlFor="worktype">Filter by Tipe Pekerjaan</Label>
                   <Input type="select" name="worktype" id="worktype" onChange={this.filterMonEv}>
                     <option value="any">Please select</option>
-                    <option value="true">Monitoring</option>
-                    <option value="false">Evaluasi</option>
+                    <option value="monitoring">Monitoring</option>
+                    <option value="evaluasi">Evaluasi</option>
                   </Input>
                 </FormGroup>
                 </Col>

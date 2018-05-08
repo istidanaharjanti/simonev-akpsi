@@ -117,24 +117,28 @@ class PJFungsionalList extends Component {
         'Authorization': token,
       }
     }).then((response) => {
-      self.setState({
-        dataSet: response.data.data
-      })
-      self.setState({
-        dt: {
-          ajax: {
-            'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}`,
-            'type': 'GET',
-            'beforeSend': function (request) {
-              request.setRequestHeader("Authorization", Cookies.get('token'))
+      console.log("count", response.data.data.length)
+      if (response.data.data.length > 0) {
+        self.setState({
+          dataSet: response.data.data
+        })
+        self.setState({
+          dt: {
+            ajax: {
+              'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}`,
+              'type': 'GET',
+              'beforeSend': function (request) {
+                request.setRequestHeader("Authorization", Cookies.get('token'))
+              },
             },
-          },
-          scrollX: true,
-          aoColumns: this.state.column
-        }
-      })
+            scrollX: true,
+            aoColumns: this.state.column
+          }
+        })
+      }
+      // alert(response.data.status)
     }).catch((e) => {
-      alert(e);
+      alert.log(e)
     });
   }
   getListTipePekerjaan() {
@@ -245,21 +249,21 @@ class PJFungsionalList extends Component {
           </DataTbl>
         }
         <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
-            <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>Ajukan ke Kabag</Button>
-              <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-            </Col>
-            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
-              <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
-              <ModalBody>
-                Anda yakin ingin mengajukan paket ini ke Kabag?
+          <Col xs="12">
+            <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>Ajukan ke Kabag</Button>
+            <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+          </Col>
+          <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
+            <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
+            <ModalBody>
+              Anda yakin ingin mengajukan paket ini ke Kabag?
               </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
-                <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
-              </ModalFooter>
-            </Modal>
-          </Row>
+            <ModalFooter>
+              <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
+              <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
+            </ModalFooter>
+          </Modal>
+        </Row>
       </div>
     );
   }

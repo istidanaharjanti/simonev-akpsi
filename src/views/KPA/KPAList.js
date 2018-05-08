@@ -117,6 +117,7 @@ class KPAList extends Component {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     }).then((response) => {
+      if (response.data.data.length > 0) {
       self.setState({
         dataSet: response.data.data
       })
@@ -133,6 +134,7 @@ class KPAList extends Component {
           aoColumns: this.state.column
         }
       })
+    }
     }).catch((e) => {
       alert(e);
     });

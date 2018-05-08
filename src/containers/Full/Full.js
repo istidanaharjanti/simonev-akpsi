@@ -34,10 +34,10 @@ class Full extends Component {
                 <Route path="/data-paket" name="Data Paket" component={DataPaket}/>
                 }
                 {typeof cookies.data.jabatan !== 'undefined' && cookies.data.jabatan === 'kpa' &&
-                <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/>
+                <Route path="/data-paket" name="Data Paket" component={KPAList}/>
                 }
                 {typeof cookies.data.jabatan !== 'undefined' && cookies.data.jabatan === 'pejabatf' &&
-                  <Route path="/data-paket-pejabatfungsional" name="Data Paket" component={PJFungsionalList}/>
+                  <Route path="/data-paket" name="Data Paket" component={PJFungsionalList}/>
                 }
                 {/* <Route path="/data-paket" name="Data Paket" component={DataPaket}/> */}
                 {/* <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/> */}
