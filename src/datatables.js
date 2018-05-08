@@ -20,9 +20,14 @@ export class DataTbl extends Component {
     this.$el = $(this.el);
     this.setState({ table: this.$el.DataTable(this.props.data) })
     console.log("fromdt", this.props.data);
-    this.setTipePekerjaan()
+    if(this.state.userData.jabatan === 'kpa') {
+    const urlKPA = `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
+      this.setTipePekerjaan(urlKPA)
+    }
     if(this.state.userData.jabatan === 'kabag') {
+    const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan`
       this.assignKPA()
+      this.setTipePekerjaan(urlKabag)
       this.assignPjFunc()
     }
   }
@@ -62,9 +67,7 @@ export class DataTbl extends Component {
     })
   }
 
-  setTipePekerjaan() {
-    const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan`
-    const urlKPA = `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
+  setTipePekerjaan(url) {
     $(document).on('change', '.set-tipe-checkbox', function () {
       console.log($(this).val())
       console.log($(this).attr('class'))
@@ -81,7 +84,7 @@ export class DataTbl extends Component {
       })
       console.log("val: ", val)
       axios({
-        url: this.isKabag() ? urlKabag : urlKPA,
+        url: url,
         method: 'POST',
         data: val,
         headers: {
