@@ -136,7 +136,8 @@ class DataPaket extends Component {
         jenis_pekerjaan: 'any',
         min_nilai_kontrak: 'any',
         max_nilai_kontrak: 'any',
-        assignment: 'any'
+        assignment: 'any',
+        tipe_pekerjaan: 'any'
       },
       column,
     }
@@ -244,7 +245,7 @@ class DataPaket extends Component {
 
   getSPSEdata(params) {
     const self = this;
-    const url = `${process.env.API_HOST}/kabag/paket/spse/2018/pejabatf`
+    const url = `${process.env.API_HOST}/kabag/paket/spse/2018/`
     const token = Cookies.get('token');
     axios({
       url,
@@ -260,7 +261,7 @@ class DataPaket extends Component {
       self.setState({
         dt: {
           ajax: {
-            'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}&assignment=${params.assignment}`,
+            'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}&assignment=${params.assignment}&tipe_pekerjaan=${params.tipe_pekerjaan}`,
             'type': 'GET',
             'beforeSend': function (request) {
               request.setRequestHeader("Authorization", Cookies.get('token'))
@@ -348,6 +349,12 @@ class DataPaket extends Component {
     this.setState({ filterValue: fv })
     this.getSPSEdata(this.state.filterValue)
   }
+  filterMonEv(event) {
+    const fv = this.state.filterValue
+    fv.tipe_pekerjaan = event.target.value
+    this.setState({ filterValue: fv })
+    this.getSPSEdata(this.state.filterValue)
+  }
   getMinNilaiPagu(event) {
     this.setState({
       filterValue: {
@@ -426,14 +433,29 @@ class DataPaket extends Component {
                 </Input>
               </FormGroup>
               { !this.dataLocked() &&
-              <FormGroup>
-                <Label htmlFor="worktype">Filter by Assignment Status to KPA</Label>
-                <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
-                  <option value="any">Please select</option>
-                  <option value="true">Lihat paket yang telah di assign ke KPA</option>
-                  <option value="false">Lihat paket yang tidak di assign ke KPA</option>
-                </Input>
-              </FormGroup> }
+              <Row>
+                <Col xs="6">
+                <FormGroup>
+                  <Label htmlFor="worktype">Filter by Tipe Pekerjaan</Label>
+                  <Input type="select" name="worktype" id="worktype" onChange={this.filterMonEv}>
+                    <option value="any">Please select</option>
+                    <option value="true">Monitoring</option>
+                    <option value="false">Evaluasi</option>
+                  </Input>
+                </FormGroup>
+                </Col>
+                <Col xs="6">
+                  <FormGroup>
+                  <Label htmlFor="worktype">Filter by Konfirmasi KPA</Label>
+                  <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
+                    <option value="any">Please select</option>
+                    <option value="true">Lihat paket yang telah di assign ke KPA</option>
+                    <option value="false">Lihat paket yang tidak di assign ke KPA</option>
+                  </Input>
+                </FormGroup>
+                </Col>
+              </Row>
+             }
             </Col>
             <Col xs="6">
               <Row>
