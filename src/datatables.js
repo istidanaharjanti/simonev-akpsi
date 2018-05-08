@@ -26,6 +26,7 @@ export class DataTbl extends Component {
   componentDidUpdate() {
     console.log('vis',this.props.visibility);
     this.state.table.columns( 8 ).visible( this.props.visibility );
+    this.state.table.columns( 10 ).visible( !this.props.visibility );
   }
 
   assignKPA() {
@@ -93,7 +94,6 @@ export class DataTbl extends Component {
           this.state.table.destroy()
           this.$el = $(this.el);
           this.setState({ table: this.$el.DataTable(nextProps.data) })
-          console.log('test2', this.state.table);
         }
       return differentData
       }

@@ -30,7 +30,7 @@ class DataPaket extends Component {
       const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
       return convertedNum;
     }
-    const renderSwitchJS= function(on, off, id, dv) {
+    const renderSwitchJS = function(on, off, id, dv) {
       var checked = "checked"
       if(dv === 'evaluasi'){
         checked = ""
@@ -43,6 +43,32 @@ class DataPaket extends Component {
               <span class="switch-handle"></span>
             </label>
           </div>`
+    }
+    const listPejabatF =[
+      {
+          "nip": "011235813",
+          "name": "Pejabat Fungsional 3",
+          "jabatan": "pejabatf"
+      },
+      {
+          "nip": "123456789",
+          "name": "Pejabat Fungsional 1",
+          "jabatan": "pejabatf"
+      },
+      {
+          "nip": "987654321",
+          "name": "Pejabat Fungsional 2",
+          "jabatan": "pejabatf"
+      }
+    ];
+    const renderSelectPejabatF = function() {
+      return `
+      <select name="pejabatF" id="pejabatFn" class="form-control">
+      <option value="any">Please select</option>
+      ${listPejabatF}.map(data => {
+        return <option>{data.name}</option>
+      })
+    </select>`
     }
     let url
     let column
@@ -82,7 +108,9 @@ class DataPaket extends Component {
         { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox" },
-      ]
+        { "sTitle": "Assign Pejabat Fungsional", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
+          return renderSelectPejabatF()
+        }, "bSortable": false, "sClass": "dt-body-center" },      ]
     }
     this.state = {
       dataSet: [],
@@ -136,17 +164,38 @@ class DataPaket extends Component {
     else if (this.state.userData.jabatan === "kabag") {
       this.getListTipePekerjaan();
       this.getSPSEdata(this.state.filterValue);
+      // this.getListPejabatFn();
     }
   }
   componentWillMount() {
   }
+  getListPejabatFn() {
+    const self = this;
+    const url = `${process.env.API_HOST}/master/list/pegawai?jabatan=pejabatf`;
+    const token = Cookies.get('token');
+    axios({
+      url,
+      method: 'GET',
+      headers: {
+        'Authorization': token,
+      }
+    }).then(response => {
+      self.state.listPejabatF.push(response.data.data);
+      console.log(self.state.listPejabatF);
+    }).catch(e => {
+      alert(e);
+    })
+  }
 
-  // componentWillUpdate(nextProps, nextState) {
-  //   if (this.state.filterValue.jenis_pekerjaan !== nextState.filterValue.jenis_pekerjaan) {
-  //     this.getSPSEdata(nextState.filterValue);
-  //   }
-  // }
-
+  renderSelectPejabatF() {
+    return `
+      <select name="pejabatF" id="pejabatFn" class="form-control">
+       <option value="any">Please select</option>
+       ${this.state.listPejabatF}.map(data => {
+         return <option>data.name</option>
+       })
+     </select>`
+  }
   getRUPdata() {
     const self = this;
     const url = `${process.env.API_HOST}/kabiro/paket/rup/2018`;
@@ -287,6 +336,7 @@ class DataPaket extends Component {
     this.setState({
       confirmModalSendToKpa: !this.state.confirmModalSendToKpa,
     });
+    window.location.reload();
   }
   startRUP() {
     const self = this;
