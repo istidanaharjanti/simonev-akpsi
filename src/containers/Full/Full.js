@@ -11,9 +11,14 @@ import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
 import DataPaket from '../../views/DataPaket/';
 import KPAList from '../../views/KPA/';
+import Cookies from 'js-cookie';
 
 class Full extends Component {
   render() {
+    var cookies = Cookies.get('userSession');
+    if (typeof cookies !== 'undefined') {
+      cookies = JSON.parse(cookies)
+    } 
     return (
       <div className="app">
         <Header {...this.props}/>
@@ -24,8 +29,14 @@ class Full extends Component {
             <Container fluid>
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
+                {typeof cookies.data.jabatan !== 'undefined' && (cookies.data.jabatan === 'kabag' || cookies.data.jabatan === 'kabiro') &&
                 <Route path="/data-paket" name="Data Paket" component={DataPaket}/>
-                <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/>
+                }
+                {typeof cookies.data.jabatan !== 'undefined' && cookies.data.jabatan === 'kpa' &&
+                <Route path="/data-paket" name="Data Paket" component={KPAList}/>
+                }
+                {/* <Route path="/data-paket" name="Data Paket" component={DataPaket}/> */}
+                {/* <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/> */}
               </Switch>
             </Container>
           </main>
