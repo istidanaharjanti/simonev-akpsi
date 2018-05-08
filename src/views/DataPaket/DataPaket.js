@@ -38,7 +38,7 @@ class DataPaket extends Component {
       return `
           <div>
             <label class="switch switch-text switch-primary  form-control-label">
-              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked} disabled/>
+              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked}/>
               <span class="switch-label" data-on="${on}" data-off="${off}"></span>
               <span class="switch-handle"></span>
             </label>
@@ -65,9 +65,9 @@ class DataPaket extends Component {
      return `
       <select name="pejabatF" id="pejabatFn-${id}" class="form-control select-pejabat-fn">
        <option value="${pjNip}">${pjName}</option>
-       <option value="011235813">PFungsional 3</option>
-       <option value="123456789">PFungsional 1</option>
-       <option value="987654321">PFungsional 2</option>
+       <option value="011235813">Pejabat Fungsional 3</option>
+       <option value="123456789">Pejabat Fungsional 1</option>
+       <option value="987654321">Pejabat Fungsional 2</option>
      </select>`
     }
     let url
@@ -109,7 +109,6 @@ class DataPaket extends Component {
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox" },
         { "sTitle": "Assign Pejabat Fungsional", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
-          console.log(full) 
           return renderSelectPejabatF(data, full.pejabatf_nip, full.pejabatf_nama)
         }, "bSortable": false, "sClass": "dt-body-center" },      ]
     }
@@ -318,7 +317,6 @@ class DataPaket extends Component {
     this.setState({
       confirmModalSendToKpa: !this.state.confirmModalSendToKpa,
     });
-    window.location.reload();
   }
   startRUP() {
     const self = this;
@@ -390,12 +388,16 @@ class DataPaket extends Component {
         confirmModalSendToKpa: false,
         successModal: true
       })
+      window.location.reload();
     }).catch((e) => {
       alert(e);
     })
   }
   dataLocked () {
     return this.state.dataSet.find(data => data.status === 1);
+  }
+  lockPejabatFungsional(){
+    console.log('lockPjFunc')
   }
   render() {
     return (
@@ -414,7 +416,7 @@ class DataPaket extends Component {
                   }
                 </Input>
               </FormGroup>
-              { this.state.dataSet.find(data => data.status === 0) &&
+              { !this.dataLocked() &&
               <FormGroup>
                 <Label htmlFor="worktype">Filter by Assignment Status to KPA</Label>
                 <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
@@ -453,10 +455,9 @@ class DataPaket extends Component {
         {this.isKabag() &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal} disabled={this.state.dataSet && this.state.dataSet.tipe_pekerjaan && this.state.dataSet.tipe_pekerjaan.is_kpa_enabled}><i className="fa fa-dot-circle-o"></i>
+              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>
                 { 
-                  this.state.dataSet && this.state.dataSet.length !== 0 &&
-                  this.state.dataSet.find(data => data.status === 0) ? 'Kunci dan Setujui Tipe Pekerjaan' : 'Simpan Pejabat Fungsional'
+                  this.dataLocked() ? 'Simpan Pejabat Fungsional' : 'Kunci dan Setujui Tipe Pekerjaan'
                 }
               </Button>
               <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
@@ -467,7 +468,7 @@ class DataPaket extends Component {
                 Anda yakin ingin mengunci tipe pekerjaan? Hal ini tidak dapat diubah kembali setelah anda menyetujui.
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={this.lockTipePekerjaan}>Tentu</Button>{' '}
+                <Button color="primary" onClick={this.dataLocked() ? this.lockPejabatFungsional : this.lockTipePekerjaan}>Tentu</Button>{' '}
                 <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
               </ModalFooter>
             </Modal>
