@@ -73,11 +73,12 @@ class DataPaket extends Component {
         { "sTitle": "Tahun Anggaran", "mDataProp": "tahun_anggaran", "sWidth": "20px" },
         { "sTitle": "Unit Eselon I", "mDataProp": "unit_eselon1", "sWidth": "20px" },
         { "sTitle": "Konfirmasi KPA", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
+          console.log(full);
           var checked = ""
           if(full.assignment.status) {
             checked = "checked"
           }
-          return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
+        return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
         }, "bSortable": false, "sClass": "dt-body-center assign-checkbox", "bVisible": false},
         { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
@@ -134,6 +135,7 @@ class DataPaket extends Component {
       this.getRUPstatus();
     }
     else if (this.state.userData.jabatan === "kabag") {
+      this.getSPSEdata(this.state.filterValue);
       this.getListTipePekerjaan();
     }
   }
@@ -379,13 +381,13 @@ class DataPaket extends Component {
                   }
                 </Input>
               </FormGroup>
-              { this.state.dataSet.status === 0 &&
+              { this.state.dataSet.find(data => data.status === 0) &&
               <FormGroup>
                 <Label htmlFor="worktype">Filter by Assignment Status to KPA</Label>
                 <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
                   <option value="any">Please select</option>
-                  <option value="true">Lihat status yang telah di assign ke KPA</option>
-                  <option value="false">Lihat semua</option>
+                  <option value="true">Lihat paket yang telah di assign ke KPA</option>
+                  <option value="false">Lihat paket yang tidak di assign ke KPA</option>
                 </Input>
               </FormGroup> }
             </Col>
@@ -415,11 +417,14 @@ class DataPaket extends Component {
           <DataTbl data={this.state.dt}>
           </DataTbl>
         }
-        {this.isKabag() && this.state.dataSet.status === 0 &&
+        {this.isKabag() &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
               <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal} disabled={this.state.dataSet && this.state.dataSet.tipe_pekerjaan && this.state.dataSet.tipe_pekerjaan.is_kpa_enabled}><i className="fa fa-dot-circle-o"></i>
-                Kunci dan Setujui Tipe Pekerjaan
+                { 
+                  this.state.dataSet && this.state.dataSet.length !== 0 &&
+                  this.state.dataSet.find(data => data.status === 0) ? 'Kunci dan Setujui Tipe Pekerjaan' : 'Simpan Pejabat Fungsional'
+                }
               </Button>
               <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
             </Col>
@@ -434,26 +439,6 @@ class DataPaket extends Component {
               </ModalFooter>
             </Modal>
         </Row> }
-          {this.isKabag() && this.state.dataSet.status === 1 &&
-          <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
-            <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>
-                Simpan Pejabat Fungsional
-              </Button>
-              <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i>Reset</Button>
-            </Col>
-            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
-              <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Pejabat Fungsional</ModalHeader>
-              <ModalBody>
-                Anda yakin ingin menyetujui paket ini dikelola pejabat fungsional?
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.lockTipePekerjaan}>Tentu</Button>{' '}
-                <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
-              </ModalFooter>
-            </Modal>
-          </Row>
-        }
         {this.isKabiro() &&
           <div>
             {this.state.rupStatus && this.state.dataSet && this.state.dataSet.length > 0 ? <Button size="lg" color="warning" disabled style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Monev 2018 Telah Dimulai!</Button> : <Button size="lg" color="primary" onClick={this.toggleAccept} style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Mulai Monev 2018!</Button>}

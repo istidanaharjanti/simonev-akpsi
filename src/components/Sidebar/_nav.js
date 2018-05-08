@@ -28,6 +28,13 @@ if (typeof cookies !== 'undefined') {
       icon: 'icon-folder'
     })
   }
+  if (userData.jabatan === 'pejabatf') {
+    items.push({
+      name: 'Data Paket',
+      url: '/data-paket-pejabatfungsional',
+      icon: 'icon-folder'
+    })
+  }
 }
 
 
