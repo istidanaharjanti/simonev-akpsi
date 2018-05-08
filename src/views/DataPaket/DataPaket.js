@@ -73,13 +73,12 @@ class DataPaket extends Component {
         { "sTitle": "Tahun Anggaran", "mDataProp": "tahun_anggaran", "sWidth": "20px" },
         { "sTitle": "Unit Eselon I", "mDataProp": "unit_eselon1", "sWidth": "20px" },
         { "sTitle": "Konfirmasi KPA", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
-          console.log(full);
           var checked = ""
           if(full.assignment.status) {
             checked = "checked"
           }
         return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
-        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox", "bVisible": false},
+        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
         { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox" },
@@ -111,7 +110,7 @@ class DataPaket extends Component {
         max_nilai_kontrak: 'any',
         assignment: 'any'
       },
-      column
+      column,
     }
     this.toggleAccept = this.toggleAccept.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
@@ -135,12 +134,11 @@ class DataPaket extends Component {
       this.getRUPstatus();
     }
     else if (this.state.userData.jabatan === "kabag") {
-      this.getSPSEdata(this.state.filterValue);
       this.getListTipePekerjaan();
+      this.getSPSEdata(this.state.filterValue);
     }
   }
   componentWillMount() {
-
   }
 
   // componentWillUpdate(nextProps, nextState) {
@@ -364,6 +362,9 @@ class DataPaket extends Component {
       alert(e);
     })
   }
+  dataLocked () {
+    return this.state.dataSet.find(data => data.status === 1);
+  }
   render() {
     return (
       <div className="animated fadeIn">
@@ -414,7 +415,7 @@ class DataPaket extends Component {
           </Row>
         }
         {typeof this.state.dt !== 'undefined' &&
-          <DataTbl data={this.state.dt}>
+          <DataTbl data={this.state.dt} visibility={!this.dataLocked()}>
           </DataTbl>
         }
         {this.isKabag() &&

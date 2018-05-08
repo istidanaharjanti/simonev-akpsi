@@ -18,13 +18,14 @@ export class DataTbl extends Component {
   }
   componentDidMount() {
     this.$el = $(this.el);
-    // this.$el.DataTable(this.props.data)
     this.setState({ table: this.$el.DataTable(this.props.data) })
-    console.log("fromdt", this.props.data)
-
-    console.log(document.getElementsByClassName("assign-checkbox"))
+    console.log("fromdt", this.props.data);
     this.assignKPA()
     this.setTipePekerjaan()
+  }
+  componentDidUpdate() {
+    console.log('vis',this.props.visibility);
+    this.state.table.columns( 8 ).visible( this.props.visibility );
   }
 
   assignKPA() {
@@ -85,7 +86,6 @@ export class DataTbl extends Component {
       })
     })
   }
-
     componentWillReceiveProps(nextProps){
         const differentData = this.props.data !== nextProps.data;
         if(differentData) {
@@ -93,6 +93,7 @@ export class DataTbl extends Component {
           this.state.table.destroy()
           this.$el = $(this.el);
           this.setState({ table: this.$el.DataTable(nextProps.data) })
+          console.log('test2', this.state.table);
         }
       return differentData
       }
@@ -101,14 +102,6 @@ export class DataTbl extends Component {
         return(
         <div>
       <table className="display" width="150%" ref={el => this.el = el}>
-        {/* <thead>
-            <tr>
-            {this.props.dataHeader.map(function(i,h){
-              return <th key={h}>{i}</th>
-            })
-          }
-          </tr>
-        </thead> */}
       </table>
         </div >
       );
