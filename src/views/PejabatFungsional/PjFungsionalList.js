@@ -115,7 +115,6 @@ class PJFungsionalList extends Component {
       method: 'GET',
       headers: {
         'Authorization': token,
-        'Content-Type': 'application/x-www-form-urlencoded'
       }
     }).then((response) => {
       self.setState({
