@@ -38,7 +38,7 @@ class DataPaket extends Component {
       return `
           <div>
             <label class="switch switch-text switch-primary  form-control-label">
-              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked}/>
+              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked} disabled/>
               <span class="switch-label" data-on="${on}" data-off="${off}"></span>
               <span class="switch-handle"></span>
             </label>
@@ -78,10 +78,10 @@ class DataPaket extends Component {
             checked = "checked"
           }
           return `<input id='assign-${data}' class='dt-body-center select-checkbox' type='checkbox' ${checked}></input>`
-        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox" },
+        }, "bSortable": false, "sClass": "dt-body-center assign-checkbox", "bVisible": false},
         { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
-        }, "bSortable": false, "sClass": "dt-body-center select-checkbox" }
+        }, "bSortable": false, "sClass": "dt-body-center select-checkbox" },
       ]
     }
     this.state = {
@@ -126,7 +126,7 @@ class DataPaket extends Component {
     this.applyMinMaxFilter = this.applyMinMaxFilter.bind(this);
     this.resetMinMaxFilter = this.resetMinMaxFilter.bind(this);
     this.getAssignmentStatus = this.getAssignmentStatus.bind(this);
-
+    this.lockTipePekerjaan = this.lockTipePekerjaan.bind(this);
   }
   componentDidMount() {
     if (this.state.userData.jabatan === "kabiro") {
@@ -283,7 +283,6 @@ class DataPaket extends Component {
   toggleSuccess() {
     this.setState({
       successModal: false,
-      confirmModalSendToKpa: false
     });
     window.location.reload();
   }
@@ -349,6 +348,23 @@ class DataPaket extends Component {
       }
     })
   }
+  lockTipePekerjaan() {
+    const self = this;
+    axios({
+      url: `${process.env.API_HOST}/kabag/paket/spse/2018/lock`,
+      method: 'post',
+      headers: {
+        'Authorization': Cookies.get('token')
+      }
+    }).then((res) => {
+      self.setState({
+        confirmModalSendToKpa: false,
+        successModal: true
+      })
+    }).catch((e) => {
+      alert(e);
+    })
+  }
   render() {
     return (
       <div className="animated fadeIn">
@@ -367,11 +383,11 @@ class DataPaket extends Component {
                 </Input>
               </FormGroup>
               <FormGroup>
-                <Label htmlFor="worktype">Filtered by Assignment Status</Label>
+                <Label htmlFor="worktype">Filter by Assignment Status to KPA</Label>
                 <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
                   <option value="any">Please select</option>
-                  <option value="true">True</option>
-                  <option value="false">False</option>
+                  <option value="true">Lihat status yang telah di assign ke KPA</option>
+                  <option value="false">Lihat semua</option>
                 </Input>
               </FormGroup>
             </Col>
@@ -401,19 +417,40 @@ class DataPaket extends Component {
           <DataTbl data={this.state.dt}>
           </DataTbl>
         }
-        {this.isKabag() &&
+        {this.isKabag() && this.state.dataSet.status === 0 ?
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i> Simpan Tipe Pekerjaan</Button>
+              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal} disabled={this.state.dataSet && this.state.dataSet.tipe_pekerjaan && this.state.dataSet.tipe_pekerjaan.is_kpa_enabled}><i className="fa fa-dot-circle-o"></i>
+                Kunci dan Setujui Tipe Pekerjaan
+              </Button>
               <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
             </Col>
             <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
               <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
               <ModalBody>
-                Anda yakin ingin meneruskan paket ini ke KPA?
-                    </ModalBody>
+                Anda yakin ingin mengunci tipe pekerjaan? Hal ini tidak dapat diubah kembali setelah anda menyetujui.
+              </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
+                <Button color="primary" onClick={this.lockTipePekerjaan}>Tentu</Button>{' '}
+                <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
+              </ModalFooter>
+            </Modal>
+          </Row>
+          :
+          <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
+            <Col xs="12">
+              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>
+                Simpan Pejabat Fungsional
+              </Button>
+              <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i>Reset</Button>
+            </Col>
+            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
+              <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Pejabat Fungsional</ModalHeader>
+              <ModalBody>
+                Anda yakin ingin menyetujui paket ini dikelola pejabat fungsional?
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick={this.lockTipePekerjaan}>Tentu</Button>{' '}
                 <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
               </ModalFooter>
             </Modal>
@@ -437,7 +474,7 @@ class DataPaket extends Component {
               <ModalHeader toggle={this.toggleSuccess}>Kegiatan Dimulai</ModalHeader>
               <ModalBody>
                 Kegiatan Monitoring dan Evaluasi Tahun 2018 berhasil dimulai!
-                    </ModalBody>
+              </ModalBody>
               <ModalFooter>
                 <Button color="success" onClick={this.toggleSuccess}>OK</Button>
               </ModalFooter>
