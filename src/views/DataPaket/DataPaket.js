@@ -379,6 +379,7 @@ class DataPaket extends Component {
                   }
                 </Input>
               </FormGroup>
+              { this.state.dataSet.status === 0 &&
               <FormGroup>
                 <Label htmlFor="worktype">Filter by Assignment Status to KPA</Label>
                 <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
@@ -386,7 +387,7 @@ class DataPaket extends Component {
                   <option value="true">Lihat status yang telah di assign ke KPA</option>
                   <option value="false">Lihat semua</option>
                 </Input>
-              </FormGroup>
+              </FormGroup> }
             </Col>
             <Col xs="6">
               <Row>
@@ -414,7 +415,7 @@ class DataPaket extends Component {
           <DataTbl data={this.state.dt}>
           </DataTbl>
         }
-        {this.isKabag() && this.state.dataSet.status === 0 ?
+        {this.isKabag() && this.state.dataSet.status === 0 &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
               <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal} disabled={this.state.dataSet && this.state.dataSet.tipe_pekerjaan && this.state.dataSet.tipe_pekerjaan.is_kpa_enabled}><i className="fa fa-dot-circle-o"></i>
@@ -432,8 +433,8 @@ class DataPaket extends Component {
                 <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
               </ModalFooter>
             </Modal>
-          </Row>
-          :
+        </Row> }
+          {this.isKabag() && this.state.dataSet.status === 1 &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
               <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>

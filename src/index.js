@@ -32,7 +32,7 @@ ReactDOM.render((
       <Route exact path="/" name="Login Page" component={Login}/>
       <Route path="/dashboard" onEnter={requireAuth} name="Home" component={Full}/>
       <Route path="/data-paket" onEnter={requireAuth} name="Data Paket" component={Full}/>
-      {/* <Route path="/data-paket-kpa" onEnter={requireAuth} name="Data Paket" component={Full}/> */}
+      <Route path="/data-paket-kpa" onEnter={requireAuth} name="Data Paket" component={Full}/>
     </Switch>
   </HashRouter>
 ), document.getElementById('root'));
