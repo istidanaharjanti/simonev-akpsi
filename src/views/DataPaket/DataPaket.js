@@ -155,6 +155,7 @@ class DataPaket extends Component {
     this.resetMinMaxFilter = this.resetMinMaxFilter.bind(this);
     this.getAssignmentStatus = this.getAssignmentStatus.bind(this);
     this.lockTipePekerjaan = this.lockTipePekerjaan.bind(this);
+    this.lockPejabatFungsional = this.lockPejabatFungsional.bind(this);
   }
   componentDidMount() {
     if (this.state.userData.jabatan === "kabiro") {
@@ -396,8 +397,16 @@ class DataPaket extends Component {
   dataLocked () {
     return this.state.dataSet.find(data => data.status === 1);
   }
-  lockPejabatFungsional(){
-    console.log('lockPjFunc')
+  pejabatLocked () {
+    return this.state.dataSet.find(data => data.status === 2);
+  }
+  lockPejabatFungsional(val){
+    const self = this;
+      self.setState({
+        confirmModalSendToKpa: false,
+        successModal: true
+      })
+      window.location.reload();
   }
   render() {
     return (
@@ -452,7 +461,7 @@ class DataPaket extends Component {
           <DataTbl data={this.state.dt} visibility={this.isKabag() && !this.dataLocked()}>
           </DataTbl>
         }
-        {this.isKabag() &&
+        {this.isKabag() && !this.pejabatLocked() &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
               <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>
