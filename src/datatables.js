@@ -20,13 +20,20 @@ export class DataTbl extends Component {
     this.$el = $(this.el);
     this.setState({ table: this.$el.DataTable(this.props.data) })
     console.log("fromdt", this.props.data);
-    this.assignKPA()
     this.setTipePekerjaan()
+    if(this.state.userData.jabatan === 'kabag') {
+      this.assignKPA()
+      this.assignPjFunc()
+    }
+  }
+  isKabag() {
+    return this.state.userData.jabatan === 'kabag'
   }
   componentDidUpdate() {
-    console.log('vis',this.props.visibility);
-    this.state.table.columns( 8 ).visible( this.props.visibility );
-    this.state.table.columns( 10 ).visible( !this.props.visibility );
+    if(this.state.userData.jabatan === 'kabag') {
+      this.state.table.columns( 8 ).visible( this.props.visibility );
+      this.state.table.columns( 10 ).visible( !this.props.visibility );
+    }
   }
 
   assignKPA() {
@@ -56,7 +63,8 @@ export class DataTbl extends Component {
   }
 
   setTipePekerjaan() {
-    const url = this.state.userData.jabatan === 'kabag' ? `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan` : `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
+    const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan`
+    const urlKPA = `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
     $(document).on('change', '.set-tipe-checkbox', function () {
       console.log($(this).val())
       console.log($(this).attr('class'))
@@ -73,7 +81,7 @@ export class DataTbl extends Component {
       })
       console.log("val: ", val)
       axios({
-        url: url,
+        url: this.isKabag() ? urlKabag : urlKPA,
         method: 'POST',
         data: val,
         headers: {
@@ -86,6 +94,32 @@ export class DataTbl extends Component {
         alert(err)
       })
     })
+  }
+  assignPjFunc() {
+    const url = `${process.env.API_HOST}/kabag/paket/spse/2018/pejabatf/assign`
+    $(document).on('change', '.select-pejabat-fn', function () {
+      const nip = $(this).val();
+      const id= $(this).closest('.select-pejabat-fn').attr('id');
+      const val = [];
+      val.push({
+        "paket_id": id.replace('pejabatFn-', ''),
+        "pegawai_nip": nip
+      });
+      console.log(val);
+      axios({
+        url: url,
+        method: 'POST',
+        data: val,
+        headers: {
+          'Authorization': Cookies.get('token'),
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        console.log("resp", response.data.data)
+      }).catch((err) => {
+        alert(err)
+      })
+    });
   }
     componentWillReceiveProps(nextProps){
         const differentData = this.props.data !== nextProps.data;

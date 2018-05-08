@@ -61,14 +61,14 @@ class DataPaket extends Component {
           "jabatan": "pejabatf"
       }
     ];
-    const renderSelectPejabatF = function() {
-      return `
-      <select name="pejabatF" id="pejabatFn" class="form-control">
-      <option value="any">Please select</option>
-      ${listPejabatF}.map(data => {
-        return <option>{data.name}</option>
-      })
-    </select>`
+    const renderSelectPejabatF = function(id, pjNip, pjName) {
+     return `
+      <select name="pejabatF" id="pejabatFn-${id}" class="form-control select-pejabat-fn">
+       <option value="${pjNip}">${pjName}</option>
+       <option value="011235813">PFungsional 3</option>
+       <option value="123456789">PFungsional 1</option>
+       <option value="987654321">PFungsional 2</option>
+     </select>`
     }
     let url
     let column
@@ -108,8 +108,9 @@ class DataPaket extends Component {
         { "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox" },
-        { "sTitle": "Assign Pejabat Fungsional", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) { 
-          return renderSelectPejabatF()
+        { "sTitle": "Assign Pejabat Fungsional", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
+          console.log(full) 
+          return renderSelectPejabatF(data, full.pejabatf_nip, full.pejabatf_nama)
         }, "bSortable": false, "sClass": "dt-body-center" },      ]
     }
     this.state = {
@@ -164,29 +165,10 @@ class DataPaket extends Component {
     else if (this.state.userData.jabatan === "kabag") {
       this.getListTipePekerjaan();
       this.getSPSEdata(this.state.filterValue);
-      // this.getListPejabatFn();
     }
   }
   componentWillMount() {
   }
-  getListPejabatFn() {
-    const self = this;
-    const url = `${process.env.API_HOST}/master/list/pegawai?jabatan=pejabatf`;
-    const token = Cookies.get('token');
-    axios({
-      url,
-      method: 'GET',
-      headers: {
-        'Authorization': token,
-      }
-    }).then(response => {
-      self.state.listPejabatF.push(response.data.data);
-      console.log(self.state.listPejabatF);
-    }).catch(e => {
-      alert(e);
-    })
-  }
-
   renderSelectPejabatF() {
     return `
       <select name="pejabatF" id="pejabatFn" class="form-control">
@@ -262,7 +244,7 @@ class DataPaket extends Component {
 
   getSPSEdata(params) {
     const self = this;
-    const url = `${process.env.API_HOST}/kabag/paket/spse/2018`;
+    const url = `${process.env.API_HOST}/kabag/paket/spse/2018/pejabatf`
     const token = Cookies.get('token');
     axios({
       url,
@@ -465,7 +447,7 @@ class DataPaket extends Component {
           </Row>
         }
         {typeof this.state.dt !== 'undefined' &&
-          <DataTbl data={this.state.dt} visibility={!this.dataLocked()}>
+          <DataTbl data={this.state.dt} visibility={this.isKabag() && !this.dataLocked()}>
           </DataTbl>
         }
         {this.isKabag() &&
