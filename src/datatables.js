@@ -21,7 +21,6 @@ export class DataTbl extends Component {
     this.$el = $(this.el);
     this.setState({ table: this.$el.DataTable(this.props.data) })
     console.log("fromdt", this.props.data);
-    this.getDetailPaket();
     if(this.state.userData.jabatan === 'kpa') {
     const urlKPA = `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
       this.setTipePekerjaan(urlKPA)
@@ -125,25 +124,6 @@ export class DataTbl extends Component {
         alert(err)
       })
     });
-  }
-
-  getDetailPaket() {
-    console.log('table', this.state.table)
-    // $(this.state.table).on( 'click', 'tbody tr', function () {
-    //   // window.location.href = $(this).attr('href');
-    //   window.location="https://google.com"
-    // });
-    // const self = this;
-    // const { showModalDetail } = this.props;
-    // $(document).on('click', '.detail-clicked', function () {
-    //   const getPaketId= $(this).closest('.detail-clicked').attr('id');
-    //   const id = getPaketId.replace('detailPaket-', '');
-    //   console.log(id);s
-    //   // showPaketDetail = this.props.showPaketDetail;
-    //   self.setState({
-    //     showPaketDetail: this.props.showPaketDetail
-    //   })
-    // });
   }
   
     componentWillReceiveProps(nextProps){

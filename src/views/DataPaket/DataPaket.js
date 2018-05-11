@@ -143,7 +143,6 @@ class DataPaket extends Component {
         tipe_pekerjaan: 'any'
       },
       column,
-      showPaketDetail: false
     }
     this.toggleAccept = this.toggleAccept.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
@@ -162,7 +161,6 @@ class DataPaket extends Component {
     this.lockTipePekerjaan = this.lockTipePekerjaan.bind(this);
     this.lockPejabatFungsional = this.lockPejabatFungsional.bind(this);
     this.filterMonEv = this.filterMonEv.bind(this);
-    this.showPaketDetailModal = this.showPaketDetailModal.bind(this);
   }
   componentDidMount() {
     if (this.state.userData.jabatan === "kabiro") {
@@ -425,14 +423,6 @@ class DataPaket extends Component {
       })
       window.location.reload();
   }
-  showPaketDetailModal() {
-    this.setState({
-      showPaketDetail: !showPaketDetail
-    })
-  }
-  show(val) {
-    console.log('val', val)
-  }
   render() {
     return (
       <div className="animated fadeIn">
@@ -498,20 +488,8 @@ class DataPaket extends Component {
           </Row>
         }
         {typeof this.state.dt !== 'undefined' &&
-          <DataTbl data={this.state.dt} visibility={this.isKabag() && !this.dataLocked()} showPaketDetail={!this.state.showPaketDetail}>
+          <DataTbl data={this.state.dt} visibility={this.isKabag() && !this.dataLocked()}>
           </DataTbl>
-        }
-        {!this.isKabiro() && 
-          <Modal isOpen={this.state.showPaketDetail} toggle={this.showPaketDetailModal} id={`isShowPaketDetail`}>
-            <ModalHeader toggle={this.showPaketDetailModal}>test</ModalHeader>
-            <ModalBody>
-              test
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.showPaketDetailModal}>Tentu</Button>{' '}
-              <Button color="secondary" onClick={this.showPaketDetailModal}>Tidak</Button>
-            </ModalFooter>
-          </Modal>
         }
         {this.isKabag() && !this.pejabatLocked() &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
