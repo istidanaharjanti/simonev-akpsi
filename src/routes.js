@@ -2,7 +2,6 @@ const routes = {
   '/': 'Home',
   '/dashboard': 'Dashboard',
   '/data-paket': 'Data Paket',
-  '/data-paket-kpa': 'Data Paket',
-  '/data-paket-pejabatfungsional': 'Data Paket'
+  '/detail-paket-:id': 'Detail Paket'
 };
 export default routes;

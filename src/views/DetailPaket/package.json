@@ -1,0 +1,7 @@
+{
+    "name": "Detail Paket",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./DetailPaket.js"
+  }
+  

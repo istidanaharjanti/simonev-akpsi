@@ -13,6 +13,7 @@ import DataPaket from '../../views/DataPaket/';
 import KPAList from '../../views/KPA/';
 import Cookies from 'js-cookie';
 import PJFungsionalList from '../../views/PejabatFungsional/';
+import DetailPaket from '../../views/DetailPaket/';
 
 class Full extends Component {
   render() {
@@ -38,6 +39,9 @@ class Full extends Component {
                 }
                 {typeof cookies.data.jabatan !== 'undefined' && cookies.data.jabatan === 'pejabatf' &&
                   <Route path="/data-paket" name="Data Paket" component={PJFungsionalList}/>
+                }
+                {typeof cookies.data.jabatan !== 'undefined' && cookies.data.jabatan !== 'kabiro' &&
+                  <Route path="/detail-paket-:id" name="Detail Paket" component={DetailPaket}/>
                 }
                 {/* <Route path="/data-paket" name="Data Paket" component={DataPaket}/> */}
                 {/* <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/> */}

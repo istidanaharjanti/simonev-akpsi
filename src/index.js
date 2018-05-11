@@ -29,11 +29,10 @@ function requireAuth(nextState, replace) {
 ReactDOM.render((
   <HashRouter history={history}>
     <Switch>
-      <Route exact path="/" name="Login Page" component={Login}/>
-      <Route path="/dashboard" onEnter={requireAuth} name="Home" component={Full}/>
-      <Route path="/data-paket" onEnter={requireAuth} name="Data Paket" component={Full}/>
-      <Route path="/data-paket-kpa" onEnter={requireAuth} name="Data Paket" component={Full}/>
-      <Route path="/data-paket-pejabatfungsional" onEnter={requireAuth} name="Data Paket" component={Full}/>
+      <Route exact path="/" name="Login Page" component={Login} />
+      <Route path="/dashboard" onEnter={requireAuth} name="Home" component={Full} />
+      <Route path="/data-paket" onEnter={requireAuth} name="Data Paket" component={Full} />
+      <Route path="/detail-paket-:id" onEnter={requireAuth} name="Detail Paket" component={Full} />
     </Switch>
   </HashRouter>
 ), document.getElementById('root'));
