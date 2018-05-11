@@ -62,7 +62,10 @@ class KPAList extends Component {
         "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function (data, type, full, meta) {
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox"
-      }
+      },
+      { "sTitle": "Detail", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
+        return `<a href="/#/detail-paket-${data}" target="_blank" style="cursor: pointer"><i class="detail-clicked fa fa-eye fa-lg"></i></a>`
+      }, "bSortable": false, "sClass": "dt-body-center" },
     ]
     this.state = {
       dataSet: [],
