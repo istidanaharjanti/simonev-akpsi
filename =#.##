@@ -1,0 +1,31 @@
+
+> fsevents@1.2.3 install /Users/istidanaharjanti/Documents/isti/S2 - FA/Semester 1/AKPSI - Pak Ucok/simonev-project/node_modules/fsevents
+> node install
+
+[fsevents] Success: "/Users/istidanaharjanti/Documents/isti/S2 - FA/Semester 1/AKPSI - Pak Ucok/simonev-project/node_modules/fsevents/lib/binding/Release/node-v57-darwin-x64/fse.node" already installed
+Pass --update-binary to reinstall or --build-from-source to recompile
+
+> node-sass@4.5.3 install /Users/istidanaharjanti/Documents/isti/S2 - FA/Semester 1/AKPSI - Pak Ucok/simonev-project/node_modules/node-sass
+> node scripts/install.js
+
+Cached binary found at /Users/istidanaharjanti/.npm/node-sass/4.5.3/darwin-x64-57_binding.node
+
+> uglifyjs-webpack-plugin@0.4.6 postinstall /Users/istidanaharjanti/Documents/isti/S2 - FA/Semester 1/AKPSI - Pak Ucok/simonev-project/node_modules/uglifyjs-webpack-plugin
+> node lib/post_install.js
+
+
+> node-sass@4.5.3 postinstall /Users/istidanaharjanti/Documents/isti/S2 - FA/Semester 1/AKPSI - Pak Ucok/simonev-project/node_modules/node-sass
+> node scripts/build.js
+
+Binary found at /Users/istidanaharjanti/Documents/isti/S2 - FA/Semester 1/AKPSI - Pak Ucok/simonev-project/node_modules/node-sass/vendor/darwin-x64-57/binding.node
+Testing binary
+Binary is fine
++ moment@2.22.1
++ react-dom@16.3.2
++ react@16.3.2
++ react-dates@16.6.1
+added 131 packages from 55 contributors, removed 258 packages and updated 888 packages in 60.044s
+[!] 238 vulnerabilities found [5722 packages audited]
+    Severity: 214 low | 12 moderate | 12 high
+    Run `npm audit` for more detail
+
