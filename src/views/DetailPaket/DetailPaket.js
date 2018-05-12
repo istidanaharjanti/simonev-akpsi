@@ -18,30 +18,32 @@ import {
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+
 class DetailPaket extends Component {
     constructor() {
         super();
         const sessionCookie = JSON.parse(Cookies.get('userSession'));
         this.togglingMenu = this.togglingMenu.bind(this);
         this.isPPK = this.isPPK.bind(this);
-
+        
         this.state = {
-            collapse: false,
+            collapse: 0,
             userData: sessionCookie.data ? sessionCookie.data : {}
         }
-    }
-
-
-
-    togglingMenu() {
-        this.setState({
-            collapse: !this.state.collapse
-        })
     }
 
     isPPK() {
         return this.state.userData.jabatan === 'ppk'
     }
+    
+    togglingMenu(selectedState) {
+        const self = this;
+        return function () {
+          self.setState({
+                collapse: selectedState
+              })
+        };
+      };
 
     render() {
         return (
@@ -99,13 +101,245 @@ class DetailPaket extends Component {
                 <Row>
                     <Col xs="12" sm="6" md="12">
                         <Card className="card-accent-warning"> {/* will be danger if < 10% mendekati h-3 duedate, warning if < 10% h-7*/}
-                            <CardHeader onClick={this.togglingMenu} style={{ cursor: 'pointer' }}>
+                            <CardHeader onClick={this.togglingMenu(1)} style={{ cursor: 'pointer' }}>
                                 <h4>
                                     1. Tahapan Persiapan
-                  <Badge pill color="warning" className="float-right">7%</Badge>
+                                    <Badge pill color="warning" className="float-right">7%</Badge>
                                 </h4>
                             </CardHeader>
-                            <Collapse isOpen={this.state.collapse}>
+                            <Collapse isOpen={this.state.collapse === 1}>
+                                {this.isPPK() &&
+                                    <CardBlock className="card-body">
+                                        <Row>
+                                            <Col md="6">
+                                                <ol type="a">
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="3">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="9">
+                                                                <Input type="file" id="file-input" name="file-input" />
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="3">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="9">
+                                                                <Input type="file" id="file-input" name="file-input" />
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                </ol>
+                                            </Col>
+                                            <Col md="6">
+                                                <Col md="12">
+                                                    {/* <DatePicker /> */}
+                                                    disini DatePicker, setelah di set, jadi tanggal fixed
+                                                </Col>
+                                                {/*will be show suggestion list if warning or danger*/}
+                                                <Col md="12">
+                                                    <Card className="text-white bg-warning" style={{fontWeight: 'bold'}}> {/* kondisi s.d.a */}
+                                                        <CardHeader>
+                                                            Apa yang harus anda lakukan?
+                                                        </CardHeader>
+                                                        <CardBlock className="card-body">
+                                                        <ol type="i">
+                                                            <li>Kelola tenaga kerja yang diperlukan</li>
+                                                            <li>Lakukan rapat dengan pihak Cipta Karya Dinas Pekerjaan Umum</li>
+                                                            <li>Percepat pengiriman barang</li>
+                                                            <li>Rapat dengan vendor untuk membahas percepatan</li>
+                                                        </ol>
+                                                        </CardBlock>
+                                                    </Card>
+                                                </Col>
+                                                <Col md="12">
+                                                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
+                                                        placeholder="Content..." />
+                                                </Col>
+                                                <Col md="3" style={{ float: 'right' }}>
+                                                    <Button color="primary" style={{ float: 'right' }}>Kirim Komentar</Button>
+                                                </Col>
+                                            </Col>
+                                        </Row>
+                                    </CardBlock>
+                                }
+                                {!this.isPPK() &&
+                                    <CardBlock className="card-body">
+                                        <Row>
+                                            <Col md="6">
+                                                <ol type="a">
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="4">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="8">
+                                                                <a href="#">Link Donlod file</a>
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="4">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="8">
+                                                                <a href="#">Link Donlod file</a>
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                </ol>
+                                            </Col>
+                                            <Col md="6">
+                                                <Col md="12">
+                                                    {/* <DatePicker /> */}
+                                                    disini tanggal fixed
+                                                 </Col>
+                                                <Col md="12">
+                                                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
+                                                        placeholder="Content..." />
+                                                </Col>
+                                                <Col md="3" style={{ float: 'right' }}>
+                                                    <Button color="primary" style={{ float: 'right' }}>Kirim Komentar</Button>
+                                                </Col>
+                                            </Col>
+                                        </Row>
+                                    </CardBlock>
+                                }
+                            </Collapse>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs="12" sm="6" md="12">
+                        <Card className="card-accent-warning"> {/* will be danger if < 10% mendekati h-3 duedate, warning if < 10% h-7*/}
+                            <CardHeader onClick={this.togglingMenu(2)} style={{ cursor: 'pointer' }}>
+                                <h4>
+                                    2. Tahapan Pelaksanaan
+                                    <Badge pill color="warning" className="float-right">7%</Badge>
+                                </h4>
+                            </CardHeader>
+                            <Collapse isOpen={this.state.collapse === 2}>
+                                {this.isPPK() &&
+                                    <CardBlock className="card-body">
+                                        <Row>
+                                            <Col md="6">
+                                                <ol type="a">
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="3">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="9">
+                                                                <Input type="file" id="file-input" name="file-input" />
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="3">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="9">
+                                                                <Input type="file" id="file-input" name="file-input" />
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                </ol>
+                                            </Col>
+                                            <Col md="6">
+                                                <Col md="12">
+                                                    {/* <DatePicker /> */}
+                                                    disini DatePicker, setelah di set, jadi tanggal fixed
+                                                </Col>
+                                                {/*will be show suggestion list if warning or danger*/}
+                                                <Col md="12">
+                                                    <Card className="text-white bg-warning" style={{fontWeight: 'bold'}}> {/* kondisi s.d.a */}
+                                                        <CardHeader>
+                                                            Apa yang harus anda lakukan?
+                                                        </CardHeader>
+                                                        <CardBlock className="card-body">
+                                                        <ol type="i">
+                                                            <li>Kelola tenaga kerja yang diperlukan</li>
+                                                            <li>Lakukan rapat dengan pihak Cipta Karya Dinas Pekerjaan Umum</li>
+                                                            <li>Percepat pengiriman barang</li>
+                                                            <li>Rapat dengan vendor untuk membahas percepatan</li>
+                                                        </ol>
+                                                        </CardBlock>
+                                                    </Card>
+                                                </Col>
+                                                <Col md="12">
+                                                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
+                                                        placeholder="Content..." />
+                                                </Col>
+                                                <Col md="3" style={{ float: 'right' }}>
+                                                    <Button color="primary" style={{ float: 'right' }}>Kirim Komentar</Button>
+                                                </Col>
+                                            </Col>
+                                        </Row>
+                                    </CardBlock>
+                                }
+                                {!this.isPPK() &&
+                                    <CardBlock className="card-body">
+                                        <Row>
+                                            <Col md="6">
+                                                <ol type="a">
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="4">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="8">
+                                                                <a href="#">Link Donlod file</a>
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                    <li>
+                                                        <FormGroup row>
+                                                            <Col md="4">
+                                                                <Label htmlFor="file-input">Tahapan lalala</Label>
+                                                            </Col>
+                                                            <Col xs="12" md="8">
+                                                                <a href="#">Link Donlod file</a>
+                                                            </Col>
+                                                        </FormGroup>
+                                                    </li>
+                                                </ol>
+                                            </Col>
+                                            <Col md="6">
+                                                <Col md="12">
+                                                    {/* <DatePicker /> */}
+                                                    disini tanggal fixed
+                                                 </Col>
+                                                <Col md="12">
+                                                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
+                                                        placeholder="Content..." />
+                                                </Col>
+                                                <Col md="3" style={{ float: 'right' }}>
+                                                    <Button color="primary" style={{ float: 'right' }}>Kirim Komentar</Button>
+                                                </Col>
+                                            </Col>
+                                        </Row>
+                                    </CardBlock>
+                                }
+                            </Collapse>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs="12" sm="6" md="12">
+                        <Card className="card-accent-warning"> {/* will be danger if < 10% mendekati h-3 duedate, warning if < 10% h-7*/}
+                            <CardHeader onClick={this.togglingMenu(3)} style={{ cursor: 'pointer' }}>
+                                <h4>
+                                    3. Tahapan Serah Terima
+                                    <Badge pill color="warning" className="float-right">7%</Badge>
+                                </h4>
+                            </CardHeader>
+                            <Collapse isOpen={this.state.collapse === 3}>
                                 {this.isPPK() &&
                                     <CardBlock className="card-body">
                                         <Row>
