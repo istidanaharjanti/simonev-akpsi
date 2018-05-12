@@ -47,8 +47,6 @@ class Full extends Component {
                 {typeof cookies.data.jabatan !== 'undefined' && cookies.data.jabatan !== 'kabiro' &&
                   <Route path="/detail-paket-:id" name="Detail Paket" component={DetailPaket}/>
                 }
-                {/* <Route path="/data-paket" name="Data Paket" component={DataPaket}/> */}
-                {/* <Route path="/data-paket-kpa" name="Data Paket" component={KPAList}/> */}
               </Switch>
             </Container>
           </main>
