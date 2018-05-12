@@ -18,8 +18,11 @@ import {
     Progress
 } from 'reactstrap';
 import axios from 'axios';
+import moment from 'moment';
 import Cookies from 'js-cookie';
 import { SingleDatePicker } from 'react-dates';
+
+import DetailPaket from '../DetailPaket';
 
 class DetailPaketMonitoring extends Component {
     constructor() {
@@ -28,6 +31,8 @@ class DetailPaketMonitoring extends Component {
         this.isPPK = this.isPPK.bind(this);
         this.reupload = this.reupload.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
+        this.getDetailPaket = this.getDetailPaket.bind(this);
+        this.formatDate = this.formatDate.bind(this);
         
         this.state = {
             collapse: 0,
@@ -37,22 +42,31 @@ class DetailPaketMonitoring extends Component {
         }
     }
     
-    getDetailPaket() {
+    componentWillMount() {
+        const idPaket = window.location.hash.replace('#/detail-paket-', '');
+        if(this.state.userData.jabatan === 'pejabatf'){
+          this.getDetailPaket('pejabatf', idPaket);
+        } else if(this.state.userData.jabatan === 'ppk'){
+          this.getDetailPaket('ppk', idPaket)
+        }
+    }
+
+    getDetailPaket(jabatan, id) {
       const self = this;
-      const url = `${process.env.API_HOST}/pejabatf/evaluasi/tahapan/72755/detail`;
       const token = Cookies.get('token');
+      const url = `${process.env.API_HOST}/${jabatan}/evaluasi/tahapan/${id}/detail`;
       axios({
         url,
         method: 'GET',
         headers: {
           'Authorization': token,
         }
-      }).then((response) => {     
-      if (response.data.data.length > 0) {
-        self.setState({
-          detailPaket: response.data.data
-        })
-      }
+      }).then((response) => {
+          console.log('response', response);
+          self.setState({
+            detailPaket: response.data.data
+          })
+          console.log('detailPaket', self.state.detailPaket);
       }).catch((e) => {
         alert(e);
       });
@@ -71,34 +85,43 @@ class DetailPaketMonitoring extends Component {
         fileUploaded: true
       })
     }
+    isEvaluasi(){
+      return this.state.detailPaket.tipe_pekerjaan_id === 'evaluasi'
+    }
+    formatDate(date, format = this.dateFormat) {
+      return moment(date).isValid() ? moment(date).locale('id').format(format) : '-';
+    }
 
     render() {
+        const { detailPaket } = this.state;
         return (
             <div className="animated fadeIn">
+              {!this.isEvaluasi() && 
+              <div>
                 <Row>
-                    <Col xs="12" md="12" style={{ marginBottom: 24 }}><h3>Nama Paket</h3></Col>
+                    <Col xs="12" md="12" style={{ marginBottom: 24 }}><h3>{detailPaket.nama_paket}</h3></Col>
                     <Col xs="12" md="6">
                         <table style={{ fontWeight: 'bold' }}>
                             <tbody>
                                 <tr>
                                     <td>Nilai Kontrak</td>
                                     <td>:</td>
-                                    <td>Rp. 200.000</td>
+                                    <td>blom</td>
                                 </tr>
                                 <tr>
                                     <td>Durasi Pekerjaan</td>
                                     <td>:</td>
-                                    <td>2 bulan</td>
+                                    <td>{detailPaket.durasi_pekerjaan}</td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Mulai Pekerjaan</td>
                                     <td>:</td>
-                                    <td>1 May 2018</td>
+                                    <td>{this.formatDate(detailPaket.tgl_mulai_pekerjaan, 'D MMMM YYYY')}</td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Selesai Pekerjaan</td>
                                     <td>:</td>
-                                    <td>2 Juni 2018</td>
+                                    <td>{this.formatDate(detailPaket.tgl_selesai_pekerjaan, 'D MMMM YYYY')}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -107,19 +130,24 @@ class DetailPaketMonitoring extends Component {
                         <table style={{ fontWeight: 'bold' }}>
                             <tbody>
                                 <tr>
-                                    <td>Petugas PPK</td>
+                                    <td>Petugas KPA</td>
                                     <td>:</td>
-                                    <td>Akil Muchtar</td>
+                                    <td>{detailPaket.kpa_nama}</td>
+                                </tr>
+                                <tr>
+                                    <td>Petugas Pejabat Fungsional</td>
+                                    <td>:</td>
+                                    <td>{detailPaket.pejabatf_nama}</td>
                                 </tr>
                                 <tr>
                                     <td>Unit Eselon I</td>
                                     <td>:</td>
-                                    <td>DJBK</td>
+                                    <td>{detailPaket.unit_eselon1}</td>
                                 </tr>
                                 <tr>
                                     <td>Tipe Pekerjaan</td>
                                     <td>:</td>
-                                    <td>Jasa Konsultasi</td>
+                                    <td>blom</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -129,7 +157,7 @@ class DetailPaketMonitoring extends Component {
                     <Col xs="12" sm="6" md="12">
                         <Card className="border-primary">
                             <CardHeader>
-                              <h4>Upload Laporan Pelaksanaan Paket</h4>
+                            <h4>Upload Laporan Pelaksanaan Paket</h4>
                             </CardHeader>
                                 {this.isPPK() &&
                                 <CardBlock className="card-body">
@@ -171,6 +199,23 @@ class DetailPaketMonitoring extends Component {
                         </Card>
                     </Col>
                 </Row>
+                </div>
+              }
+              {this.isEvaluasi() &&
+                <DetailPaket 
+                  namaPaket={detailPaket.nama_paket}
+                  nilaiKontrak={'belum'}
+                  duration={detailPaket.durasi_pekerjaan}
+                  startDate={this.formatDate(detailPaket.tgl_mulai_pekerjaan, 'D MMMM YYYY')}
+                  endDate={this.formatDate(detailPaket.tgl_selesai_pekerjaan, 'D MMMM YYYY')}
+                  kpaName={detailPaket.kpa_nama}
+                  pejabatFname={detailPaket.pejabatf_nama}
+                  unitEs1={detailPaket.unit_eselon1}
+                  workType={'belum'}
+                  tahapanInti={detailPaket.tahapan_duedate}
+                  subTahapan={detailPaket.tahapan}
+                />
+              }
             </div>
         );
     }

@@ -440,7 +440,6 @@ class DataPaket extends Component {
                   }
                 </Input>
               </FormGroup>
-              { !this.dataLocked() &&
               <Row>
                 <Col xs="6">
                 <FormGroup>
@@ -463,7 +462,6 @@ class DataPaket extends Component {
                 </FormGroup>
                 </Col>
               </Row>
-             }
             </Col>
             <Col xs="6">
               <Row>
@@ -520,7 +518,7 @@ class DataPaket extends Component {
               <ModalBody>
                 Anda yakin ingin memulai kegiatan monitoring dan evaluasi tahun 2018?<br />
                 Anda tidak dapat membatalkan jika sudah memilih ya.
-                    </ModalBody>
+              </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={this.startRUP}>Tentu</Button>{' '}
                 <Button color="secondary" onClick={this.toggleAccept}>Tidak</Button>

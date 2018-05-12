@@ -57,7 +57,7 @@ class PPKList extends Component {
         }, "sWidth": "20px"
       },
       { "sTitle": "Petugas KPA", "mDataProp": "kpa_nama", "sWidth": "20px" },
-      { "sTitle": "Pejabat Fungsional", "mDataProp": "ppk_nama", "sWidth": "20px" },
+      { "sTitle": "Pejabat Fungsional", "mDataProp": "pejabatf_nama", "sWidth": "20px" },
       {
         "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function (data, type, full, meta) {
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)

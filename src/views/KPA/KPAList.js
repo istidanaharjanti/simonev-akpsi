@@ -85,7 +85,7 @@ class KPAList extends Component {
       tipePekerjaan: [],
       confirmModal: false,
       successModal: false,
-      confirmModalSendToKpa: false,
+      confirmModalSendToKabag: false,
       rupStatus: false,
       filterValue: {
         jenis_pekerjaan: 'any',
@@ -101,7 +101,7 @@ class KPAList extends Component {
     this.applyMinMaxFilter = this.applyMinMaxFilter.bind(this);
     this.resetMinMaxFilter = this.resetMinMaxFilter.bind(this);
     this.getSPSEdata = this.getSPSEdata.bind(this);
-    this.showSendToKpaModal = this.showSendToKpaModal.bind(this);
+    this.showSendToKabagModal = this.showSendToKabagModal.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
   }
   componentDidMount() {
@@ -196,14 +196,14 @@ class KPAList extends Component {
       }
     })
   }
-  showSendToKpaModal() {
+  showSendToKabagModal() {
     this.setState({
-      confirmModalSendToKpa: !this.state.confirmModalSendToKpa,
+      confirmModalSendToKabag: !this.state.confirmModalSendToKabag,
     });
   }
   toggleSuccess() {
     this.setState({
-      confirmModalSendToKpa: false
+      confirmModalSendToKabag: false
     });
     window.location.reload();
   }
@@ -250,21 +250,21 @@ class KPAList extends Component {
           </DataTbl>
         }
         <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
-            <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>Ajukan ke Kabag</Button>
-              <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-            </Col>
-            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
-              <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
-              <ModalBody>
-                Anda yakin ingin mengajukan paket ini ke Kabag?
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
-                <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
-              </ModalFooter>
-            </Modal>
-          </Row>
+          <Col xs="12">
+            <Button type="submit" size="lg" color="primary" onClick={this.showSendToKabagModal}><i className="fa fa-dot-circle-o"></i>Ajukan ke kabag</Button>
+            <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+          </Col>
+        </Row>
+        <Modal isOpen={this.state.confirmModalSendToKabag} toggle={this.showSendToKabagModal}>
+          <ModalHeader toggle={this.showSendToKabagModal}>Konfirmasi Paket</ModalHeader>
+          <ModalBody>
+            Anda yakin ingin mengajukan paket ini ke Kabag?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.toggleSuccess}>Tentu</Button>{' '}
+            <Button color="secondary" onClick={this.showSendToKabagModal}>Tidak</Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }
