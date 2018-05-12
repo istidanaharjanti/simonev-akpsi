@@ -124,24 +124,63 @@ class DetailPaket extends Component {
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
-                                                          {this.props.subTahapan.map(data => {
-                                                            return (
-                                                              <li>
-                                                                <FormGroup row>
-                                                                    <Col md="4">
-                                                                        <Label htmlFor="file-input">{data.tahapan_action_desc}</Label>
-                                                                    </Col>
-                                                                    <Col md="4">
-                                                                        <Input type="file" id="file-input" name="file-input" />
-                                                                    </Col>
-                                                                    <Col md="4">
-                                                                        <Button color="primary">Upload</Button>
-                                                                    </Col>
-                                                                </FormGroup>
-                                                              </li>
-                                                            )
-                                                           })
-                                                          }
+                                                            { index === 0 &&
+                                                                this.props.subTahapan.filter(i => i.tahapan_id === 'persiapan').map(sub => {
+                                                                    return (
+                                                                        <li>
+                                                                            <FormGroup row>
+                                                                                <Col md="4">
+                                                                                    <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
+                                                                                </Col>
+                                                                                <Col md="4">
+                                                                                    <Input type="file" id="file-input" name="file-input" />
+                                                                                </Col>
+                                                                                <Col md="4">
+                                                                                    <Button color="primary">Upload</Button>
+                                                                                </Col>
+                                                                            </FormGroup>
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
+                                                            { index === 1 &&
+                                                                this.props.subTahapan.filter(i => i.tahapan_id === 'pelaksanaan').map(sub => {
+                                                                    return (
+                                                                        <li>
+                                                                            <FormGroup row>
+                                                                                <Col md="4">
+                                                                                    <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
+                                                                                </Col>
+                                                                                <Col md="4">
+                                                                                    <Input type="file" id="file-input" name="file-input" />
+                                                                                </Col>
+                                                                                <Col md="4">
+                                                                                    <Button color="primary">Upload</Button>
+                                                                                </Col>
+                                                                            </FormGroup>
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
+                                                            { index === 2 &&
+                                                                this.props.subTahapan.filter(i => i.tahapan_id === 'serah_terima').map(sub => {
+                                                                    return (
+                                                                        <li>
+                                                                            <FormGroup row>
+                                                                                <Col md="4">
+                                                                                    <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
+                                                                                </Col>
+                                                                                <Col md="4">
+                                                                                    <Input type="file" id="file-input" name="file-input" />
+                                                                                </Col>
+                                                                                <Col md="4">
+                                                                                    <Button color="primary">Upload</Button>
+                                                                                </Col>
+                                                                            </FormGroup>
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
                                                         </ol>
                                                     </Col>
                                                     <Col md="6">
