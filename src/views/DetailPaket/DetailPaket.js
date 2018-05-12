@@ -65,7 +65,7 @@ class DetailPaket extends Component {
                                 <tr>
                                     <td>Durasi Pekerjaan</td>
                                     <td>:</td>
-                                    <td>{this.props.duration}</td>
+                                    <td>{this.props.duration} hari</td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Mulai Pekerjaan</td>
@@ -99,7 +99,7 @@ class DetailPaket extends Component {
                                     <td>{this.props.unitEs1}</td>
                                 </tr>
                                 <tr>
-                                    <td>Tipe Pekerjaan</td>
+                                    <td>Jenis Pekerjaan</td>
                                     <td>:</td>
                                     <td>{this.props.workType}</td>
                                 </tr>
@@ -184,14 +184,19 @@ class DetailPaket extends Component {
                                                         </ol>
                                                     </Col>
                                                     <Col md="6">
-                                                        <Col md="12" style={{ marginBottom: 10 }}>
-                                                            <SingleDatePicker
-                                                                date={this.state.date} // momentPropTypes.momentObj or null
-                                                                onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
-                                                                focused={this.state.focused} // PropTypes.bool
-                                                                onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-                                                            />
-                                                        </Col>
+                                                        <Row style={{ marginBottom: 10, paddingLeft: 15 }}>
+                                                            <Col md="4">
+                                                                <SingleDatePicker
+                                                                    date={this.state.date} // momentPropTypes.momentObj or null
+                                                                    onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
+                                                                    focused={this.state.focused} // PropTypes.bool
+                                                                    onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+                                                                />
+                                                            </Col>
+                                                            <Col md="8">
+                                                              <Button color="primary" style={{height: 52}}>Set Tanggal Deadline</Button>
+                                                            </Col>
+                                                        </Row>
                                                         {/*will be show suggestion list if warning or danger*/}
                                                         <Col md="12">
                                                             <Card className="text-white bg-warning" style={{ fontWeight: 'bold' }}> {/* kondisi s.d.a */}

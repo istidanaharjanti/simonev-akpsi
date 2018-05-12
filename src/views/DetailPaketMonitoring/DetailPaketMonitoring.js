@@ -33,6 +33,7 @@ class DetailPaketMonitoring extends Component {
         this.uploadFile = this.uploadFile.bind(this);
         this.getDetailPaket = this.getDetailPaket.bind(this);
         this.formatDate = this.formatDate.bind(this);
+        this.convertCurrency = this.convertCurrency.bind(this);
         
         this.state = {
             collapse: 0,
@@ -91,6 +92,17 @@ class DetailPaketMonitoring extends Component {
     formatDate(date, format = this.dateFormat) {
       return moment(date).isValid() ? moment(date).locale('id').format(format) : '-';
     }
+    convertCurrency(val) {
+      const options = {
+        style: 'currency',
+        currency: 'IDR',
+        currencyDisplay: 'symbol',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      };
+      const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
+      return convertedNum;
+    }
 
     render() {
         const { detailPaket } = this.state;
@@ -106,12 +118,12 @@ class DetailPaketMonitoring extends Component {
                                 <tr>
                                     <td>Nilai Kontrak</td>
                                     <td>:</td>
-                                    <td>blom</td>
+                                    <td>{this.convertCurrency(detailPaket.nilai_kontrak)}</td>
                                 </tr>
                                 <tr>
                                     <td>Durasi Pekerjaan</td>
                                     <td>:</td>
-                                    <td>{detailPaket.durasi_pekerjaan}</td>
+                                    <td>{detailPaket.durasi_pekerjaan} hari</td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Mulai Pekerjaan</td>
@@ -145,9 +157,9 @@ class DetailPaketMonitoring extends Component {
                                     <td>{detailPaket.unit_eselon1}</td>
                                 </tr>
                                 <tr>
-                                    <td>Tipe Pekerjaan</td>
+                                    <td>Jenis Pekerjaan</td>
                                     <td>:</td>
-                                    <td>blom</td>
+                                    <td>{detailPaket.jenis_pekerjaan_desc}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -204,14 +216,14 @@ class DetailPaketMonitoring extends Component {
               {this.isEvaluasi() &&
                 <DetailPaket 
                   namaPaket={detailPaket.nama_paket}
-                  nilaiKontrak={'belum'}
+                  nilaiKontrak={this.convertCurrency(detailPaket.nilai_kontrak)}
                   duration={detailPaket.durasi_pekerjaan}
                   startDate={this.formatDate(detailPaket.tgl_mulai_pekerjaan, 'D MMMM YYYY')}
                   endDate={this.formatDate(detailPaket.tgl_selesai_pekerjaan, 'D MMMM YYYY')}
                   kpaName={detailPaket.kpa_nama}
                   pejabatFname={detailPaket.pejabatf_nama}
                   unitEs1={detailPaket.unit_eselon1}
-                  workType={'belum'}
+                  workType={detailPaket.jenis_pekerjaan_desc}
                   tahapanInti={detailPaket.tahapan_duedate}
                   subTahapan={detailPaket.tahapan}
                 />
