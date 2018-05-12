@@ -14,7 +14,7 @@ import KPAList from '../../views/KPA/';
 import Cookies from 'js-cookie';
 import PJFungsionalList from '../../views/PejabatFungsional/';
 import PPKList from '../../views/PPK/';
-import DetailPaket from '../../views/DetailPaket/';
+import DetailPaket from '../../views/DetailPaketMonitoring/';
 
 class Full extends Component {
   render() {

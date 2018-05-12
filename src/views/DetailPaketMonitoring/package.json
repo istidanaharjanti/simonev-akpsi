@@ -1,0 +1,7 @@
+{
+    "name": "Detail Paket Monitoring",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./DetailPaketMonitoring.js"
+  }
+  
