@@ -149,7 +149,7 @@ class DetailPaketMonitoring extends Component {
                                 <tr>
                                     <td>Petugas Pejabat Fungsional</td>
                                     <td>:</td>
-                                    <td>{detailPaket.pejabatf_nama}</td>
+                                    <td>{detailPaket.pejabatf_nama ? detailPaket.pejabatf_nama : '-'}</td>
                                 </tr>
                                 <tr>
                                     <td>Unit Eselon I</td>
@@ -175,7 +175,7 @@ class DetailPaketMonitoring extends Component {
                                 <CardBlock className="card-body">
                                     <Row>
                                         <Col md="3">
-                                            {this.state.fileUploaded ? <a href="#">Nama Dokumen</a> : <Input type="file" id="file-input" name="file-input" />}
+                                            {this.state.fileUploaded ? <a href="#">DokumenLaporan.pdf</a> : <Input type="file" id="file-input" name="file-input" />}
                                         </Col>
                                         <Col md="9">
                                         {this.state.fileUploaded ? <Button color="primary" onClick={this.reupload}>Ganti File</Button> : <Button color="primary" onClick={this.uploadFile}>Upload</Button> }
@@ -185,7 +185,9 @@ class DetailPaketMonitoring extends Component {
                                         <Card>
                                             <CardHeader>History file diupload</CardHeader>
                                             <CardBlock>
-                                                datetimeuploaded - namafile
+                                                <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
+                                                <p>9 Mei 2018 13:32:10 - DokumenLaporan.pdf</p>
+                                                <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
                                             </CardBlock>
                                         </Card>
                                     </Row>
@@ -195,14 +197,16 @@ class DetailPaketMonitoring extends Component {
                                 <CardBlock className="card-body">
                                     <Row>
                                         <Col md="12">
-                                            <a href="#">Nama Dokumen</a>
+                                            <a href="#">DokumenLaporan.pdf</a>
                                         </Col>
                                     </Row>
                                     <Row style={{ marginTop: 60, paddingLeft: 15}}>
-                                        <Card>
+                                      <Card>
                                             <CardHeader>History file diupload</CardHeader>
                                             <CardBlock>
-                                                datetimeuploaded - namafile
+                                                <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
+                                                <p>9 Mei 2018 13:32:10 - DokumenLaporan.pdf</p>
+                                                <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
                                             </CardBlock>
                                         </Card>
                                     </Row>

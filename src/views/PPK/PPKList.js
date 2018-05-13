@@ -90,7 +90,8 @@ class PPKList extends Component {
       filterValue: {
         jenis_pekerjaan: 'any',
         min_nilai_kontrak: 'any',
-        max_nilai_kontrak: 'any'
+        max_nilai_kontrak: 'any',
+        tipe_pekerjaan: 'any'
       },
       column
     }
@@ -103,6 +104,7 @@ class PPKList extends Component {
     this.getSPSEdata = this.getSPSEdata.bind(this);
     this.showSendToKpaModal = this.showSendToKpaModal.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
+    this.filterMonEv = this.filterMonEv.bind(this);
   }
   componentDidMount() {
     this.getListTipePekerjaan();
@@ -128,7 +130,7 @@ class PPKList extends Component {
         self.setState({
           dt: {
             ajax: {
-              'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}`,
+              'url': `${this.state.url}?jenis_pekerjaan=${params.jenis_pekerjaan}&min_nilai_kontrak=${params.min_nilai_kontrak}&max_nilai_kontrak=${params.max_nilai_kontrak}&tipe_pekerjaan=${params.tipe_pekerjaan}`,
               'type': 'GET',
               'beforeSend': function (request) {
                 request.setRequestHeader("Authorization", Cookies.get('token'))
@@ -209,22 +211,43 @@ class PPKList extends Component {
     });
     window.location.reload();
   }
+
+  filterMonEv(event) {
+    const fv = this.state.filterValue
+    fv.tipe_pekerjaan = event.target.value
+    this.setState({ filterValue: fv })
+    this.getSPSEdata(this.state.filterValue)
+  }
   render() {
     return (
       <div className="animated fadeIn">
         <h1>Data Paket SPSE Tahun 2018</h1>
         <Row>
           <Col xs="6">
-            <FormGroup>
-              <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
-              <Input type="select" name="worktype" id="worktype" onChange={this.getFilterValue}>
-                <option value="any">Please select</option>
-                {this.state.tipePekerjaan && this.state.tipePekerjaan.map(data => {
-                  return <option value={`${data.id}`}>{data.description}</option>
-                })
-                }
-              </Input>
-            </FormGroup>
+            <Row>
+              <Col xs="6">
+                <FormGroup>
+                  <Label htmlFor="worktype">Filtered by Jenis Pekerjaan</Label>
+                  <Input type="select" name="worktype" id="worktype" onChange={this.getFilterValue}>
+                    <option value="any">Please select</option>
+                    {this.state.tipePekerjaan && this.state.tipePekerjaan.map(data => {
+                      return <option value={`${data.id}`}>{data.description}</option>
+                    })
+                    }
+                  </Input>
+                </FormGroup>
+              </Col>
+              <Col xs="6">
+                <FormGroup>
+                  <Label htmlFor="tipePekerjaan">Filter by Tipe Pekerjaan</Label>
+                  <Input type="select" name="tipePekerjaan" id="tipePekerjaan" onChange={this.filterMonEv}>
+                    <option value="any">Please select</option>
+                    <option value="monitoring">Monitoring</option>
+                    <option value="evaluasi">Evaluasi</option>
+                  </Input>
+                </FormGroup>  
+              </Col>
+            </Row>
           </Col>
           <Col xs="6">
             <Row>

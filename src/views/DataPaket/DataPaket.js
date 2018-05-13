@@ -443,8 +443,8 @@ class DataPaket extends Component {
               <Row>
                 <Col xs="6">
                 <FormGroup>
-                  <Label htmlFor="worktype">Filter by Tipe Pekerjaan</Label>
-                  <Input type="select" name="worktype" id="worktype" onChange={this.filterMonEv}>
+                  <Label htmlFor="tipePekerjaan">Filter by Tipe Pekerjaan</Label>
+                  <Input type="select" name="tipePekerjaan" id="tipePekerjaan" onChange={this.filterMonEv}>
                     <option value="any">Please select</option>
                     <option value="monitoring">Monitoring</option>
                     <option value="evaluasi">Evaluasi</option>
@@ -453,8 +453,8 @@ class DataPaket extends Component {
                 </Col>
                 <Col xs="6">
                   <FormGroup>
-                  <Label htmlFor="worktype">Filter by Konfirmasi KPA</Label>
-                  <Input type="select" name="worktype" id="worktype" onChange={this.getAssignmentStatus}>
+                  <Label htmlFor="konfirmasiKPA">Filter by Konfirmasi KPA</Label>
+                  <Input type="select" name="konfirmasiKPA" id="konfirmasiKPA" onChange={this.getAssignmentStatus}>
                     <option value="any">Please select</option>
                     <option value="true">Lihat paket yang telah di assign ke KPA</option>
                     <option value="false">Lihat paket yang tidak di assign ke KPA</option>
