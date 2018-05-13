@@ -77,7 +77,7 @@ class DetailPaketMonitoring extends Component {
     }
     reupload() {
       this.setState({
-        fileUploaded: true
+        fileUploaded: !this.state.fileUploaded
       })
     }
     uploadFile() {

@@ -48,14 +48,14 @@ class DetailPaket extends Component {
     }
 
     componentDidUpdate() {
-      comment = this.state.commentContent;
-      console.log('comment', comment)
+        comment = this.state.commentContent;
+        console.log('comment', comment)
     }
     isPPK() {
         return this.state.userData.jabatan === 'ppk'
     }
 
-    handleDateChange(date){
+    handleDateChange(date) {
         this.setState({
             startDate: date
         });
@@ -70,20 +70,20 @@ class DetailPaket extends Component {
         };
     };
 
-    getWarnaIndikator(index){
+    getWarnaIndikator(index) {
         let warna
         if (index === 0) {
-          warna = 'card-accent-success'
+            warna = 'card-accent-success'
         } if (index === 1) {
-          warna = 'card-accent-warning'
+            warna = 'card-accent-warning'
         } if (index === 2) {
-          warna = 'card-accent-danger'
-        } 
+            warna = 'card-accent-danger'
+        }
         return warna;
     }
 
     renderSugestionCard(index) {
-        if(index === 1) {
+        if (index === 1) {
             return (
                 <Card className="text-white bg-warning" style={{ fontWeight: 'bold' }}>
                     <CardHeader>
@@ -100,7 +100,7 @@ class DetailPaket extends Component {
                 </Card>
             )
         }
-        if(index === 2) {
+        if (index === 2) {
             return (
                 <Card className="text-white bg-danger" style={{ fontWeight: 'bold' }}>
                     <CardHeader>
@@ -121,46 +121,46 @@ class DetailPaket extends Component {
         else { return '' }
     }
 
-    renderCommentSection(){
-      return(
-        <Card>
-            <CardHeader>
-            <h6 style={{fontWeight: 'bold'}}>Tanggapan pihak terkait</h6>
-            </CardHeader>
-            <CardBlock>
-                <Col md="12">
-                    <p style={{fontWeight: 'bold', color: '#216ba5', marginBottom: 0}}>Mohamad Teguh Prasetyo</p>
-                    <p style={{fontSize: 10, color: 'grey', marginBottom: 4}}>Kemarin - 09:45</p>
-                    <p>Kamu semangat dong</p>
-                </Col>
-                { comment !== '' && this.state.showNewComment &&
-                <Col md="12">
-                    <p style={{fontWeight: 'bold', color: '#216ba5', marginBottom: 0}}>Sumarmo</p>
-                    <p style={{fontSize: 10, color: 'grey', marginBottom: 4}}>Hari Ini - 14:25</p>
-                    <p>{comment}</p>
-                </Col>
-                }
-            </CardBlock>
-            <CardFooter>
-                <Col md="12">
-                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
-                        value={this.state.commentContent}
-                        onChange={this.getCommentContent}
-                        placeholder="Content..." />
-                </Col>
-                <Col md="3" style={{ float: 'right' }}>
-                    <Button color="primary" style={{ float: 'right' }} onClick={this.sendComment}>Kirim Komentar</Button>
-                </Col>
-            </CardFooter>
-        </Card> 
-      )
+    renderCommentSection() {
+        return (
+            <Card>
+                <CardHeader>
+                    <h6 style={{ fontWeight: 'bold' }}>Tanggapan pihak terkait</h6>
+                </CardHeader>
+                <CardBlock>
+                    <Col md="12">
+                        <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Mohamad Teguh Prasetyo</p>
+                        <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Kemarin - 09:45</p>
+                        <p>Kamu semangat dong</p>
+                    </Col>
+                    {comment !== '' && this.state.showNewComment &&
+                        <Col md="12">
+                            <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Sumarmo</p>
+                            <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Hari Ini - 14:25</p>
+                            <p>{comment}</p>
+                        </Col>
+                    }
+                </CardBlock>
+                <CardFooter>
+                    <Col md="12">
+                        <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
+                            value={this.state.commentContent}
+                            onChange={this.getCommentContent}
+                            placeholder="Content..." />
+                    </Col>
+                    <Col md="3" style={{ float: 'right' }}>
+                        <Button color="primary" style={{ float: 'right' }} onClick={this.sendComment}>Kirim Komentar</Button>
+                    </Col>
+                </CardFooter>
+            </Card>
+        )
     }
     getProgress(index) {
-      let number
-      if(index === 0) { number = '0%' }
-      if(index === 1) { number = '7%' }
-      if(index === 2) { number = '5%' }
-      return number;
+        let number
+        if (index === 0) { number = '0%' }
+        if (index === 1) { number = '7%' }
+        if (index === 2) { number = '5%' }
+        return number;
     }
 
     getCommentContent(event) {
@@ -168,11 +168,11 @@ class DetailPaket extends Component {
         this.setState({ commentContent: event.target.value });
     };
 
-    sendComment(){
-      this.setState({
-        showNewComment: true,
-        commentContent: ''
-      })
+    sendComment() {
+        this.setState({
+            showNewComment: true,
+            commentContent: ''
+        })
     }
     render() {
         return (
@@ -239,7 +239,7 @@ class DetailPaket extends Component {
                         return (
                             <Col xs="12" md="12">
                                 <Card className={warna} style={{ marginBottom: 10 }}> {/* will be danger if < 10% mendekati h-3 duedate, warning if < 10% h-7*/}
-                                    <CardHeader onClick={this.togglingMenu(index+1)} style={{ cursor: 'pointer' }}>
+                                    <CardHeader onClick={this.togglingMenu(index + 1)} style={{ cursor: 'pointer' }}>
                                         <h4>
                                             {index + 1}. {data.tahapan_desc}
                                             <Badge pill color={colorBadge} className="float-right">{this.getProgress(index)}</Badge>
@@ -251,7 +251,7 @@ class DetailPaket extends Component {
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
-                                                            { index === 0 &&
+                                                            {index === 0 &&
                                                                 this.props.subTahapan.filter(i => i.tahapan_id === 'persiapan').map(sub => {
                                                                     return (
                                                                         <li>
@@ -270,7 +270,7 @@ class DetailPaket extends Component {
                                                                     )
                                                                 })
                                                             }
-                                                            { index === 1 &&
+                                                            {index === 1 &&
                                                                 this.props.subTahapan.filter(i => i.tahapan_id === 'pelaksanaan').map(sub => {
                                                                     return (
                                                                         <li>
@@ -289,7 +289,7 @@ class DetailPaket extends Component {
                                                                     )
                                                                 })
                                                             }
-                                                            { index === 2 &&
+                                                            {index === 2 &&
                                                                 this.props.subTahapan.filter(i => i.tahapan_id === 'serah_terima').map(sub => {
                                                                     return (
                                                                         <li>
@@ -313,16 +313,16 @@ class DetailPaket extends Component {
                                                     <Col md="6">
                                                         <Row style={{ marginBottom: 10 }}>
                                                             <Col md="3">
-                                                            <DatePicker
-                                                                selected={this.state.startDate}
-                                                                onChange={this.handleDateChange}
-                                                                dateFormat="DD/MM/YYYY"
-                                                                isClearable={true}
-                                                                placeholderText="Click to select a date"
-                                                            />
+                                                                <DatePicker
+                                                                    selected={this.state.startDate}
+                                                                    onChange={this.handleDateChange}
+                                                                    dateFormat="DD/MM/YYYY"
+                                                                    isClearable={true}
+                                                                    placeholderText="Click to select a date"
+                                                                />
                                                             </Col>
                                                             <Col md="9">
-                                                              <Button color="primary" size="sm">Set Tanggal</Button>
+                                                                <Button color="primary" size="sm">Set Tanggal</Button>
                                                             </Col>
                                                         </Row>
                                                         {/*will be show suggestion list if warning or danger*/}
@@ -337,37 +337,68 @@ class DetailPaket extends Component {
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
-                                                            <li>
-                                                                <FormGroup row>
-                                                                    <Col md="4">
-                                                                        <Label htmlFor="file-input">Tahapan lalala</Label>
-                                                                    </Col>
-                                                                    <Col xs="12" md="8">
-                                                                        <a href="#">Link Donlod file</a>
-                                                                    </Col>
-                                                                </FormGroup>
-                                                            </li>
-                                                            <li>
-                                                                <FormGroup row>
-                                                                    <Col md="4">
-                                                                        <Label htmlFor="file-input">Tahapan lalala</Label>
-                                                                    </Col>
-                                                                    <Col xs="12" md="8">
-                                                                        <a href="#">Link Donlod file</a>
-                                                                    </Col>
-                                                                </FormGroup>
-                                                            </li>
+                                                            {index === 0 &&
+                                                                this.props.subTahapan.filter(i => i.tahapan_id === 'persiapan').map(sub => {
+                                                                    return (
+                                                                        <li>
+                                                                            <FormGroup row>
+                                                                                <Col md="6">
+                                                                                    <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
+                                                                                </Col>
+                                                                                <Col md="6">
+                                                                                    <a href="#">File {sub.tahapan_action_desc}.pdf</a>
+                                                                                </Col>
+                                                                            </FormGroup>
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
+                                                            {index === 1 &&
+                                                                this.props.subTahapan.filter(i => i.tahapan_id === 'pelaksanaan').map(sub => {
+                                                                    return (
+                                                                        <li>
+                                                                            <FormGroup row>
+                                                                                <Col md="6">
+                                                                                    <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
+                                                                                </Col>
+                                                                                <Col md="6">
+                                                                                    <a href="#">File {sub.tahapan_action_desc}.pdf</a>
+                                                                                </Col>
+                                                                            </FormGroup>
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
+                                                            {index === 2 &&
+                                                                this.props.subTahapan.filter(i => i.tahapan_id === 'serah_terima').map(sub => {
+                                                                    return (
+                                                                        <li>
+                                                                            <FormGroup row>
+                                                                                <Col md="6">
+                                                                                    <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
+                                                                                </Col>
+                                                                                <Col md="6">
+                                                                                    <a href="#">File {sub.tahapan_action_desc}.pdf</a>
+                                                                                </Col>
+                                                                            </FormGroup>
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
                                                         </ol>
                                                     </Col>
                                                     <Col md="6">
-                                                        <Col md="12" style={{ marginBottom: 10 }}>
-                                                        <DatePicker
-                                                            selected={this.state.startDate}
-                                                            onChange={this.handleDateChange}
-                                                            dateFormat="DD/MM/YYYY"
-                                                            disabled={true}
-                                                        />
-                                                        </Col>
+                                                        <Row style={{ marginBottom: 10 }}>
+                                                            <Col md="3">
+                                                                <DatePicker
+                                                                    selected={this.state.startDate}
+                                                                    onChange={this.handleDateChange}
+                                                                    dateFormat="DD/MM/YYYY"
+                                                                    disabled={true}
+                                                                    placeholderText="Click to select a date"
+                                                                />
+                                                            </Col>
+                                                        </Row>
                                                         {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
