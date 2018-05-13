@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     Row,
     Col,
-    Card, CardHeader, CardBlock,
+    Card, CardHeader, CardBody,
     Collapse,
     FormGroup,
     Button,
@@ -48,6 +48,10 @@ class DetailPaketMonitoring extends Component {
           this.getDetailPaket('pejabatf', idPaket);
         } else if(this.state.userData.jabatan === 'ppk'){
           this.getDetailPaket('ppk', idPaket)
+        } else if(this.state.userData.jabatan === 'kpa'){
+            this.getDetailPaket('kpa', idPaket)
+        } else if(this.state.userData.jabatan === 'kabag'){
+            this.getDetailPaket('kabag', idPaket)
         }
     }
 
@@ -167,9 +171,9 @@ class DetailPaketMonitoring extends Component {
                                     <td>{detailPaket.kpa_nama}</td>
                                 </tr>
                                 <tr>
-                                    <td>Petugas Pejabat Fungsional</td>
+                                    <td>{this.isPPK() ? 'Petugas Pejabat Fungsional' : 'Petugas PPK'}</td>
                                     <td>:</td>
-                                    <td>{detailPaket.pejabatf_nama ? detailPaket.pejabatf_nama : '-'}</td>
+                                    <td>{this.isPPK() ? detailPaket.pejabatf_nama : detailPaket.ppk_nama}</td>
                                 </tr>
                                 <tr>
                                     <td>Unit Eselon I</td>
@@ -192,7 +196,7 @@ class DetailPaketMonitoring extends Component {
                             <h4>Upload Laporan Pelaksanaan Paket</h4>
                             </CardHeader>
                                 {this.isPPK() &&
-                                <CardBlock className="card-body">
+                                <CardBody className="card-body">
                                     <Row>
                                         <Col md="3">
                                             {this.state.fileUploaded ? <a href="#">DokumenLaporan.pdf</a> : <Input type="file" id="file-input" name="file-input" />}
@@ -204,7 +208,7 @@ class DetailPaketMonitoring extends Component {
                                     <Row style={{ marginTop: 60, paddingLeft: 15}}>
                                         <Card>
                                             <CardHeader>History file diupload</CardHeader>
-                                            <CardBlock>
+                                            <CardBody>
                                                 <ul style={{paddingLeft: 20}}>
                                                   { this.state.fileUploaded && <li>
                                                     <p>15 Mei 2018 14:40:21 - DokumenLaporan.pdf</p>
@@ -219,13 +223,13 @@ class DetailPaketMonitoring extends Component {
                                                     <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
                                                   </li>
                                                 </ul>
-                                            </CardBlock>
+                                            </CardBody>
                                         </Card>
                                     </Row>
-                                </CardBlock>
+                                </CardBody>
                                 }
                                 {!this.isPPK() &&
-                                <CardBlock className="card-body">
+                                <CardBody className="card-body">
                                     <Row>
                                         <Col md="12">
                                             <a href="#">DokumenLaporan.pdf</a>
@@ -234,7 +238,7 @@ class DetailPaketMonitoring extends Component {
                                     <Row style={{ marginTop: 60, paddingLeft: 15}}>
                                       <Card>
                                             <CardHeader>History file diupload</CardHeader>
-                                            <CardBlock>
+                                            <CardBody>
                                                 <ul style={{paddingLeft: 20}}>
                                                   <li>
                                                     <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
@@ -246,10 +250,10 @@ class DetailPaketMonitoring extends Component {
                                                     <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
                                                   </li>
                                                 </ul>
-                                            </CardBlock>
+                                            </CardBody>
                                         </Card>
                                     </Row>
-                                </CardBlock>
+                                </CardBody>
                                 }
                         </Card>
                     </Col>
@@ -264,7 +268,7 @@ class DetailPaketMonitoring extends Component {
                   startDate={this.formatDate(detailPaket.tgl_mulai_pekerjaan, 'D MMMM YYYY')}
                   endDate={this.formatDate(detailPaket.tgl_selesai_pekerjaan, 'D MMMM YYYY')}
                   kpaName={detailPaket.kpa_nama}
-                  pejabatFname={detailPaket.pejabatf_nama}
+                  pejabatFname={this.isPPK() ? detailPaket.pejabatf_nama : detailPaket.ppk_nama}
                   unitEs1={detailPaket.unit_eselon1}
                   workType={detailPaket.jenis_pekerjaan_desc}
                   tahapanInti={detailPaket.tahapan_duedate}

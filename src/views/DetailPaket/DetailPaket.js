@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import {
     Row,
     Col,
-    Card, CardHeader, CardBlock, CardFooter,
+    Card, CardHeader, CardBody, CardFooter,
     Collapse,
+    Form,
     FormGroup,
     Button,
     Badge,
@@ -29,6 +30,7 @@ class DetailPaket extends Component {
         const sessionCookie = JSON.parse(Cookies.get('userSession'));
         this.togglingMenu = this.togglingMenu.bind(this);
         this.isPPK = this.isPPK.bind(this);
+        this.isKPA = this.isKPA.bind(this);
         this.getWarnaIndikator = this.getWarnaIndikator.bind(this);
         this.renderSugestionCard = this.renderSugestionCard.bind(this);
         this.getProgress = this.getProgress.bind(this);
@@ -36,6 +38,7 @@ class DetailPaket extends Component {
         this.renderCommentSection = this.renderCommentSection.bind(this);
         this.getCommentContent = this.getCommentContent.bind(this);
         this.sendComment = this.sendComment.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
 
         this.state = {
             collapse: 0,
@@ -54,7 +57,9 @@ class DetailPaket extends Component {
     isPPK() {
         return this.state.userData.jabatan === 'ppk'
     }
-
+    isKPA() {
+        return this.state.userData.jabatan === 'kpa'
+    }
     handleDateChange(date) {
         this.setState({
             startDate: date
@@ -89,14 +94,14 @@ class DetailPaket extends Component {
                     <CardHeader>
                         Apa yang harus anda lakukan?
                     </CardHeader>
-                    <CardBlock className="card-body">
+                    <CardBody className="card-body">
                         <ol type="i">
                             <li>Kelola tenaga kerja yang diperlukan</li>
                             <li>Lakukan rapat dengan pihak Cipta Karya Dinas Pekerjaan Umum</li>
                             <li>Percepat pengiriman barang</li>
                             <li>Rapat dengan vendor untuk membahas percepatan</li>
                         </ol>
-                    </CardBlock>
+                    </CardBody>
                 </Card>
             )
         }
@@ -106,7 +111,7 @@ class DetailPaket extends Component {
                     <CardHeader>
                         Apa yang harus anda lakukan?
                     </CardHeader>
-                    <CardBlock className="card-body">
+                    <CardBody className="card-body">
                         <ol type="i">
                             <li>Merencanakan strategi percepatan oleh Tenaga Ahli</li>
                             <li>Melibatkan konsultan untuk melakukan assesmen</li>
@@ -114,7 +119,7 @@ class DetailPaket extends Component {
                             <li>Menghitung prestasi untuk menentukan denda keterlambatan</li>
                             <li>Melibatkan pihak Kantor Pusat</li>
                         </ol>
-                    </CardBlock>
+                    </CardBody>
                 </Card>
             )
         }
@@ -127,7 +132,7 @@ class DetailPaket extends Component {
                 <CardHeader>
                     <h6 style={{ fontWeight: 'bold' }}>Tanggapan pihak terkait</h6>
                 </CardHeader>
-                <CardBlock>
+                <CardBody>
                     <Col md="12">
                         <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Mohamad Teguh Prasetyo</p>
                         <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Kemarin - 09:45</p>
@@ -135,12 +140,12 @@ class DetailPaket extends Component {
                     </Col>
                     {comment !== '' && this.state.showNewComment &&
                         <Col md="12">
-                            <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Sumarmo</p>
+                            <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>{this.isKPA()? 'Sumarmo' : 'Pejabat Fungsional 1'}</p>
                             <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Hari Ini - 14:25</p>
                             <p>{comment}</p>
                         </Col>
                     }
-                </CardBlock>
+                </CardBody>
                 <CardFooter>
                     <Col md="12">
                         <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
@@ -173,6 +178,15 @@ class DetailPaket extends Component {
             showNewComment: true,
             commentContent: ''
         })
+    }
+
+    handleUpload(event) {
+      event.preventDefault();
+    //   console.log(event.target);
+    console.log(this.fileInput);
+      console.log(
+        `Selected file - ${this.fileInput}`
+      );
     }
     render() {
         return (
@@ -214,7 +228,7 @@ class DetailPaket extends Component {
                                     <td>{this.props.kpaName}</td>
                                 </tr>
                                 <tr>
-                                    <td>Petugas Pejabat Fungsional</td>
+                                    <td>{this.isPPK() ? 'Petugas Pejabat Fungsional' : 'Petugas PPK'}</td>
                                     <td>:</td>
                                     <td>{this.props.pejabatFname}</td>
                                 </tr>
@@ -247,7 +261,7 @@ class DetailPaket extends Component {
                                     </CardHeader>
                                     <Collapse isOpen={this.state.collapse === index + 1}>
                                         {this.isPPK() &&
-                                            <CardBlock className="card-body">
+                                            <CardBody className="card-body">
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
@@ -274,17 +288,26 @@ class DetailPaket extends Component {
                                                                 this.props.subTahapan.filter(i => i.tahapan_id === 'pelaksanaan').map(sub => {
                                                                     return (
                                                                         <li>
+                                                                            <Form onSubmit={this.handleUpload}>
                                                                             <FormGroup row>
                                                                                 <Col md="4">
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Input type="file" id="file-input" name="file-input" />
+                                                                                    <Input
+                                                                                        type="file"
+                                                                                        id="file-input"
+                                                                                        name="file-input"
+                                                                                        ref={input => {
+                                                                                          this.fileInput = input;
+                                                                                        }}
+                                                                                    />
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button color="primary">Upload</Button>
+                                                                                    <Button type="submit" color="primary">Upload</Button>
                                                                                 </Col>
                                                                             </FormGroup>
+                                                                            </Form>
                                                                         </li>
                                                                     )
                                                                 })
@@ -330,10 +353,10 @@ class DetailPaket extends Component {
                                                         {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
-                                            </CardBlock>
+                                            </CardBody>
                                         }
                                         {!this.isPPK() &&
-                                            <CardBlock className="card-body">
+                                            <CardBody className="card-body">
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
@@ -402,7 +425,7 @@ class DetailPaket extends Component {
                                                         {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
-                                            </CardBlock>
+                                            </CardBody>
                                         }
                                     </Collapse>
                                 </Card>

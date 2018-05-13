@@ -4,7 +4,7 @@ import qs from 'qs';
 import Cookies from 'js-cookie';
 
 import { Redirect } from 'react-router-dom';
-import { Container, Row, Col, CardGroup, Card, CardBlock, Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 let username;
 let password;
@@ -73,7 +73,7 @@ class LoginComponent extends Component {
             <Col md="5">
               <CardGroup className="mb-0">
                 <Card className="p-4">
-                  <CardBlock className="card-body">
+                  <CardBody className="card-body">
                     <h1>Login</h1>
                     <p className="text-muted">Sistem Monev Kemenkeu</p>
                     <InputGroup className="mb-3">
@@ -93,7 +93,7 @@ class LoginComponent extends Component {
                         <Button color="link" className="px-0">Forgot password?</Button>
                       </Col>
                     </Row>
-                  </CardBlock>
+                  </CardBody>
                 </Card>
               </CardGroup>
             </Col>
