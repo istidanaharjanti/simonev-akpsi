@@ -115,7 +115,7 @@ class DetailPaketMonitoring extends Component {
 
     renderSuccessModal() {
       return(
-        `<Modal isOpen={this.state.successUploadModal} toggle={this.toggleAccept} className='modal-success'>
+        <Modal isOpen={this.state.successUploadModal} toggle={this.toggleAccept} className='modal-success'>
             <ModalHeader toggle={this.toggleAccept}>Upload Berhasil!</ModalHeader>
             <ModalBody>
               Laporan Berhasil Diupload
@@ -123,7 +123,7 @@ class DetailPaketMonitoring extends Component {
             <ModalFooter>
               <Button color="success" onClick={this.toggleAccept}>Yes!</Button>{' '}
             </ModalFooter>
-        </Modal>`
+        </Modal>
       )
     }
 

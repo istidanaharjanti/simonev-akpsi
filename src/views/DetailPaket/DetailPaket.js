@@ -90,7 +90,7 @@ class DetailPaket extends Component {
     renderSugestionCard(index) {
         if (index === 1) {
             return (
-                `<Card className="text-white bg-warning" style={{ fontWeight: 'bold' }}>
+                <Card className="text-white bg-warning" style={{ fontWeight: 'bold' }}>
                     <CardHeader>
                         Apa yang harus anda lakukan?
                     </CardHeader>
@@ -102,12 +102,12 @@ class DetailPaket extends Component {
                             <li>Rapat dengan vendor untuk membahas percepatan</li>
                         </ol>
                     </CardBlock>
-                </Card>`
+                </Card>
             )
         }
         if (index === 2) {
             return (
-                `<Card className="text-white bg-danger" style={{ fontWeight: 'bold' }}>
+                <Card className="text-white bg-danger" style={{ fontWeight: 'bold' }}>
                     <CardHeader>
                         Apa yang harus anda lakukan?
                     </CardHeader>
@@ -120,7 +120,7 @@ class DetailPaket extends Component {
                             <li>Melibatkan pihak Kantor Pusat</li>
                         </ol>
                     </CardBlock>
-                </Card>`
+                </Card>
             )
         }
         else { return '' }
@@ -128,7 +128,7 @@ class DetailPaket extends Component {
 
     renderCommentSection() {
         return (
-            `<Card>
+            <Card>
                 <CardHeader>
                     <h6 style={{ fontWeight: 'bold' }}>Tanggapan pihak terkait</h6>
                 </CardHeader>
@@ -157,7 +157,7 @@ class DetailPaket extends Component {
                         <Button color="primary" style={{ float: 'right' }} onClick={this.sendComment}>Kirim Komentar</Button>
                     </Col>
                 </CardFooter>
-            </Card>`
+            </Card>
         )
     }
     getProgress(index) {
