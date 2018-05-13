@@ -1,5 +1,3 @@
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
 import React, { Component } from "react";
 import {
     Row,
@@ -20,7 +18,6 @@ import {
 import axios from 'axios';
 import moment from 'moment';
 import Cookies from 'js-cookie';
-import { SingleDatePicker } from 'react-dates';
 
 import DetailPaket from '../DetailPaket';
 
@@ -34,12 +31,14 @@ class DetailPaketMonitoring extends Component {
         this.getDetailPaket = this.getDetailPaket.bind(this);
         this.formatDate = this.formatDate.bind(this);
         this.convertCurrency = this.convertCurrency.bind(this);
+        this.toggleAccept = this.toggleAccept.bind(this);
         
         this.state = {
             collapse: 0,
             userData: sessionCookie.data ? sessionCookie.data : {},
             detailPaket: {},
-            fileUploaded: false
+            fileUploaded: false,
+            successUploadModal: false
         }
     }
     
@@ -78,12 +77,18 @@ class DetailPaketMonitoring extends Component {
     }
     reupload() {
       this.setState({
-        fileUploaded: !this.state.fileUploaded
+        fileUploaded: true
       })
     }
     uploadFile() {
       this.setState({
-        fileUploaded: true
+        fileUploaded: true,
+        successUploadModal: true
+      })
+    }
+    toggleAccept() {
+      this.setState({
+        successUploadModal: false
       })
     }
     isEvaluasi(){
@@ -104,10 +109,25 @@ class DetailPaketMonitoring extends Component {
       return convertedNum;
     }
 
+    renderSuccessModal() {
+      return(
+        <Modal isOpen={this.state.successUploadModal} toggle={this.toggleAccept} className='modal-success'>
+            <ModalHeader toggle={this.toggleAccept}>Upload Berhasil!</ModalHeader>
+            <ModalBody>
+              Laporan Berhasil Diupload
+            </ModalBody>
+            <ModalFooter>
+              <Button color="success" onClick={this.toggleAccept}>Yes!</Button>{' '}
+            </ModalFooter>
+        </Modal>
+      )
+    }
+
     render() {
         const { detailPaket } = this.state;
         return (
             <div className="animated fadeIn">
+              {this.renderSuccessModal()}
               {!this.isEvaluasi() && 
               <div>
                 <Row>
@@ -185,9 +205,20 @@ class DetailPaketMonitoring extends Component {
                                         <Card>
                                             <CardHeader>History file diupload</CardHeader>
                                             <CardBlock>
-                                                <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
-                                                <p>9 Mei 2018 13:32:10 - DokumenLaporan.pdf</p>
-                                                <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
+                                                <ul style={{paddingLeft: 20}}>
+                                                  { this.state.fileUploaded && <li>
+                                                    <p>15 Mei 2018 14:40:21 - DokumenLaporan.pdf</p>
+                                                  </li>}
+                                                  <li>
+                                                    <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>9 Mei 2018 13:32:10 - DokumenLaporan.pdf</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
+                                                  </li>
+                                                </ul>
                                             </CardBlock>
                                         </Card>
                                     </Row>
@@ -204,9 +235,17 @@ class DetailPaketMonitoring extends Component {
                                       <Card>
                                             <CardHeader>History file diupload</CardHeader>
                                             <CardBlock>
-                                                <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
-                                                <p>9 Mei 2018 13:32:10 - DokumenLaporan.pdf</p>
-                                                <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
+                                                <ul style={{paddingLeft: 20}}>
+                                                  <li>
+                                                    <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>9 Mei 2018 13:32:10 - DokumenLaporan.pdf</p>
+                                                  </li>
+                                                  <li>
+                                                    <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
+                                                  </li>
+                                                </ul>
                                             </CardBlock>
                                         </Card>
                                     </Row>

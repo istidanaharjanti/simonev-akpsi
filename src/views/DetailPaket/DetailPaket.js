@@ -1,10 +1,8 @@
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
 import React, { Component } from "react";
 import {
     Row,
     Col,
-    Card, CardHeader, CardBlock,
+    Card, CardHeader, CardBlock, CardFooter,
     Collapse,
     FormGroup,
     Button,
@@ -18,9 +16,13 @@ import {
     Progress
 } from 'reactstrap';
 import axios from 'axios';
+import moment from 'moment';
 import Cookies from 'js-cookie';
-import { SingleDatePicker } from 'react-dates';
+import DatePicker from 'react-datepicker';
 
+import 'react-datepicker/dist/react-datepicker.css';
+
+let comment = ''
 class DetailPaket extends Component {
     constructor(props) {
         super(props);
@@ -30,17 +32,33 @@ class DetailPaket extends Component {
         this.getWarnaIndikator = this.getWarnaIndikator.bind(this);
         this.renderSugestionCard = this.renderSugestionCard.bind(this);
         this.getProgress = this.getProgress.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.renderCommentSection = this.renderCommentSection.bind(this);
+        this.getCommentContent = this.getCommentContent.bind(this);
+        this.sendComment = this.sendComment.bind(this);
 
         this.state = {
             collapse: 0,
             userData: sessionCookie.data ? sessionCookie.data : {},
             focused: false,
-            date: null
+            startDate: moment(),
+            commentContent: '',
+            showNewComment: false
         }
     }
 
+    componentDidUpdate() {
+      comment = this.state.commentContent;
+      console.log('comment', comment)
+    }
     isPPK() {
         return this.state.userData.jabatan === 'ppk'
+    }
+
+    handleDateChange(date){
+        this.setState({
+            startDate: date
+        });
     }
 
     togglingMenu(selectedState) {
@@ -103,12 +121,58 @@ class DetailPaket extends Component {
         else { return '' }
     }
 
+    renderCommentSection(){
+      return(
+        <Card>
+            <CardHeader>
+            <h6 style={{fontWeight: 'bold'}}>Tanggapan pihak terkait</h6>
+            </CardHeader>
+            <CardBlock>
+                <Col md="12">
+                    <p style={{fontWeight: 'bold', color: '#216ba5', marginBottom: 0}}>Mohamad Teguh Prasetyo</p>
+                    <p style={{fontSize: 10, color: 'grey', marginBottom: 4}}>Kemarin - 09:45</p>
+                    <p>Kamu semangat dong</p>
+                </Col>
+                { comment !== '' && this.state.showNewComment &&
+                <Col md="12">
+                    <p style={{fontWeight: 'bold', color: '#216ba5', marginBottom: 0}}>Sumarmo</p>
+                    <p style={{fontSize: 10, color: 'grey', marginBottom: 4}}>Hari Ini - 14:25</p>
+                    <p>{comment}</p>
+                </Col>
+                }
+            </CardBlock>
+            <CardFooter>
+                <Col md="12">
+                    <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
+                        value={this.state.commentContent}
+                        onChange={this.getCommentContent}
+                        placeholder="Content..." />
+                </Col>
+                <Col md="3" style={{ float: 'right' }}>
+                    <Button color="primary" style={{ float: 'right' }} onClick={this.sendComment}>Kirim Komentar</Button>
+                </Col>
+            </CardFooter>
+        </Card> 
+      )
+    }
     getProgress(index) {
       let number
       if(index === 0) { number = '0%' }
       if(index === 1) { number = '7%' }
       if(index === 2) { number = '5%' }
       return number;
+    }
+
+    getCommentContent(event) {
+        event.preventDefault();
+        this.setState({ commentContent: event.target.value });
+    };
+
+    sendComment(){
+      this.setState({
+        showNewComment: true,
+        commentContent: ''
+      })
     }
     render() {
         return (
@@ -247,30 +311,23 @@ class DetailPaket extends Component {
                                                         </ol>
                                                     </Col>
                                                     <Col md="6">
-                                                        <Row style={{ marginBottom: 10, paddingLeft: 15 }}>
+                                                        <Row style={{ marginBottom: 10 }}>
                                                             <Col md="3">
-                                                                <SingleDatePicker
-                                                                    date={this.state.date} // momentPropTypes.momentObj or null
-                                                                    onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
-                                                                    focused={this.state.focused} // PropTypes.bool
-                                                                    onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-                                                                />
+                                                            <DatePicker
+                                                                selected={this.state.startDate}
+                                                                onChange={this.handleDateChange}
+                                                                dateFormat="DD/MM/YYYY"
+                                                                isClearable={true}
+                                                                placeholderText="Click to select a date"
+                                                            />
                                                             </Col>
                                                             <Col md="9">
-                                                              <Button color="primary" style={{height: 52}}>Set Tanggal Deadline</Button>
+                                                              <Button color="primary" size="sm">Set Tanggal</Button>
                                                             </Col>
                                                         </Row>
                                                         {/*will be show suggestion list if warning or danger*/}
-                                                        <Col md="12">
-                                                            {this.renderSugestionCard(index)}
-                                                        </Col>
-                                                        <Col md="12">
-                                                            <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
-                                                                placeholder="Content..." />
-                                                        </Col>
-                                                        <Col md="3" style={{ float: 'right' }}>
-                                                            <Button color="primary" style={{ float: 'right' }}>Kirim Komentar</Button>
-                                                        </Col>
+                                                        {this.renderSugestionCard(index)}
+                                                        {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
                                             </CardBlock>
@@ -304,21 +361,14 @@ class DetailPaket extends Component {
                                                     </Col>
                                                     <Col md="6">
                                                         <Col md="12" style={{ marginBottom: 10 }}>
-                                                            <SingleDatePicker
-                                                                disabled
-                                                                date={this.state.date} // momentPropTypes.momentObj or null
-                                                                onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
-                                                                focused={this.state.focused} // PropTypes.bool
-                                                                onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-                                                            />
+                                                        <DatePicker
+                                                            selected={this.state.startDate}
+                                                            onChange={this.handleDateChange}
+                                                            dateFormat="DD/MM/YYYY"
+                                                            disabled={true}
+                                                        />
                                                         </Col>
-                                                        <Col md="12">
-                                                            <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
-                                                                placeholder="Content..." />
-                                                        </Col>
-                                                        <Col md="3" style={{ float: 'right' }}>
-                                                            <Button color="primary" style={{ float: 'right' }}>Kirim Komentar</Button>
-                                                        </Col>
+                                                        {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
                                             </CardBlock>
