@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     Row,
     Col,
-    Card, CardHeader, CardBody, CardFooter,
+    Card, CardHeader, CardBlock, CardFooter,
     Collapse,
     Form,
     FormGroup,
@@ -90,28 +90,28 @@ class DetailPaket extends Component {
     renderSugestionCard(index) {
         if (index === 1) {
             return (
-                <Card className="text-white bg-warning" style={{ fontWeight: 'bold' }}>
+                `<Card className="text-white bg-warning" style={{ fontWeight: 'bold' }}>
                     <CardHeader>
                         Apa yang harus anda lakukan?
                     </CardHeader>
-                    <CardBody className="card-body">
+                    <CardBlock className="card-body">
                         <ol type="i">
                             <li>Kelola tenaga kerja yang diperlukan</li>
                             <li>Lakukan rapat dengan pihak Cipta Karya Dinas Pekerjaan Umum</li>
                             <li>Percepat pengiriman barang</li>
                             <li>Rapat dengan vendor untuk membahas percepatan</li>
                         </ol>
-                    </CardBody>
-                </Card>
+                    </CardBlock>
+                </Card>`
             )
         }
         if (index === 2) {
             return (
-                <Card className="text-white bg-danger" style={{ fontWeight: 'bold' }}>
+                `<Card className="text-white bg-danger" style={{ fontWeight: 'bold' }}>
                     <CardHeader>
                         Apa yang harus anda lakukan?
                     </CardHeader>
-                    <CardBody className="card-body">
+                    <CardBlock className="card-body">
                         <ol type="i">
                             <li>Merencanakan strategi percepatan oleh Tenaga Ahli</li>
                             <li>Melibatkan konsultan untuk melakukan assesmen</li>
@@ -119,8 +119,8 @@ class DetailPaket extends Component {
                             <li>Menghitung prestasi untuk menentukan denda keterlambatan</li>
                             <li>Melibatkan pihak Kantor Pusat</li>
                         </ol>
-                    </CardBody>
-                </Card>
+                    </CardBlock>
+                </Card>`
             )
         }
         else { return '' }
@@ -128,11 +128,11 @@ class DetailPaket extends Component {
 
     renderCommentSection() {
         return (
-            <Card>
+            `<Card>
                 <CardHeader>
                     <h6 style={{ fontWeight: 'bold' }}>Tanggapan pihak terkait</h6>
                 </CardHeader>
-                <CardBody>
+                <CardBlock>
                     <Col md="12">
                         <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Mohamad Teguh Prasetyo</p>
                         <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Kemarin - 09:45</p>
@@ -145,7 +145,7 @@ class DetailPaket extends Component {
                             <p>{comment}</p>
                         </Col>
                     }
-                </CardBody>
+                </CardBlock>
                 <CardFooter>
                     <Col md="12">
                         <Input type="textarea" name="textarea-input" id="textarea-input" rows="5"
@@ -157,7 +157,7 @@ class DetailPaket extends Component {
                         <Button color="primary" style={{ float: 'right' }} onClick={this.sendComment}>Kirim Komentar</Button>
                     </Col>
                 </CardFooter>
-            </Card>
+            </Card>`
         )
     }
     getProgress(index) {
@@ -261,7 +261,7 @@ class DetailPaket extends Component {
                                     </CardHeader>
                                     <Collapse isOpen={this.state.collapse === index + 1}>
                                         {this.isPPK() &&
-                                            <CardBody className="card-body">
+                                            <CardBlock className="card-body">
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
@@ -353,10 +353,10 @@ class DetailPaket extends Component {
                                                         {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
-                                            </CardBody>
+                                            </CardBlock>
                                         }
                                         {!this.isPPK() &&
-                                            <CardBody className="card-body">
+                                            <CardBlock className="card-body">
                                                 <Row>
                                                     <Col md="6">
                                                         <ol type="a">
@@ -425,7 +425,7 @@ class DetailPaket extends Component {
                                                         {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
-                                            </CardBody>
+                                            </CardBlock>
                                         }
                                     </Collapse>
                                 </Card>

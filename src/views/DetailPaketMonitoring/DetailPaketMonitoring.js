@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     Row,
     Col,
-    Card, CardHeader, CardBody,
+    Card, CardHeader, CardBlock,
     Collapse,
     FormGroup,
     Button,
@@ -115,7 +115,7 @@ class DetailPaketMonitoring extends Component {
 
     renderSuccessModal() {
       return(
-        <Modal isOpen={this.state.successUploadModal} toggle={this.toggleAccept} className='modal-success'>
+        `<Modal isOpen={this.state.successUploadModal} toggle={this.toggleAccept} className='modal-success'>
             <ModalHeader toggle={this.toggleAccept}>Upload Berhasil!</ModalHeader>
             <ModalBody>
               Laporan Berhasil Diupload
@@ -123,7 +123,7 @@ class DetailPaketMonitoring extends Component {
             <ModalFooter>
               <Button color="success" onClick={this.toggleAccept}>Yes!</Button>{' '}
             </ModalFooter>
-        </Modal>
+        </Modal>`
       )
     }
 
@@ -196,7 +196,7 @@ class DetailPaketMonitoring extends Component {
                             <h4>Upload Laporan Pelaksanaan Paket</h4>
                             </CardHeader>
                                 {this.isPPK() &&
-                                <CardBody className="card-body">
+                                <CardBlock className="card-body">
                                     <Row>
                                         <Col md="3">
                                             {this.state.fileUploaded ? <a href="#">DokumenLaporan.pdf</a> : <Input type="file" id="file-input" name="file-input" />}
@@ -208,7 +208,7 @@ class DetailPaketMonitoring extends Component {
                                     <Row style={{ marginTop: 60, paddingLeft: 15}}>
                                         <Card>
                                             <CardHeader>History file diupload</CardHeader>
-                                            <CardBody>
+                                            <CardBlock>
                                                 <ul style={{paddingLeft: 20}}>
                                                   { this.state.fileUploaded && <li>
                                                     <p>15 Mei 2018 14:40:21 - DokumenLaporan.pdf</p>
@@ -223,13 +223,13 @@ class DetailPaketMonitoring extends Component {
                                                     <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
                                                   </li>
                                                 </ul>
-                                            </CardBody>
+                                            </CardBlock>
                                         </Card>
                                     </Row>
-                                </CardBody>
+                                </CardBlock>
                                 }
                                 {!this.isPPK() &&
-                                <CardBody className="card-body">
+                                <CardBlock className="card-body">
                                     <Row>
                                         <Col md="12">
                                             <a href="#">DokumenLaporan.pdf</a>
@@ -238,7 +238,7 @@ class DetailPaketMonitoring extends Component {
                                     <Row style={{ marginTop: 60, paddingLeft: 15}}>
                                       <Card>
                                             <CardHeader>History file diupload</CardHeader>
-                                            <CardBody>
+                                            <CardBlock>
                                                 <ul style={{paddingLeft: 20}}>
                                                   <li>
                                                     <p>11 Mei 2018 08:20:21 - DokumenLaporan.pdf</p>
@@ -250,10 +250,10 @@ class DetailPaketMonitoring extends Component {
                                                     <p>5 Mei 2018 10:04:12 - DokumenLaporan.pdf</p>
                                                   </li>
                                                 </ul>
-                                            </CardBody>
+                                            </CardBlock>
                                         </Card>
                                     </Row>
-                                </CardBody>
+                                </CardBlock>
                                 }
                         </Card>
                     </Col>
