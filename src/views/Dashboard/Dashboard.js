@@ -540,8 +540,8 @@ class Dashboard extends Component {
               <CardBlock className="card-body">
                 <Row>
                   <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
+                    <CardTitle className="mb-0">Penyerapan Anggaran</CardTitle>
+                    <div className="small text-muted">Tahun 2018</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
@@ -567,28 +567,28 @@ class Dashboard extends Component {
               <CardFooter>
                 <ul>
                   <li>
-                    <div className="text-muted">Visits</div>
-                    <strong>29.703 Users (40%)</strong>
+                    <div className="text-muted">Sekjen</div>
+                    <strong>Rp. 29.703 Miliar (40%)</strong>
                     <Progress className="progress-xs mt-2" color="success" value="40"/>
                   </li>
                   <li className="d-none d-md-table-cell">
-                    <div className="text-muted">Unique</div>
-                    <strong>24.093 Users (20%)</strong>
+                    <div className="text-muted">DJP</div>
+                    <strong>Rp. 24.093 Miliar (20%)</strong>
                     <Progress className="progress-xs mt-2" color="info" value="20"/>
                   </li>
                   <li>
-                    <div className="text-muted">Pageviews</div>
-                    <strong>78.706 Views (60%)</strong>
+                    <div className="text-muted">Beacukai</div>
+                    <strong>Rp. 78.706 Miliar (60%)</strong>
                     <Progress className="progress-xs mt-2" color="warning" value="60"/>
                   </li>
                   <li className="d-none d-md-table-cell">
-                    <div className="text-muted">New Users</div>
-                    <strong>22.123 Users (80%)</strong>
+                    <div className="text-muted">DJKN</div>
+                    <strong>Rp. 22.123 Miliar (80%)</strong>
                     <Progress className="progress-xs mt-2" color="danger" value="80"/>
                   </li>
                   <li className="d-none d-md-table-cell">
-                    <div className="text-muted">Bounce Rate</div>
-                    <strong>Average 40.15%</strong>
+                    <div className="text-muted">BKF</div>
+                    <strong>Rp. 40.150 Miliar (40%)</strong>
                     <Progress className="progress-xs mt-2" color="primary" value="40"/>
                   </li>
                 </ul>
@@ -609,9 +609,9 @@ class Dashboard extends Component {
                     <Row>
                       <Col sm="6">
                         <div className="callout callout-info">
-                          <small className="text-muted">Project Baru</small>
+                          <small className="text-muted">Tepat Waktu</small>
                           <br/>
-                          <strong className="h4">9,123</strong>
+                          <strong className="h4">300</strong>
                           <div className="chart-wrapper">
                             <Line data={makeSparkLineData(0, brandPrimary)} options={sparklineChartOpts} width={100} height={30}/>
                           </div>
@@ -619,9 +619,9 @@ class Dashboard extends Component {
                       </Col>
                       <Col sm="6">
                         <div className="callout callout-danger">
-                          <small className="text-muted">Project Berjalan</small>
+                          <small className="text-muted">Telat</small>
                           <br/>
-                          <strong className="h4">22,643</strong>
+                          <strong className="h4">100</strong>
                           <div className="chart-wrapper">
                             <Line data={makeSparkLineData(1, brandDanger)} options={sparklineChartOpts} width={100} height={30}/>
                           </div>
@@ -632,7 +632,7 @@ class Dashboard extends Component {
                     <ul className="horizontal-bars">
                       <li>
                         <div className="title">
-                          Monday
+                          Sekjen
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="34"/>
@@ -641,7 +641,7 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <div className="title">
-                          Tuesday
+                          DJP
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="56"/>
@@ -650,7 +650,7 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <div className="title">
-                          Wednesday
+                          DJBC
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="12"/>
@@ -659,7 +659,7 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <div className="title">
-                          Thursday
+                          DJKN
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="43"/>
@@ -668,7 +668,7 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <div className="title">
-                          Friday
+                          DJPB
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="22"/>
@@ -677,7 +677,7 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <div className="title">
-                          Saturday
+                          BKF
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="53"/>
@@ -686,7 +686,7 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <div className="title">
-                          Sunday
+                          DJPPR
                         </div>
                         <div className="bars">
                           <Progress className="progress-xs" color="info" value="9"/>
@@ -695,31 +695,41 @@ class Dashboard extends Component {
                       </li>
                       <li className="legend">
                         <Badge pill color="info"></Badge>
-                        <small>Project Baru</small>
+                        <small>Tepat Waktu</small>
                         &nbsp; <Badge pill color="danger"></Badge>
-                        <small>Project Berjalan</small>
+                        <small>Telat</small>
                       </li>
                     </ul>
                   </Col>
                   <Col xs="12" md="6" xl="6">
                     <Row>
-                      <Col sm="6">
+                    <Col sm="4">
                         <div className="callout callout-warning">
-                          <small className="text-muted">Pejabat Fungsional</small>
-                          <br/>
-                          <strong className="h4">78,623</strong>
-                          <div className="chart-wrapper">
-                            <Line data={makeSparkLineData(2, brandWarning)} options={sparklineChartOpts} width={100} height={30}/>
-                          </div>
-                        </div>
-                      </Col>
-                      <Col sm="6">
-                        <div className="callout callout-success">
-                          <small className="text-muted">Project Selesai</small>
+                          <small className="text-muted">Penghematan</small>
                           <br/>
                           <strong className="h4">49,123</strong>
                           <div className="chart-wrapper">
-                            <Line data={makeSparkLineData(3, brandSuccess)} options={sparklineChartOpts} width={100} height={30}/>
+                            <Line data={makeSparkLineData(3, brandWarning)} options={sparklineChartOpts} width={100} height={30}/>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col sm="4">
+                        <div className="callout callout-warning">
+                          <small className="text-muted">Pagu</small>
+                          <br/>
+                          <strong className="h4">49,123</strong>
+                          <div className="chart-wrapper">
+                            <Line data={makeSparkLineData(3, brandWarning)} options={sparklineChartOpts} width={100} height={30}/>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col sm="4">
+                        <div className="callout callout-warning">
+                          <small className="text-muted">Nilai Kontrak</small>
+                          <br/>
+                          <strong className="h4">49,123</strong>
+                          <div className="chart-wrapper">
+                            <Line data={makeSparkLineData(3, brandWarning)} options={sparklineChartOpts} width={100} height={30}/>
                           </div>
                         </div>
                       </Col>
@@ -728,7 +738,7 @@ class Dashboard extends Component {
                     <ul className="horizontal-bars type-2">
                       <li>
                         <i className="icon-user"></i>
-                        <span className="title">Male</span>
+                        <span className="title">Sekjen</span>
                         <span className="value">43%</span>
                         <div className="bars">
                           <Progress className="progress-xs" color="warning" value="43"/>
@@ -736,50 +746,25 @@ class Dashboard extends Component {
                       </li>
                       <li>
                         <i className="icon-user-female"></i>
-                        <span className="title">Female</span>
+                        <span className="title">DJP</span>
                         <span className="value">37%</span>
                         <div className="bars">
                           <Progress className="progress-xs" color="warning" value="37"/>
                         </div>
                       </li>
                       <li className="divider"></li>
-                      <li>
-                        <i className="icon-globe"></i>
-                        <span className="title">Organic Search</span>
-                        <span className="value">191,235 <span className="text-muted small">(56%)</span></span>
-                        <div className="bars">
-                          <Progress className="progress-xs" color="success" value="56"/>
-                        </div>
-                      </li>
-                      <li>
-                        <i className="icon-social-facebook"></i>
-                        <span className="title">Facebook</span>
-                        <span className="value">51,223 <span className="text-muted small">(15%)</span></span>
-                        <div className="bars">
-                          <Progress className="progress-xs" color="success" value="15"/>
-                        </div>
-                      </li>
-                      <li>
-                        <i className="icon-social-twitter"></i>
-                        <span className="title">Twitter</span>
-                        <span className="value">37,564 <span className="text-muted small">(11%)</span></span>
-                        <div className="bars">
-                          <Progress className="progress-xs" color="success" value="11"/>
-                        </div>
-                      </li>
-                      <li>
-                        <i className="icon-social-linkedin"></i>
-                        <span className="title">LinkedIn</span>
-                        <span className="value">27,319 <span className="text-muted small">(8%)</span></span>
-                        <div className="bars">
-                          <Progress className="progress-xs" color="success" value="8"/>
-                        </div>
-                      </li>
-                      <li className="divider text-center">
-                        <Button color="link" size="sm" className="text-muted" data-toggle="tooltip" data-placement="top"
-                                title="" data-original-title="show more"><i className="icon-options"></i></Button>
-                      </li>
                     </ul>
+                    <h3>Berita Terkini</h3>
+                    <Card className="text-white bg-success">
+                      <CardBlock className="card-body">
+                        Paket Pengadaan Jasa Tenaga Kerja Layanan Kebersihan (Cleaning Service) pada KPTIK-BMN Surabaya TA 2018 telah <b>selesai</b> realisasi Tahap 2 pada Satuan Kerja DJP Jawa Barat
+                      </CardBlock>
+                    </Card>
+                    <Card className="text-white bg-danger">
+                      <CardBlock className="card-body">
+                        Pengadaan Jasa Konsultasi Perencanaan Renovasi Lantai, TPT, dan Tampak Depan Gedung Kantor, mengalami <b>keterlambatan</b> realisasi Tahap I pada satuan kerja DJPB Sulawesi Selatan.
+                      </CardBlock>
+                    </Card>
                   </Col>
                 </Row>
               </CardBlock>

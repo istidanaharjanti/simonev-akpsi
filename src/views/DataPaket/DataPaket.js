@@ -63,7 +63,7 @@ class DataPaket extends Component {
     ];
     const renderSelectPejabatF = function(id, pjNip, pjName) {
      return `
-      <select name="pejabatF" id="pejabatFn-${id}" class="form-control select-pejabat-fn">
+      <select name="pejabatF" id="pejabatFn-${id}" class="form-control select-pejabat-fn" value="Pejabat Fungsional 1">
        <option value="${pjNip}">${pjName}</option>
        <option value="011235813">Pejabat Fungsional 3</option>
        <option value="123456789">Pejabat Fungsional 1</option>
@@ -492,14 +492,14 @@ class DataPaket extends Component {
         {this.isKabag() && !this.pejabatLocked() &&
           <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
             <Col xs="12">
-              <Button type="submit" size="lg" color="primary" onClick={this.showSendToKpaModal}><i className="fa fa-dot-circle-o"></i>
+              <Button type="submit" size="lg" color="primary" onClick={this.dataLocked() ? this.lockPejabatFungsional : this.lockTipePekerjaan}><i className="fa fa-dot-circle-o"></i>
                 { 
                   this.dataLocked() ? 'Simpan Pejabat Fungsional' : 'Kunci dan Setujui Tipe Pekerjaan'
                 }
               </Button>
               <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
             </Col>
-            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
+            {/* <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
               <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
               <ModalBody>
                 Anda yakin ingin mengunci tipe pekerjaan? Hal ini tidak dapat diubah kembali setelah anda menyetujui.
@@ -508,12 +508,12 @@ class DataPaket extends Component {
                 <Button color="primary" onClick={this.dataLocked() ? this.lockPejabatFungsional : this.lockTipePekerjaan}>Tentu</Button>{' '}
                 <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
               </ModalFooter>
-            </Modal>
+            </Modal> */}
         </Row> }
         {this.isKabiro() &&
           <div>
-            {this.state.rupStatus && this.state.dataSet && this.state.dataSet.length > 0 ? <Button size="lg" color="warning" disabled style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Monev 2018 Telah Dimulai!</Button> : <Button size="lg" color="primary" onClick={this.toggleAccept} style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Mulai Monev 2018!</Button>}
-            <Modal isOpen={this.state.confirmModal} toggle={this.toggleAccept}>
+            {this.state.rupStatus && this.state.dataSet && this.state.dataSet.length > 0 ? <Button size="lg" color="warning" disabled style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Monev 2018 Telah Dimulai!</Button> : <Button size="lg" color="primary" onClick={this.startRUP} style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Mulai Monev 2018!</Button>}
+            {/* <Modal isOpen={this.state.confirmModal} toggle={this.toggleAccept}>
               <ModalHeader toggle={this.toggleAccept}>Konfirmasi Kegiatan</ModalHeader>
               <ModalBody>
                 Anda yakin ingin memulai kegiatan monitoring dan evaluasi tahun 2018?<br />
@@ -532,7 +532,7 @@ class DataPaket extends Component {
               <ModalFooter>
                 <Button color="success" onClick={this.toggleSuccess}>OK</Button>
               </ModalFooter>
-            </Modal>
+            </Modal> */}
           </div>
         }
       </div>

@@ -439,6 +439,7 @@ class DetailPaket extends Component {
                                                     <Col md="6">
                                                         <Row style={{ marginBottom: 10 }}>
                                                             <Col md="3">
+                                                                <label>Tanggal Selesai</label>
                                                                 <DatePicker
                                                                     selected={this.state.startDate}
                                                                     onChange={this.handleDateChange}
@@ -448,6 +449,7 @@ class DetailPaket extends Component {
                                                                 />
                                                             </Col>
                                                         </Row>
+                                                        {this.renderSugestionCard(index)}
                                                         {this.renderCommentSection()}
                                                     </Col>
                                                 </Row>
