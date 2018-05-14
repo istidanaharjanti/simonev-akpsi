@@ -61,13 +61,19 @@ class DataPaket extends Component {
           "jabatan": "pejabatf"
       }
     ];
-    const renderSelectPejabatF = function(id, pjNip, pjName) {
+    const getNumberPJ = function (min, max) {
+      const number = Math.floor(Math.random() * (max - min) + min);
+      return number;
+    }
+    const renderSelectPejabatF = function(id, pjNip, pjName, type) {
+     const randNum = getNumberPJ(1,3);
+     const disabled = type === "monitoring" ? 'disabled' : ''
      return `
-      <select name="pejabatF" id="pejabatFn-${id}" class="form-control select-pejabat-fn" value="Pejabat Fungsional 1">
-       <option value="${pjNip}">${pjName}</option>
-       <option value="011235813">Pejabat Fungsional 3</option>
+      <select name="pejabatF" id="pejabatFn-${id}" class="form-control select-pejabat-fn" ${disabled}>
+       <option value="${pjNip}">${pjName === '' && type === 'evaluasi' ? `Pejabat Fungsional ${randNum}` : pjName}</option>
        <option value="123456789">Pejabat Fungsional 1</option>
        <option value="987654321">Pejabat Fungsional 2</option>
+       <option value="011235813">Pejabat Fungsional 3</option>
      </select>`
     }
     let url
@@ -109,7 +115,7 @@ class DataPaket extends Component {
           return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox" },
         { "sTitle": "Assign Pejabat Fungsional", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
-          return renderSelectPejabatF(data, full.pejabatf_nip, full.pejabatf_nama)
+          return renderSelectPejabatF(data, full.pejabatf_nip, full.pejabatf_nama, full.tipe_pekerjaan.tipe_pekerjaan)
         }, "bSortable": false, "sClass": "dt-body-center" },
         { "sTitle": "Detail", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
           return `<a href="/#/detail-paket-${data}" target="_blank" style="cursor: pointer"><i class="detail-clicked fa fa-eye fa-lg"></i></a>`
@@ -486,7 +492,7 @@ class DataPaket extends Component {
           </Row>
         }
         {typeof this.state.dt !== 'undefined' &&
-          <DataTbl data={this.state.dt} visibility={this.isKabag() && !this.dataLocked()}>
+          <DataTbl data={this.state.dt} visibility={this.isKabag() && !this.dataLocked()} detailView={!!this.dataLocked()}>
           </DataTbl>
         }
         {this.isKabag() && !this.pejabatLocked() &&

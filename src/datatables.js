@@ -17,6 +17,7 @@ export class DataTbl extends Component {
       showPaketDetail: false
     }
   }
+
   componentDidMount() {
     this.$el = $(this.el);
     this.setState({ table: this.$el.DataTable(this.props.data) })
@@ -25,21 +26,26 @@ export class DataTbl extends Component {
     const urlKPA = `${process.env.API_HOST}/kpa/paket/spse/2018/set-tipe-pekerjaan`
       this.setTipePekerjaan(urlKPA)
     }
-    if(this.state.userData.jabatan === 'kabag') {
+    if(this.isKabag()) {
     const urlKabag = `${process.env.API_HOST}/kabag/paket/spse/2018/set-tipe-pekerjaan`
-      this.assignKPA()
-      this.setTipePekerjaan(urlKabag)
-      this.assignPjFunc()
+      this.assignKPA();
+      this.setTipePekerjaan(urlKabag);
+      this.assignPjFunc();
+    }
+  }
+  componentDidUpdate() {
+    if (this.isKabag()) {
+      this.state.table.columns( 8 ).visible( this.props.visibility );
+      this.state.table.columns( 10 ).visible( !this.props.visibility );
+      this.state.table.columns( 11 ).visible( this.props.detailView );
+    }
+    if(this.state.userData.jabatan === 'kpa') {
+      console.log('test')
+      this.state.table.columns( 9 ).visible( this.props.detailView );
     }
   }
   isKabag() {
     return this.state.userData.jabatan === 'kabag'
-  }
-  componentDidUpdate() {
-    if(this.state.userData.jabatan === 'kabag') {
-      this.state.table.columns( 8 ).visible( this.props.visibility );
-      this.state.table.columns( 10 ).visible( !this.props.visibility );
-    }
   }
 
   assignKPA() {

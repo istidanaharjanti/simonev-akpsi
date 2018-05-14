@@ -142,7 +142,7 @@ class DetailPaket extends Component {
       const pejabatF = this.isPjFu();
       let commentator
       if (kpa) {
-        commentator = 'Mohamad Teguh Prasetyo'
+        commentator = 'Ibrahim Saad'
       } else if (kabag) {
         commentator = 'kabag'
       } else if (ppk) {
@@ -160,7 +160,7 @@ class DetailPaket extends Component {
                 </CardHeader>
                 <CardBlock>
                     <Col md="12">
-                        <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Mohamad Teguh Prasetyo</p>
+                        <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>Ibrahim Saad</p>
                         <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Kemarin - 09:45</p>
                         <p>Kamu semangat dong</p>
                     </Col>

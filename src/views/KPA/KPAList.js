@@ -103,6 +103,7 @@ class KPAList extends Component {
     this.getSPSEdata = this.getSPSEdata.bind(this);
     this.showSendToKabagModal = this.showSendToKabagModal.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
+    this.isLocked = this.isLocked.bind(this);
   }
   componentDidMount() {
     this.getListTipePekerjaan();
@@ -207,6 +208,9 @@ class KPAList extends Component {
     });
     window.location.reload();
   }
+  isLocked(){
+    return this.state.dataSet.find(data => data.status === 1);
+  }
   render() {
     return (
       <div className="animated fadeIn">
@@ -223,6 +227,28 @@ class KPAList extends Component {
                 }
               </Input>
             </FormGroup>
+            <Row>
+                <Col xs="6">
+                <FormGroup>
+                  <Label htmlFor="tipePekerjaan">Filter by Tipe Pekerjaan</Label>
+                  <Input type="select" name="tipePekerjaan" id="tipePekerjaan" onChange={this.filterMonEv}>
+                    <option value="any">Please select</option>
+                    <option value="monitoring">Monitoring</option>
+                    <option value="evaluasi">Evaluasi</option>
+                  </Input>
+                </FormGroup>
+                </Col>
+                <Col xs="6">
+                  <FormGroup>
+                  <Label htmlFor="konfirmasiKPA">Filter by Ditanya oleh Kabag</Label>
+                  <Input type="select" name="konfirmasiKPA" id="konfirmasiKPA" onChange={this.getAssignmentStatus}>
+                    <option value="any">Please select</option>
+                    <option value="true">Lihat paket yang telah ditanya oleh Kabag</option>
+                    <option value="false">Lihat paket yang tidak ditanya oleh Kabag</option>
+                  </Input>
+                </FormGroup>
+                </Col>
+              </Row>
           </Col>
           <Col xs="6">
             <Row>
@@ -246,7 +272,7 @@ class KPAList extends Component {
           </Col>
         </Row>
         {typeof this.state.dt !== 'undefined' &&
-          <DataTbl data={this.state.dt}>
+          <DataTbl data={this.state.dt} detailView={!!this.isLocked()}>
           </DataTbl>
         }
         <Row style={{ marginTop: '5%', marginBottom: '5%', textAlign: 'right' }}>
