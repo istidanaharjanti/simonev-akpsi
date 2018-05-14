@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 
 import { Redirect } from 'react-router-dom';
 import { Container, Row, Col, CardGroup, Card, CardBlock, Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
+import logo from '../../../../public/img/logo1.png'
 
 let username;
 let password;
@@ -74,9 +75,8 @@ class LoginComponent extends Component {
               <CardGroup className="mb-0">
                 <Card className="p-4">
                   <CardBlock className="card-body">
-                    <h1>Login</h1>
-                    <p className="text-muted">Sistem Monev Kemenkeu</p>
-                    <InputGroup className="mb-3">
+                    <img src={logo} />
+                    <InputGroup className="mb-3" style={{marginTop: 15}}>
                       <InputGroupAddon><i className="icon-user"></i></InputGroupAddon>
                       <Input type="text" placeholder="Username" value={this.state.username} onChange={this.handleUserName} />
                     </InputGroup>
