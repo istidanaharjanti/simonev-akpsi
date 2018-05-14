@@ -40,7 +40,8 @@ class DetailPaketMonitoring extends Component {
             detailPaket: {},
             file: [],
             fileUploaded: false,
-            successUploadModal: false
+            successUploadModal: false,
+            url: ''
         }
     }
 
@@ -115,7 +116,8 @@ class DetailPaketMonitoring extends Component {
             console.log("res", response.data.data)
             self.setState({
                 fileUploaded: true,
-                successUploadModal: true
+                successUploadModal: true,
+                url: response.data.data[0].path
             })
         }).catch((e) => {
             alert(e);
@@ -230,7 +232,7 @@ class DetailPaketMonitoring extends Component {
                                         <CardBlock className="card-body">
                                             <Row>
                                                 <Col md="3">
-                                                    {this.state.fileUploaded ? <a href="#">DokumenLaporan.pdf</a> : <Input type="file" id="file-input" name="file-input" onChange={this.setFile} />}
+                                                    {this.state.fileUploaded ? <a href={this.state.url} target="_blank">DokumenLaporan.pdf</a> : <Input type="file" id="file-input" name="file-input" onChange={this.setFile} />}
                                                 </Col>
                                                 <Col md="9">
                                                     {this.state.fileUploaded ? <Button color="primary" onClick={this.reupload}>Ganti File</Button> : <Button color="primary" onClick={this.uploadFile}>Upload</Button>}

@@ -40,8 +40,10 @@ class DetailPaket extends Component {
         this.renderCommentSection = this.renderCommentSection.bind(this);
         this.getCommentContent = this.getCommentContent.bind(this);
         this.sendComment = this.sendComment.bind(this);
-        this.handleUpload = this.handleUpload.bind(this);
         this.renderCommentatorName = this.renderCommentatorName.bind(this);
+        this.showBerhasilGenerate = this.showBerhasilGenerate.bind(this);
+        this.setFile = this.setFile.bind(this);
+        this.uploadFile = this.uploadFile.bind(this);
 
         this.state = {
             collapse: 0,
@@ -49,7 +51,8 @@ class DetailPaket extends Component {
             focused: false,
             startDate: moment(),
             commentContent: '',
-            showNewComment: false
+            showNewComment: false,
+            suksesBikinBap: false,
         }
     }
 
@@ -74,7 +77,9 @@ class DetailPaket extends Component {
             startDate: date
         });
     }
-
+    showBerhasilGenerate() {
+        this.setState({ suksesBikinBap: !this.state.suksesBikinBap })
+    }
     togglingMenu(selectedState) {
         const self = this;
         return function () {
@@ -206,14 +211,43 @@ class DetailPaket extends Component {
         })
     }
 
-    handleUpload(event) {
-      event.preventDefault();
-    //   console.log(event.target);
-    console.log(this.fileInput);
-      console.log(
-        `Selected file - ${this.fileInput}`
-      );
+    setFile(e) {
+        console.log("up", e.target.files[0])
+        this.setState({
+            file: e.target.files
+        })
     }
+    uploadFile(tahapan) {
+        const idPaket = window.location.hash.replace('#/detail-paket-', '');
+        const form = new FormData()
+        form.append("document", this.state.file[0])
+        const self = this;
+        const url = `${process.env.API_HOST}/ppk/evaluasi/tahapan/${idPaket}/document/${tahapan}/upload/pk`;
+        const token = Cookies.get('token');
+        axios({
+            url,
+            method: 'POST',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/pdf',
+                // "Content-Disposition": `form-data; name=document; filename=${self.state.file[0].name}`
+            },
+            processData: false,
+            mimeType: 'multipart/form-data',
+            data: form
+        }).then((response) => {
+            console.log("res", response.data.data)
+            // self.setState({
+            //     fileUploaded: true,
+            //     successUploadModal: true,
+            //     url: response.data.data[0].path
+            // })
+        }).catch((e) => {
+            alert(e);
+        });
+    }
+
+    
     render() {
         return (
             <div className="animated fadeIn">
@@ -300,10 +334,10 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Input type="file" id="file-input" name="file-input" />
+                                                                                    <Input type="file" id="file-input" name="file-input" onChange={this.setFile}/>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button color="primary">Upload</Button>
+                                                                                    <Button color="primary" onClick={this.uploadFile}>Upload</Button>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -314,7 +348,6 @@ class DetailPaket extends Component {
                                                                 this.props.subTahapan.filter(i => i.tahapan_id === 'pelaksanaan').map(sub => {
                                                                     return (
                                                                         <li>
-                                                                            <Form onSubmit={this.handleUpload}>
                                                                             <FormGroup row>
                                                                                 <Col md="4">
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
@@ -324,16 +357,12 @@ class DetailPaket extends Component {
                                                                                         type="file"
                                                                                         id="file-input"
                                                                                         name="file-input"
-                                                                                        ref={input => {
-                                                                                          this.fileInput = input;
-                                                                                        }}
                                                                                     />
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button type="submit" color="primary">Upload</Button>
+                                                                                    <Button type="button" color="primary">Upload</Button>
                                                                                 </Col>
                                                                             </FormGroup>
-                                                                            </Form>
                                                                         </li>
                                                                     )
                                                                 })
@@ -358,6 +387,16 @@ class DetailPaket extends Component {
                                                                 })
                                                             }
                                                         </ol>
+                                                        <h6>Generate File Berita Acara Pelaksanaan<Button color="link" onClick={this.showBerhasilGenerate} style={{marginLeft: 5, padding: 0, fontSize: 16}}>disini</Button></h6>
+                                                        <Modal isOpen={this.state.suksesBikinBap} toggle={this.showBerhasilGenerate} className='modal-success'>
+                                                            <ModalHeader toggle={this.showBerhasilGenerate}>BAP sukses dibuat!</ModalHeader>
+                                                            <ModalBody>
+                                                                Berita Acara Pelaksanaan berhasil dibuat! Klik unduh untuk melihat.
+                                                            </ModalBody>
+                                                            <ModalFooter>
+                                                                <a color="primary" href="https://cdn.simonev.dualboot.id/get/simonev/BERITA ACARA PELAKSANAAN.pdf" target="_blank">Unduh</a>{' '}
+                                                            </ModalFooter>
+                                                        </Modal>
                                                     </Col>
                                                     <Col md="6">
                                                         <Row style={{ marginBottom: 10 }}>
@@ -435,6 +474,7 @@ class DetailPaket extends Component {
                                                                 })
                                                             }
                                                         </ol>
+                                                        <h6>Unduh File Berita Acara Pelaksanaan<a href="https://cdn.simonev.dualboot.id/get/simonev/BERITA ACARA PELAKSANAAN.pdf" target="_blank">&nbsp;disini</a></h6>
                                                     </Col>
                                                     <Col md="6">
                                                         <Row style={{ marginBottom: 10 }}>
