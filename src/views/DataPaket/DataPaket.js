@@ -499,7 +499,7 @@ class DataPaket extends Component {
               </Button>
               <Button type="reset" size="lg" color="danger"><i className="fa fa-ban"></i> Reset</Button>
             </Col>
-            {/* <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
+            <Modal isOpen={this.state.confirmModalSendToKpa} toggle={this.showSendToKpaModal}>
               <ModalHeader toggle={this.showSendToKpaModal}>Konfirmasi Paket</ModalHeader>
               <ModalBody>
                 Anda yakin ingin mengunci tipe pekerjaan? Hal ini tidak dapat diubah kembali setelah anda menyetujui.
@@ -508,12 +508,12 @@ class DataPaket extends Component {
                 <Button color="primary" onClick={this.dataLocked() ? this.lockPejabatFungsional : this.lockTipePekerjaan}>Tentu</Button>{' '}
                 <Button color="secondary" onClick={this.showSendToKpaModal}>Tidak</Button>
               </ModalFooter>
-            </Modal> */}
+            </Modal>
         </Row> }
         {this.isKabiro() &&
           <div>
             {this.state.rupStatus && this.state.dataSet && this.state.dataSet.length > 0 ? <Button size="lg" color="warning" disabled style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Monev 2018 Telah Dimulai!</Button> : <Button size="lg" color="primary" onClick={this.startRUP} style={{ float: 'right', marginTop: '3%', fontWeight: 'bold' }}>Mulai Monev 2018!</Button>}
-            {/* <Modal isOpen={this.state.confirmModal} toggle={this.toggleAccept}>
+            <Modal isOpen={this.state.confirmModal} toggle={this.toggleAccept}>
               <ModalHeader toggle={this.toggleAccept}>Konfirmasi Kegiatan</ModalHeader>
               <ModalBody>
                 Anda yakin ingin memulai kegiatan monitoring dan evaluasi tahun 2018?<br />
@@ -532,7 +532,7 @@ class DataPaket extends Component {
               <ModalFooter>
                 <Button color="success" onClick={this.toggleSuccess}>OK</Button>
               </ModalFooter>
-            </Modal> */}
+            </Modal>
           </div>
         }
       </div>
