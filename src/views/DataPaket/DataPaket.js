@@ -98,7 +98,7 @@ class DataPaket extends Component {
         },
         { "sTitle": "Tahun Anggaran", "mDataProp": "tahun_anggaran", "sWidth": "20px" },
         { "sTitle": "Unit Eselon I", "mDataProp": "unit_eselon1", "sWidth": "20px" },
-        { "sTitle": "Konfirmasi KPA", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
+        { "sTitle": "Ajukan ke KPA", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
           var checked = ""
           if(full.assignment.status) {
             checked = "checked"
@@ -453,7 +453,7 @@ class DataPaket extends Component {
                 </Col>
                 <Col xs="6">
                   <FormGroup>
-                  <Label htmlFor="konfirmasiKPA">Filter by Konfirmasi KPA</Label>
+                  <Label htmlFor="konfirmasiKPA">Filter by Ajukan KPA</Label>
                   <Input type="select" name="konfirmasiKPA" id="konfirmasiKPA" onChange={this.getAssignmentStatus}>
                     <option value="any">Please select</option>
                     <option value="true">Lihat paket yang telah di assign ke KPA</option>
