@@ -30,15 +30,16 @@ class KPAList extends Component {
       const convertedNum = new Intl.NumberFormat(['id'], options).format(Number(val));
       return convertedNum;
     }
-    const renderSwitchJS = function (on, off, id, dv) {
+    const renderSwitchJS = function (on, off, id, dv, status) {
       var checked = "checked"
       if (dv === 'evaluasi') {
         checked = ""
       }
+      const disabled = status === 1 ? 'disabled' : ''
       return `
           <div>
             <label class="switch switch-text switch-primary  form-control-label">
-              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked}/>
+              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked} ${disabled}/>
               <span class="switch-label" data-on="${on}" data-off="${off}"></span>
               <span class="switch-handle"></span>
             </label>
@@ -60,7 +61,7 @@ class KPAList extends Component {
       { "sTitle": "Unit Eselon I", "mDataProp": "unit_eselon1", "sWidth": "20px" },
       {
         "sTitle": "Jenis Paket", "mDataProp": "paket_id", "sWidth": "5px", "render": function (data, type, full, meta) {
-          return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan)
+          return renderSwitchJS('M', 'E', data, full.tipe_pekerjaan.tipe_pekerjaan, full.status)
         }, "bSortable": false, "sClass": "dt-body-center select-checkbox"
       },
       { "sTitle": "Detail", "mDataProp": "paket_id", "sWidth": "5px", "render": function(data, type, full, meta) {
@@ -219,7 +220,6 @@ class KPAList extends Component {
     window.location.reload();
   }
   isLocked(){
-    console.log(this.state.dataSet);
     return this.state.dataSet.find(data => data.status === 1);
   }
   render() {

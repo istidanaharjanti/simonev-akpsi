@@ -152,7 +152,7 @@ class DetailPaket extends Component {
       const pejabatF = this.isPjFu();
       let commentator
       if (kpa) {
-        commentator = 'Ibrahim Saad'
+        commentator = 'Mohammad Teguh Prasetyo'
       } else if (kabag) {
         commentator = 'kabag'
       } else if (ppk) {
@@ -299,7 +299,7 @@ class DetailPaket extends Component {
                         <table style={{ fontWeight: 'bold' }}>
                             <tbody>
                                 <tr>
-                                    <td>Petugas KPA</td>
+                                    <td>{this.isKPA() ? 'Petugas Pejabat Fungsional' : 'Petugas KPA'}</td>
                                     <td>:</td>
                                     <td>{this.props.kpaName}</td>
                                 </tr>

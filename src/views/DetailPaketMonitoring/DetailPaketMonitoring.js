@@ -26,6 +26,7 @@ class DetailPaketMonitoring extends Component {
         super();
         const sessionCookie = JSON.parse(Cookies.get('userSession'));
         this.isPPK = this.isPPK.bind(this);
+        this.isKPA = this.isKPA.bind(this);
         this.reupload = this.reupload.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
         this.getDetailPaket = this.getDetailPaket.bind(this);
@@ -81,6 +82,9 @@ class DetailPaketMonitoring extends Component {
 
     isPPK() {
         return this.state.userData.jabatan === 'ppk'
+    }
+    isKPA() {
+        return this.state.userData.jabatan === 'kpa'
     }
     reupload() {
         this.setState({
@@ -199,9 +203,9 @@ class DetailPaketMonitoring extends Component {
                                 <table style={{ fontWeight: 'bold' }}>
                                     <tbody>
                                         <tr>
-                                            <td>Petugas KPA</td>
+                                            <td>{this.isKPA() ? 'Petugas Pejabat Fungsional' : 'Petugas KPA'}</td>
                                             <td>:</td>
-                                            <td>{detailPaket.kpa_nama}</td>
+                                            <td>{this.isKPA() ? detailPaket.pejabatf_nama : detailPaket.kpa_nama}</td>
                                         </tr>
                                         <tr>
                                             <td>{this.isPPK() ? 'Petugas Pejabat Fungsional' : 'Petugas PPK'}</td>
@@ -300,7 +304,7 @@ class DetailPaketMonitoring extends Component {
                         duration={detailPaket.durasi_pekerjaan}
                         startDate={this.formatDate(detailPaket.tgl_mulai_pekerjaan, 'D MMMM YYYY')}
                         endDate={this.formatDate(detailPaket.tgl_selesai_pekerjaan, 'D MMMM YYYY')}
-                        kpaName={detailPaket.kpa_nama}
+                        kpaName={this.isKPA() ? detailPaket.pejabatf_nama : detailPaket.kpa_nama}
                         pejabatFname={this.isPPK() ? detailPaket.pejabatf_nama : detailPaket.ppk_nama}
                         unitEs1={detailPaket.unit_eselon1}
                         workType={detailPaket.jenis_pekerjaan_desc}
