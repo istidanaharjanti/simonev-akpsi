@@ -337,7 +337,7 @@ class DetailPaket extends Component {
                                                                                     <Input type="file" id="file-input" name="file-input" onChange={this.setFile}/>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button color="primary" onClick={this.uploadFile}>Upload</Button>
+                                                                                    <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -360,7 +360,7 @@ class DetailPaket extends Component {
                                                                                     />
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button type="button" color="primary">Upload</Button>
+                                                                                    <Button type="button" color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -379,7 +379,7 @@ class DetailPaket extends Component {
                                                                                     <Input type="file" id="file-input" name="file-input" />
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button color="primary">Upload</Button>
+                                                                                    <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
