@@ -265,7 +265,7 @@ class DetailPaketMonitoring extends Component {
                                         <CardBlock className="card-body">
                                             <Row>
                                                 <Col md="12">
-                                                    <a href="#">DokumenLaporan.pdf</a>
+                                                  <a href={this.state.url} target="_blank">DokumenLaporan.pdf</a>
                                                 </Col>
                                             </Row>
                                             <Row style={{ marginTop: 60, paddingLeft: 15 }}>

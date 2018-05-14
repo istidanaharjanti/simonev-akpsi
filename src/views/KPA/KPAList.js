@@ -90,7 +90,9 @@ class KPAList extends Component {
       filterValue: {
         jenis_pekerjaan: 'any',
         min_nilai_kontrak: 'any',
-        max_nilai_kontrak: 'any'
+        max_nilai_kontrak: 'any',
+        assignment: 'any',
+        tipe_pekerjaan: 'any'
       },
       column
     }
@@ -104,9 +106,11 @@ class KPAList extends Component {
     this.showSendToKabagModal = this.showSendToKabagModal.bind(this);
     this.toggleSuccess = this.toggleSuccess.bind(this);
     this.isLocked = this.isLocked.bind(this);
+    this.filterMonEv = this.filterMonEv.bind(this);
   }
   componentDidMount() {
     this.getListTipePekerjaan();
+    this.getSPSEdata(this.state.filterValue);
   }
   getSPSEdata(params) {
     const self = this;
@@ -188,6 +192,12 @@ class KPAList extends Component {
   applyMinMaxFilter() {
     this.getSPSEdata(this.state.filterValue);
   }
+  filterMonEv(event) {
+    const fv = this.state.filterValue
+    fv.tipe_pekerjaan = event.target.value
+    this.setState({ filterValue: fv })
+    this.getSPSEdata(this.state.filterValue)
+  }
   resetMinMaxFilter() {
     this.setState({
       filterValue: {
@@ -209,6 +219,7 @@ class KPAList extends Component {
     window.location.reload();
   }
   isLocked(){
+    console.log(this.state.dataSet);
     return this.state.dataSet.find(data => data.status === 1);
   }
   render() {

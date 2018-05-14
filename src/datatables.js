@@ -40,7 +40,6 @@ export class DataTbl extends Component {
       this.state.table.columns( 11 ).visible( this.props.detailView );
     }
     if(this.state.userData.jabatan === 'kpa') {
-      console.log('test')
       this.state.table.columns( 9 ).visible( this.props.detailView );
     }
   }

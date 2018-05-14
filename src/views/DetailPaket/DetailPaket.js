@@ -44,6 +44,8 @@ class DetailPaket extends Component {
         this.showBerhasilGenerate = this.showBerhasilGenerate.bind(this);
         this.setFile = this.setFile.bind(this);
         this.uploadFile = this.uploadFile.bind(this);
+        this.reUpload = this.reUpload.bind(this);
+        this.showUploadModalSuccess = this.showUploadModalSuccess.bind(this);
 
         this.state = {
             collapse: 0,
@@ -53,6 +55,9 @@ class DetailPaket extends Component {
             commentContent: '',
             showNewComment: false,
             suksesBikinBap: false,
+            urlUploaded: '',
+            fileUploaded: false,
+            successUploadModal: false,
         }
     }
 
@@ -237,14 +242,25 @@ class DetailPaket extends Component {
             data: form
         }).then((response) => {
             console.log("res", response.data.data)
-            // self.setState({
-            //     fileUploaded: true,
-            //     successUploadModal: true,
-            //     url: response.data.data[0].path
-            // })
+            self.setState({
+                fileUploaded: true,
+                successUploadModal: true,
+                urlUploaded: response.data.data
+            })
         }).catch((e) => {
             alert(e);
         });
+    }
+    reUpload(){
+        this.setState({
+            fileUploaded: false,
+            urlUploaded: ''
+        })
+    }
+    showUploadModalSuccess(){
+        this.setState({
+            successUploadModal: !this.state.successUploadModal
+        })
     }
 
     
@@ -334,10 +350,10 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Input type="file" id="file-input" name="file-input" onChange={this.setFile}/>
+                                                                                    {this.state.fileUploaded ? <a href={this.state.urlUploaded} target="_blank">File {sub.tahapan_action_desc}.pdf</a>  : <Input type="file" id="file-input" name="file-input" onChange={this.setFile}/> }
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>
+                                                                                    {this.state.fileUploaded ? <Button color="primary" onClick={this.reUpload}>Ganti File</Button> : <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>}
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -353,14 +369,10 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Input
-                                                                                        type="file"
-                                                                                        id="file-input"
-                                                                                        name="file-input"
-                                                                                    />
+                                                                                    {this.state.fileUploaded ? <a href={this.state.urlUploaded} target="_blank">File {sub.tahapan_action_desc}.pdf</a>  : <Input type="file" id="file-input" name="file-input" onChange={this.setFile}/> }
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button type="button" color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>
+                                                                                    {this.state.fileUploaded ? <Button color="primary" onClick={this.reUpload}>Ganti File</Button> : <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>}
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -376,10 +388,10 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Input type="file" id="file-input" name="file-input" />
+                                                                                    {this.state.fileUploaded ? <a href={this.state.urlUploaded} target="_blank">File {sub.tahapan_action_desc}.pdf</a>  : <Input type="file" id="file-input" name="file-input" onChange={this.setFile}/> }
                                                                                 </Col>
                                                                                 <Col md="4">
-                                                                                    <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>
+                                                                                    {this.state.fileUploaded ? <Button color="primary" onClick={this.reUpload}>Ganti File</Button> : <Button color="primary" onClick={(e) => this.uploadFile(sub.tahapan_id)}>Upload</Button>}
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -387,7 +399,14 @@ class DetailPaket extends Component {
                                                                 })
                                                             }
                                                         </ol>
-                                                        <h6>Generate File Berita Acara Pelaksanaan<Button color="link" onClick={this.showBerhasilGenerate} style={{marginLeft: 5, padding: 0, fontSize: 16}}>disini</Button></h6>
+                                                        { this.state.fileUploaded && <h6>Generate File Berita Acara Pelaksanaan<Button color="link" onClick={this.showBerhasilGenerate} style={{marginLeft: 5, padding: 0, fontSize: 16}}>disini</Button></h6> }
+                                                        <Modal isOpen={this.state.successUploadModal} toggle={this.showUploadModalSuccess} className='modal-success'>
+                                                            <ModalHeader toggle={this.showUploadModalSuccess}>File berhasil diupload!</ModalHeader>
+                                                            <ModalBody>
+                                                                File berhasil diupload. Anda masih bisa mengganti file yang anda telah upload dengan mengklik Ganti File.
+                                                            </ModalBody>
+                                                        </Modal>
+                                                        
                                                         <Modal isOpen={this.state.suksesBikinBap} toggle={this.showBerhasilGenerate} className='modal-success'>
                                                             <ModalHeader toggle={this.showBerhasilGenerate}>BAP sukses dibuat!</ModalHeader>
                                                             <ModalBody>
@@ -434,7 +453,7 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="6">
-                                                                                    <a href="#">File {sub.tahapan_action_desc}.pdf</a>
+                                                                                    <a href={this.state.urlUploaded} target="_blank">File {sub.tahapan_action_desc}.pdf</a>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -450,7 +469,7 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="6">
-                                                                                    <a href="#">File {sub.tahapan_action_desc}.pdf</a>
+                                                                                    <a href={this.state.urlUploaded} target="_blank">File {sub.tahapan_action_desc}.pdf</a>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
@@ -466,7 +485,7 @@ class DetailPaket extends Component {
                                                                                     <Label htmlFor="file-input">{sub.tahapan_action_desc}</Label>
                                                                                 </Col>
                                                                                 <Col md="6">
-                                                                                    <a href="#">File {sub.tahapan_action_desc}.pdf</a>
+                                                                                    <a href={this.state.urlUploaded} target="_blank">File {sub.tahapan_action_desc}.pdf</a>
                                                                                 </Col>
                                                                             </FormGroup>
                                                                         </li>
