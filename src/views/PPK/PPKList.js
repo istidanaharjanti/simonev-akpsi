@@ -38,7 +38,7 @@ class PPKList extends Component {
       return `
           <div>
             <label class="switch switch-text switch-primary  form-control-label">
-              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked}/>
+              <input type="checkbox" id="set-tipe-${id}" class="switch-input form-check-input set-tipe-checkbox" ${checked} disabled/>
               <span class="switch-label" data-on="${on}" data-off="${off}"></span>
               <span class="switch-handle"></span>
             </label>

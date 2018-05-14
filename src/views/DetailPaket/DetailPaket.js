@@ -31,6 +31,8 @@ class DetailPaket extends Component {
         this.togglingMenu = this.togglingMenu.bind(this);
         this.isPPK = this.isPPK.bind(this);
         this.isKPA = this.isKPA.bind(this);
+        this.isKabag = this.isKabag.bind(this);
+        this.isPjFu = this.isPjFu.bind(this);
         this.getWarnaIndikator = this.getWarnaIndikator.bind(this);
         this.renderSugestionCard = this.renderSugestionCard.bind(this);
         this.getProgress = this.getProgress.bind(this);
@@ -39,6 +41,7 @@ class DetailPaket extends Component {
         this.getCommentContent = this.getCommentContent.bind(this);
         this.sendComment = this.sendComment.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
+        this.renderCommentatorName = this.renderCommentatorName.bind(this);
 
         this.state = {
             collapse: 0,
@@ -59,6 +62,12 @@ class DetailPaket extends Component {
     }
     isKPA() {
         return this.state.userData.jabatan === 'kpa'
+    }
+    isKabag() {
+        return this.state.userData.jabatan === 'kabag'
+    }
+    isPjFu() {
+        return this.state.userData.jabatan === 'pejabatf'
     }
     handleDateChange(date) {
         this.setState({
@@ -126,6 +135,23 @@ class DetailPaket extends Component {
         else { return '' }
     }
 
+    renderCommentatorName(){
+      const kpa = this.isKPA();
+      const ppk = this.isPPK();
+      const kabag = this.isKabag();
+      const pejabatF = this.isPjFu();
+      let commentator
+      if (kpa) {
+        commentator = 'Mohamad Teguh Prasetyo'
+      } else if (kabag) {
+        commentator = 'kabag'
+      } else if (ppk) {
+        commentator = 'Sumarmo'
+      } else if (pejabatF) {
+        commentator = 'Pejabat Fungsional 1'
+      } return commentator;
+    }
+
     renderCommentSection() {
         return (
             <Card>
@@ -140,7 +166,7 @@ class DetailPaket extends Component {
                     </Col>
                     {comment !== '' && this.state.showNewComment &&
                         <Col md="12">
-                            <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>{this.isKPA()? 'Sumarmo' : 'Pejabat Fungsional 1'}</p>
+                            <p style={{ fontWeight: 'bold', color: '#216ba5', marginBottom: 0 }}>{this.renderCommentatorName()}</p>
                             <p style={{ fontSize: 10, color: 'grey', marginBottom: 4 }}>Hari Ini - 14:25</p>
                             <p>{comment}</p>
                         </Col>
